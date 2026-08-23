@@ -20,9 +20,21 @@ namespace Assets._game.Npc {
             currentState?.EnterState();
         }
 
-        private void UpdateState() {
-            currentState?.UpdateState();
+        private void UpdateState(NPCState state) {
+
+            switch ( state ) {
+                case NPCState.MoveToLine:
+                break;
+
+
+                
+            }
+
+
         }
+
+
+
 
     }
 }
