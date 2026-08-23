@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using UnityEditor.SceneManagement;
 using UnityEngine;
 
 namespace Assets._game.Npc {
