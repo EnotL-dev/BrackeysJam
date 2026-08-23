@@ -9,27 +9,32 @@ namespace Assets._game.Npc {
 
         Transform transform;
 
+        float timeMoving = 5;
+        
+        Vector3 dest;
 
-        public NPCMoveScript( Transform transform, NPCMachineState machineState) {
+        public NPCMoveScript( Transform transform, NPCMachineState machineState ) {
             this.transform = transform;
             this.machineState = machineState;
         }
 
+        public void SetDestination( Transform transform ) {
+            dest = transform.position;
+        }
 
         public void EnterState() {
             //use ai navigation for this
 
             //For testing
 
-            Debug.Log("move this npc to some where");
-
-            var temp = new Vector3 ( 10,0,10);
-
-            transform.DOMove(temp, 10);
+            Debug.Log($"move this npc to some {dest}");
+            transform.DOMove(dest, timeMoving);
         }
 
         public void ExitState() {
-            throw new System.NotImplementedException();
+            //throw new System.NotImplementedException();
+
+            Debug.Log("exit move");
         }
 
         public void UpdateState() {

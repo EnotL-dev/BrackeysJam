@@ -6,6 +6,9 @@ namespace Assets._game.Npc {
 
         readonly NPCMachineState machineState;
 
+        //wait 
+        //after a period of time left?.
+
         public NpcWaitingScript(NPCMachineState NPCMachineState ) {
             machineState = NPCMachineState;
         }
