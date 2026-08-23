@@ -1,7 +1,8 @@
+using Assets._game.Bar.Controller;
 using UnityEngine;
 using Zenject;
 
-namespace Assets._game.Bar.Controller
+namespace Assets._game.Core.Installers
 {
     public class BarInstaller : MonoInstaller
     {
