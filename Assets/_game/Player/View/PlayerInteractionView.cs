@@ -13,13 +13,18 @@ namespace Assets._game.Player.View
 
         [SerializeField] private InputActionReference interactAction;
         [Space(5)]
+        [SerializeField] private PlayerController playerController;
+        [Space(5)]
         [SerializeField] private UIInteractionView uiInteractionView;
         [SerializeField] private Camera cam;
         [SerializeField] private float distanceToInteract = 3f;
         [SerializeField] private LayerMask interactLayer;
 
+        private bool holdStart = false;
+
         private void Start()
         {
+            interactionService.Init(playerController);
             interactAction.action.Enable();
         }
 
@@ -31,32 +36,44 @@ namespace Assets._game.Player.View
         private void Update()
         {
             CheckInteraction();
+
+            if(holdStart && interactAction.action.WasReleasedThisFrame())
+            {
+                holdStart = false;
+
+                interactionService.EndInteraction();
+            }
         }
 
         private void CheckInteraction()
         {
-            if (interactAction.action.WasPressedThisFrame())
+            if (CheckObject() is IInteractable interactableObject)
             {
-               if(CheckObject() is InteractableObjectView interactableObjectView)
-               {
-                    interactionService.InitInteraction(interactableObjectView);
-                    uiInteractionView.HideTip();
-               }
-            }
-            else
-            {
-                if (CheckObject() is InteractableObjectView interactableObjectView)
+                if (interactAction.action.WasPressedThisFrame()) // one click
                 {
-                    uiInteractionView.ShowTip();
+                    if (interactionService.IsBusy()) return;
+
+                    holdStart = true;
+
+                    interactionService.StartInteraction(interactableObject);
+                    uiInteractionView.HideTip();
+                }
+                else if (interactAction.action.IsPressed()) // pressed
+                {
+                    interactionService.ContinuousInteraction();
                 }
                 else
                 {
-                    uiInteractionView.HideTip();
+                    uiInteractionView.ShowTip();
                 }
+            }
+            else // cross
+            {
+                uiInteractionView.HideTip();
             }
         }
 
-        private InteractableObjectView CheckObject()
+        private IInteractable CheckObject()
         {
             Vector3 screenCenter = new Vector3(Screen.width / 2f, Screen.height / 2f, 0);
 
@@ -66,7 +83,7 @@ namespace Assets._game.Player.View
 
             if (Physics.Raycast(ray, out hit, distanceToInteract, interactLayer))
             {
-                return hit.collider.gameObject.GetComponent<InteractableObjectView>();
+                return hit.collider.gameObject.GetComponent<IInteractable>();
             }
 
             return null;

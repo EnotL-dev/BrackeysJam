@@ -5,6 +5,9 @@ namespace Assets._game.Interaction.View
 {
     public interface IInteractable
     {
-        public bool FreezePlayer();
+        bool FreezePlayer();
+        void OnStartInteraction();
+        void OnContinuousInteraction();
+        void OnEndInteraction();
     }
 }

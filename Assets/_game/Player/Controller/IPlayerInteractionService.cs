@@ -6,6 +6,10 @@ namespace Assets._game.Player.Controller
 {
     public interface IPlayerInteractionService
     {
-        void InitInteraction(IInteractable interactableObject);
+        bool IsBusy();
+        void Init(PlayerController playerController);
+        void StartInteraction(IInteractable interactableObject);
+        void ContinuousInteraction();
+        void EndInteraction();
     }
 }

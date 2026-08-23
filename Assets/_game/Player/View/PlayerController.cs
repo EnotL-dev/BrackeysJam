@@ -10,6 +10,9 @@ public class PlayerController : MonoBehaviour {
     [SerializeField] private InputActionReference jumpAction;
 
     [Header("Movement")]
+    private bool freezeMovemet = false;
+    public void FreezeMovement() => freezeMovemet = true;
+    public void UnFreezeMovement() => freezeMovemet = false;
     [SerializeField] private float moveSpeed = 5f;
     [SerializeField] private float rotationSpeed = 15f;
     [SerializeField] private float gravity = -20f;
@@ -51,7 +54,7 @@ public class PlayerController : MonoBehaviour {
 
     private void Update() {
         HandleLook();
-        HandleMovement();
+        if(!freezeMovemet) HandleMovement();
         HandleGravity();
     }
 
