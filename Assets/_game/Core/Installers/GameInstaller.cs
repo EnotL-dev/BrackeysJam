@@ -1,9 +1,9 @@
-using Core.Bootstrap;
-using Core.StateMachine;
+using Assets._game.Core.Bootstrap;
+using Assets._game.Core.StateMachine;
 using UnityEngine;
 using Zenject;
 
-namespace Core.Installers
+namespace Assets._game.Core.Installers
 {
     public class GameInstaller : MonoInstaller
     {

@@ -2,7 +2,7 @@ using Cysharp.Threading.Tasks;
 using UnityEngine;
 using Zenject;
 
-namespace Core.StateMachine
+namespace Assets._game.Core.StateMachine
 {
     public class BootstrapState : IGameState
     {

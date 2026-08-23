@@ -1,7 +1,7 @@
 using Zenject;
 using Cysharp.Threading.Tasks;
 
-namespace Core.StateMachine
+namespace Assets._game.Core.StateMachine
 {
     public class GameStateMachine : IGameStateMachine
     {

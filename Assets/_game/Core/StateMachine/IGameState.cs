@@ -1,7 +1,7 @@
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 
-namespace Core.StateMachine
+namespace Assets._game.Core.StateMachine
 {
     public interface IGameState
     {

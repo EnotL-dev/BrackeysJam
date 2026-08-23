@@ -1,8 +1,8 @@
-using Core.StateMachine;
+using Assets._game.Core.StateMachine;
 using UnityEngine;
 using Zenject;
 
-namespace Core.Bootstrap
+namespace Assets._game.Core.Bootstrap
 {
     public class GameBootstrap : IInitializable
     {
@@ -15,7 +15,7 @@ namespace Core.Bootstrap
 
         public void Initialize()
         {
-            Debug.Log("<Color=green>GameBootstrap initialized</color>");
+            Debug.Log("<color=green>GameBootstrap initialized</color>");
 
             Application.targetFrameRate = 60;
             _stateMachine.Enter<BootstrapState>();
