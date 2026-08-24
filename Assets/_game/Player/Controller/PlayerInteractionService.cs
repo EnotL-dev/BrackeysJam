@@ -22,7 +22,10 @@ namespace Assets._game.Player.Controller
 
             Debug.Log("interact");
 
-            if (interactableObject.FreezePlayer()) playerController?.FreezeMovement();
+            if ( interactableObject.FreezePlayer() ) {
+                //playerController?.FreezeMovement();
+                playerController?.SetInputEnabled(false);
+            }
 
             //interactableObject?.OnStartInteraction();
             lastInteractableObject = interactableObject;
@@ -37,7 +40,10 @@ namespace Assets._game.Player.Controller
 
         public void EndInteraction()
         {
-            if (lastInteractableObject.FreezePlayer()) playerController.UnFreezeMovement();
+            if ( lastInteractableObject.FreezePlayer() ) {
+                //playerController.UnFreezeMovement();
+                playerController?.SetInputEnabled(true);
+            }
 
             lastInteractableObject?.OnEndInteraction();
 
