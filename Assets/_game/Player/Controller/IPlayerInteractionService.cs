@@ -1,4 +1,5 @@
 ﻿using Assets._game.Interaction.View;
+using Assets._game.Player.View;
 using System.Collections;
 using UnityEngine;
 

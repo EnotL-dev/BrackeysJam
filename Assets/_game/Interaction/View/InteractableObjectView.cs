@@ -25,7 +25,7 @@ namespace Assets._game.Interaction.View
         }
 
         public void OnInteract() {
-            throw new System.NotImplementedException();
+            //nothing
         }
     }
 }
