@@ -34,6 +34,8 @@ namespace Assets._game.Player.Controller
             lastInteractableObject = interactableObject;
             interactableObject?.OnInteract();
 
+            if (lastInteractableObject.IsDragingObject())
+                dragManagerView.Grab(lastInteractableObject);
         }
 
         public void ContinuousInteraction()
@@ -49,6 +51,9 @@ namespace Assets._game.Player.Controller
             }
 
             lastInteractableObject?.OnEndInteraction();
+
+            if (lastInteractableObject.IsDragingObject())
+                dragManagerView.Drop();
 
             Busy = false;
         }

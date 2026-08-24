@@ -7,7 +7,7 @@ namespace Assets._game.Interaction.View
     {
         [SerializeField] private bool freezePlayer = false;
         public bool FreezePlayer() => freezePlayer;
-        [SerializeField] private bool isDraggingObject = false;
+        [SerializeField] private bool isDraggingObject = true;
         public bool IsDragingObject() => isDraggingObject;
         public void OnContinuousInteraction()
         {
