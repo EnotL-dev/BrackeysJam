@@ -53,8 +53,12 @@ public class PlayerController : MonoBehaviour {
     }
 
     private void Update() {
-        HandleLook();
-        if(!freezeMovemet) HandleMovement();
+
+        //this should lock the look input too
+        if ( !freezeMovemet ) {
+            HandleMovement();
+            HandleLook();
+        }
         HandleGravity();
     }
 
@@ -99,6 +103,8 @@ public class PlayerController : MonoBehaviour {
         );
     }
 
+    //BUG: stay still can't jump
+    //might not use jump
     private void HandleGravity() {
         if ( controller.isGrounded && velocity.y < 0f ) {
             velocity.y = -2f;
@@ -117,6 +123,14 @@ public class PlayerController : MonoBehaviour {
         );
     }
 
+    public void SetInputEnabled( bool enable ) {
+        freezeMovemet = !enable;
+
+        if ( enable ) SetMouseFocus(true);
+        else SetMouseFocus(false);
+    }
+
+
     private void SetMouseFocus( bool focused ) {
         if ( focused ) {
             Cursor.lockState = CursorLockMode.Locked;
@@ -127,6 +141,11 @@ public class PlayerController : MonoBehaviour {
             Cursor.visible = true;
         }
     }
+
+
+
+
+
 
 }
 

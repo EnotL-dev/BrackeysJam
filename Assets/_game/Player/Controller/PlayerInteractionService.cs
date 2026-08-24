@@ -20,25 +20,32 @@ namespace Assets._game.Player.Controller
         {
             Busy = true;
 
-            if (interactableObject.FreezePlayer())
-                playerController.FreezeMovement();
+            Debug.Log("interact");
 
-            interactableObject.OnStartInteraction();
+            if ( interactableObject.FreezePlayer() ) {
+                //playerController?.FreezeMovement();
+                playerController?.SetInputEnabled(false);
+            }
 
+            //interactableObject?.OnStartInteraction();
             lastInteractableObject = interactableObject;
+            interactableObject?.OnInteract();
+
         }
 
         public void ContinuousInteraction()
         {
-            lastInteractableObject.OnContinuousInteraction();
+            lastInteractableObject?.OnContinuousInteraction();
         }
 
         public void EndInteraction()
         {
-            if (lastInteractableObject.FreezePlayer())
-                playerController.UnFreezeMovement();
+            if ( lastInteractableObject.FreezePlayer() ) {
+                //playerController.UnFreezeMovement();
+                playerController?.SetInputEnabled(true);
+            }
 
-            lastInteractableObject.OnEndInteraction();
+            lastInteractableObject?.OnEndInteraction();
 
             Busy = false;
         }

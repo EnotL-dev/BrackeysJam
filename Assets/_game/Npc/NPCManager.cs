@@ -33,6 +33,9 @@ namespace Assets._game.Npc {
             }
         }
 
+
+        //TODO: chagne into a service to provide the position in waitingline
+        //to the npc script
         private void SpawnNPC() {
             if ( !waitingLineScript.HasAvailableSlot() ) return;
 
