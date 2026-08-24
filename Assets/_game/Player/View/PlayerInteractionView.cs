@@ -41,8 +41,10 @@ namespace Assets._game.Player.View {
             //}
 
             IInteractable interactable = CheckObject();
+
             UpdateInteractionUI(interactable);
             CheckInteraction(interactable);
+            CheckInteractionRelease();
 
         }
 
@@ -97,8 +99,13 @@ namespace Assets._game.Player.View {
             else if ( interactAction.action.IsPressed() ) {
                 interactionService.ContinuousInteraction();
             }
+        }
 
-
+        private void CheckInteractionRelease() {
+            if ( holdStart && interactAction.action.WasReleasedThisFrame() ) {
+                holdStart = false;
+                interactionService?.EndInteraction();
+            }
         }
 
         private IInteractable CheckObject() {
