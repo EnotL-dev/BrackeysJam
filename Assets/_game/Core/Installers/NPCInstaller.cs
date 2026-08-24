@@ -13,7 +13,7 @@ namespace Assets._game.Core.Installers {
 
         [SerializeField] WaitingLineScript waitingLineScript;
         [SerializeField] NPCInfoView NPCInfoViewInstance;
-        
+
         public override void InstallBindings() {
             BindView();
 
@@ -24,6 +24,7 @@ namespace Assets._game.Core.Installers {
             Container.Bind<NPCService>().AsSingle();
             Container.Bind<SeatService>().AsSingle();
             Container.Bind<WaitingLineService>().AsSingle();
+            Container.Bind<BarService>().AsSingle();
 
             Container.Bind<NPCInfoView>().
                 FromInstance(NPCInfoViewInstance).
@@ -33,7 +34,7 @@ namespace Assets._game.Core.Installers {
                 FromInstance(waitingLineScript).
                 AsSingle();
 
-            
+
         }
     }
 }
