@@ -11,10 +11,12 @@ namespace Assets._game.Player.View
         [SerializeField] private TextMeshProUGUI textTip;
 
 
-        public void ShowTip()
+        public void ShowTip(string text)
         {
             if (tipShowed) return;
             tipShowed = true;
+
+            textTip.text = text;
 
             textTip.alpha = 0;
             textTip.DOKill();

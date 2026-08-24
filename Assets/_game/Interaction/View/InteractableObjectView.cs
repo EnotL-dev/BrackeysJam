@@ -8,6 +8,7 @@ namespace Assets._game.Interaction.View
         [SerializeField] private bool freezePlayer = false;
         public bool FreezePlayer() => freezePlayer;
 
+
         public void OnStartInteraction()
         {
             Debug.Log($"I LOVE CATGIRLS");
@@ -21,6 +22,10 @@ namespace Assets._game.Interaction.View
         public void OnEndInteraction()
         {
             Debug.Log($"And foxgirls");
+        }
+
+        public void OnInteract() {
+            throw new System.NotImplementedException();
         }
     }
 }

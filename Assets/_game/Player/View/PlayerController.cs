@@ -53,8 +53,12 @@ public class PlayerController : MonoBehaviour {
     }
 
     private void Update() {
-        HandleLook();
-        if(!freezeMovemet) HandleMovement();
+
+        //this should lock the look input too
+        if ( !freezeMovemet ) {
+            HandleMovement();
+            HandleLook();
+        }
         HandleGravity();
     }
 
