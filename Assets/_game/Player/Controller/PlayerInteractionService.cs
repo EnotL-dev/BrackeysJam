@@ -10,9 +10,11 @@ namespace Assets._game.Player.Controller
         public bool IsBusy() => Busy;
 
         private PlayerController playerController;
-        public void Init(PlayerController playerController)
+        private DragManagerView dragManagerView;
+        public void Init(PlayerController playerController, DragManagerView dragManagerView)
         {
             this.playerController = playerController;
+            this.dragManagerView = dragManagerView;
             Debug.Log("PlayerInteractionService was init");
         }
 

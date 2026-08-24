@@ -5,7 +5,12 @@ namespace Assets._game.Player.View
 {
     public class DragManagerView : MonoBehaviour
     {
-        public void TryDrag(IInteractable interactable)
+        public void Drag(IInteractable interactable)
+        {
+
+        }
+
+        public void Drop(IInteractable interactable)
         {
 
         }

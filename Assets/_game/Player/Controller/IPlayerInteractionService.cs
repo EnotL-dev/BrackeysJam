@@ -8,7 +8,7 @@ namespace Assets._game.Player.Controller
     public interface IPlayerInteractionService
     {
         bool IsBusy();
-        void Init(PlayerController playerController);
+        void Init(PlayerController playerController, DragManagerView dragManagerView);
         void StartInteraction(IInteractable interactableObject);
         void ContinuousInteraction();
         void EndInteraction();

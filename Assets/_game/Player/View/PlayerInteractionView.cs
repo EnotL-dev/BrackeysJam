@@ -22,7 +22,7 @@ namespace Assets._game.Player.View {
         private bool holdStart = false;
 
         private void Start() {
-            interactionService.Init(playerController);
+            interactionService.Init(playerController, dragManagerView);
             interactAction.action.Enable();
         }
 
