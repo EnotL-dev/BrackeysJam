@@ -9,6 +9,9 @@ namespace Assets._game.Core.Installers
     {
         public override void InstallBindings()
         {
+            SignalBusInstaller.Install(Container);
+            Container.DeclareSignal<StateChangedSignal>();
+
             BindStateMachine();
             BindStates();
 

@@ -12,6 +12,7 @@ namespace Assets._game.Player.View {
         [SerializeField] private InputActionReference interactAction;
         [Space(5)]
         [SerializeField] private PlayerController playerController;
+        [SerializeField] private DragManagerView dragManagerView;
         [Space(5)]
         [SerializeField] private UIInteractionView uiInteractionView;
         [SerializeField] private Camera cam;
@@ -21,7 +22,7 @@ namespace Assets._game.Player.View {
         private bool holdStart = false;
 
         private void Start() {
-            interactionService.Init(playerController);
+            interactionService.Init(playerController, dragManagerView);
             interactAction.action.Enable();
         }
 

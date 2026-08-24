@@ -41,6 +41,9 @@ namespace Assets._game.Npc {
             return true; //for now
         }
 
+        [SerializeField] private bool isDraggingObject = false;
+        public bool IsDragingObject() => isDraggingObject;
+
         public void OnContinuousInteraction() {
             //throw new System.NotImplementedException();
         }

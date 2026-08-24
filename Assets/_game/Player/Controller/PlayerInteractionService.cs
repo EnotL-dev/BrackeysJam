@@ -1,4 +1,5 @@
 using Assets._game.Interaction.View;
+using Assets._game.Player.View;
 using UnityEngine;
 
 namespace Assets._game.Player.Controller
@@ -9,9 +10,11 @@ namespace Assets._game.Player.Controller
         public bool IsBusy() => Busy;
 
         private PlayerController playerController;
-        public void Init(PlayerController playerController)
+        private DragManagerView dragManagerView;
+        public void Init(PlayerController playerController, DragManagerView dragManagerView)
         {
             this.playerController = playerController;
+            this.dragManagerView = dragManagerView;
             Debug.Log("PlayerInteractionService was init");
         }
 
@@ -31,6 +34,8 @@ namespace Assets._game.Player.Controller
             lastInteractableObject = interactableObject;
             interactableObject?.OnInteract();
 
+            if (lastInteractableObject.IsDragingObject())
+                dragManagerView.Grab(lastInteractableObject);
         }
 
         public void ContinuousInteraction()
@@ -46,6 +51,9 @@ namespace Assets._game.Player.Controller
             }
 
             lastInteractableObject?.OnEndInteraction();
+
+            if (lastInteractableObject.IsDragingObject())
+                dragManagerView.Drop();
 
             Busy = false;
         }

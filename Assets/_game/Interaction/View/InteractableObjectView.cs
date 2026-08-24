@@ -7,7 +7,8 @@ namespace Assets._game.Interaction.View
     {
         [SerializeField] private bool freezePlayer = false;
         public bool FreezePlayer() => freezePlayer;
-
+        [SerializeField] private bool isDraggingObject = false;
+        public bool IsDragingObject() => isDraggingObject;
 
         public void OnStartInteraction()
         {
@@ -25,7 +26,7 @@ namespace Assets._game.Interaction.View
         }
 
         public void OnInteract() {
-            throw new System.NotImplementedException();
+            //nothing
         }
     }
 }
