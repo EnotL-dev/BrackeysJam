@@ -1,15 +1,15 @@
 ﻿using System.Collections;
 using UnityEngine;
 
-namespace Assets._game.Npc {
-    public class NpcWaitingScript : INPCState {
+namespace Assets._game.Npc.ConcreateClass {
+    public class NPCWaitingScript : INPCState {
 
         readonly NPCMachineState machineState;
 
         //wait 
         //after a period of time left?.
 
-        public NpcWaitingScript(NPCMachineState NPCMachineState ) {
+        public NPCWaitingScript(NPCMachineState NPCMachineState ) {
             machineState = NPCMachineState;
         }
 

@@ -5,7 +5,7 @@ namespace Assets._game.Npc {
     public interface INPCState {
 
         void EnterState();
-        void UpdateState(); //might dont need
         void ExitState(); 
+        void UpdateState(); //might dont need
     }
 }
