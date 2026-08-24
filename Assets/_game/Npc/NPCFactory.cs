@@ -1,16 +1,18 @@
 ﻿using System.Collections;
 using UnityEngine;
+using Zenject;
 
 namespace Assets._game.Npc {
     public class NPCFactory : MonoBehaviour {
 
         [SerializeField] GameObject prefab;
 
+        [Inject]
+        private DiContainer container;
 
         public GameObject SpawnNpc() {
-            return Instantiate(prefab);
+            return container.InstantiatePrefab(prefab);
         }
-
 
 
     }

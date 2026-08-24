@@ -39,6 +39,7 @@ namespace Assets._game.TestingScript {
         }
 
         public void Exit() {
+
         }
 
 
@@ -46,6 +47,11 @@ namespace Assets._game.TestingScript {
             return scripts.Count < maxCap;
         }
 
+        public int GetMaxCap() => maxCap;
+
+        public Transform GetPosition( int index ) {
+            return transforms[index];
+        }
 
     }
 }
