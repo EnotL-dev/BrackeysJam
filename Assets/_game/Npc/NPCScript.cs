@@ -1,6 +1,11 @@
-﻿using System.Collections;
+﻿using Assets._game.Bar.Controller;
+using Assets._game.Bar.Model;
+using Assets._game.Npc.ConcreateClass;
+using System;
+using System.Collections;
 using Unity.VisualScripting;
 using UnityEngine;
+using Zenject;
 
 namespace Assets._game.Npc {
     public class NPCScript : MonoBehaviour {
@@ -10,14 +15,26 @@ namespace Assets._game.Npc {
         public NPCInfo npcInfo;
 
         public NPCMoveScript moveScript;
-        public NpcWaitingScript waitScript;
+        public NPCWaitingScript waitScript;
+        public NPCConsumeOrder consumeOrder;
+
+        [SerializeField] GameObject LeavePos;
+
+
+        BarService barService;
+
+        [Inject]
+        void Construct(BarService barService) {
+            this.barService = barService;
+        }
 
         void Awake() {
             npcInfo = new NPCInfo(); //later will need another script for this
 
 
             moveScript = new NPCMoveScript(this.gameObject.transform, machineState);
-            waitScript = new NpcWaitingScript(machineState);
+            waitScript = new NPCWaitingScript(machineState);
+            consumeOrder = new NPCConsumeOrder(this);
 
             //machineState.Initialize(moveScript);
         }
@@ -47,22 +64,49 @@ namespace Assets._game.Npc {
 
 
         public void MoveToDest(Transform transform) {
-            moveScript.SetDestination(transform);
+            moveScript.SetDestination(transform.position);
             machineState.ChangeState(moveScript);
         }
 
         
+
+
         public void MoveToWaitingLine(Transform transform) {
-            moveScript.SetDestination(transform);
+            moveScript.SetDestination(transform.position);
             machineState.ChangeState(moveScript);
         }
 
         public void MoveToBar(Transform transform) {
-            moveScript.SetDestination(transform);
+            moveScript.SetDestination(transform.position);
             machineState.ChangeState(moveScript);
         }
 
 
+        public void PlaceOrder() {
+            int count = System.Enum.GetValues(typeof(OrderType)).Length;
+            OrderType orderType = (OrderType)UnityEngine.Random.Range(0, count);
+
+            barService.RequestOrder(this, orderType);
+
+            machineState.ChangeState(consumeOrder);
+        }
+
+        public void WaitForConsumeOrder( float seconds, Action onComplete ) {
+            StartCoroutine(WaitForConsumeOrderRoutine(seconds, onComplete));
+        }
+
+        private IEnumerator WaitForConsumeOrderRoutine(
+            float seconds,
+            Action onComplete ) {
+            yield return new WaitForSeconds(seconds);
+
+            onComplete?.Invoke();
+        }
+
+        public void Leave() {
+            moveScript.SetDestination(new Vector3(-10, -0.5f, 5));
+            machineState.ChangeState(moveScript);
+        }
 
     }
 }
