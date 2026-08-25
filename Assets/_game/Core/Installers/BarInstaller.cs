@@ -15,8 +15,14 @@ namespace Assets._game.Core.Installers
 
         private void BindBar()
         {
-            Container.Bind<IBarService>()
-                     .To<BarService>()
+            Container.BindInterfacesAndSelfTo<BarService>()
+                     .AsSingle()
+                     .NonLazy();
+
+            Container.Bind<SeatService>().AsSingle();
+
+            Container.Bind<IEconomyService>()
+                     .To<EconomyService>()
                      .AsSingle();
         }
     }

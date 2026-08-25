@@ -199,6 +199,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a287e3d32d64fad4895399557175f4e8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DragManagerView
+  dragSpeed: 6
   cam: {fileID: 9147236426612041794}
 --- !u!1 &3611158049262800402
 GameObject:
@@ -349,9 +350,41 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 1037494492573481625, guid: db48a95242618bd48836e13ed70d0392, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1037494492573481625, guid: db48a95242618bd48836e13ed70d0392, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1037494492573481625, guid: db48a95242618bd48836e13ed70d0392, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1037494492573481625, guid: db48a95242618bd48836e13ed70d0392, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2606242531583278370, guid: db48a95242618bd48836e13ed70d0392, type: 3}
       propertyPath: m_Name
       value: PlayerCanvas
+      objectReference: {fileID: 0}
+    - target: {fileID: 3166937286830116839, guid: db48a95242618bd48836e13ed70d0392, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3166937286830116839, guid: db48a95242618bd48836e13ed70d0392, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3166937286830116839, guid: db48a95242618bd48836e13ed70d0392, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3166937286830116839, guid: db48a95242618bd48836e13ed70d0392, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6267030459907547309, guid: db48a95242618bd48836e13ed70d0392, type: 3}
       propertyPath: m_fontColor.a
@@ -439,6 +472,30 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7778265939906221545, guid: db48a95242618bd48836e13ed70d0392, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7875827029798931006, guid: db48a95242618bd48836e13ed70d0392, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7875827029798931006, guid: db48a95242618bd48836e13ed70d0392, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7875827029798931006, guid: db48a95242618bd48836e13ed70d0392, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7875827029798931006, guid: db48a95242618bd48836e13ed70d0392, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7875827029798931006, guid: db48a95242618bd48836e13ed70d0392, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7875827029798931006, guid: db48a95242618bd48836e13ed70d0392, type: 3}
+      propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []

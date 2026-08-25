@@ -1,4 +1,5 @@
 ﻿using Assets._game.Bar.Model;
+using System;
 using System.Collections;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -17,7 +18,7 @@ namespace Assets._game.Npc.ConcreateClass {
             this.NPCScript = NPCScript;
         }
 
-        void INPCState.EnterState() {
+        void INPCState.EnterState(Action _) {
 
             Debug.Log($"Start consume {orderType}");
 

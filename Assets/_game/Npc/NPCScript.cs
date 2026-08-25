@@ -18,14 +18,17 @@ namespace Assets._game.Npc {
         public NPCWaitingScript waitScript;
         public NPCConsumeOrder consumeOrder;
 
+
         [SerializeField] GameObject LeavePos;
 
 
         BarService barService;
+        SeatService seatService;
 
         [Inject]
-        void Construct(BarService barService) {
+        void Construct( BarService barService, SeatService seatService ) {
             this.barService = barService;
+            this.seatService = seatService;
         }
 
         void Awake() {
@@ -39,7 +42,7 @@ namespace Assets._game.Npc {
             //machineState.Initialize(moveScript);
         }
 
-        public void ChangeState(NPCState state) {
+        public void ChangeState( NPCState state ) {
             switch ( state ) {
                 case NPCState.MoveToLine:
                 case NPCState.MoveToBar:
@@ -52,7 +55,7 @@ namespace Assets._game.Npc {
                     machineState.ChangeState(moveScript);
                     break;
 
-                
+
 
 
                 default:
@@ -63,36 +66,55 @@ namespace Assets._game.Npc {
         }
 
 
-        public void MoveToDest(Transform transform) {
-            moveScript.SetDestination(transform.position);
-            machineState.ChangeState(moveScript);
-        }
-
-        
-
-
-        public void MoveToWaitingLine(Transform transform) {
-            moveScript.SetDestination(transform.position);
-            machineState.ChangeState(moveScript);
-        }
-
-        public void MoveToBar(Transform transform) {
-            moveScript.SetDestination(transform.position);
+        public void MoveToDest( Vector3 pos ) {
+            moveScript.SetDestination(pos);
             machineState.ChangeState(moveScript);
         }
 
 
-        public void PlaceOrder() {
-            int count = System.Enum.GetValues(typeof(OrderType)).Length;
-            OrderType orderType = (OrderType)UnityEngine.Random.Range(0, count);
 
-            barService.RequestOrder(this, orderType);
 
-            machineState.ChangeState(consumeOrder);
+        //public void MoveToWaitingLine( Vector3 pos ) {
+        //    moveScript.SetDestination(transform.position);
+        //    machineState.ChangeState(moveScript);
+        //}
+
+        public void MoveToBar( Vector3 pos ) {
+            moveScript.SetDestination(pos);
+            machineState.ChangeState(moveScript, () => {
+                PlaceOrder();
+            });
+
+
+        }
+
+
+        public void PlaceOrder( Order order = null ) {
+            //machineState.ChangeState(waitScript);
+
+            StartCoroutine(barService.RequestOrder(this, order, () => {
+                var pos = seatService.FindBestSeat();
+                MoveToDest(pos.transform.position);
+                machineState.ChangeState(moveScript, () => {
+
+                    machineState.ChangeState(consumeOrder, () => {
+
+                        Leave();
+                    });
+                });
+
+            }));
+
+
+        }
+
+        public void ConsumeOrder( float second ) {
+            machineState.ChangeState(consumeOrder); //TODO: make the method use the second
         }
 
         public void WaitForConsumeOrder( float seconds, Action onComplete ) {
             StartCoroutine(WaitForConsumeOrderRoutine(seconds, onComplete));
+
         }
 
         private IEnumerator WaitForConsumeOrderRoutine(

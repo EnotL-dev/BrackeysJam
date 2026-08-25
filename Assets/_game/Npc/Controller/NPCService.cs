@@ -9,15 +9,21 @@ namespace Assets._game.Npc.Controller {
     public class NPCService {
 
         private SeatService seatService;
-        private WaitingLineService waitingLineService;
+        private WaitingLineService comeInWaitingLineService;
+        private WaitingLineService barWaitingLineService;
+        private OrderService orderService;
         IPlayerInteractionService playerInteractionService;
 
         [Inject]
-        void Construct(SeatService seatService, 
-            WaitingLineService waitingLineService,
-            IPlayerInteractionService playerInteractionService) {
+        void Construct( SeatService seatService,
+            [Inject(Id = "ComeIn")] WaitingLineService comeInWaitingLineService,
+            [Inject(Id = "Bar")] WaitingLineService barWait,
+            OrderService orderService,
+            IPlayerInteractionService playerInteractionService ) {
             this.seatService = seatService;
-            this.waitingLineService = waitingLineService;
+            this.comeInWaitingLineService = comeInWaitingLineService;
+            this.barWaitingLineService = barWait;
+            this.orderService = orderService;
             this.playerInteractionService = playerInteractionService;
         }
 
@@ -37,8 +43,10 @@ namespace Assets._game.Npc.Controller {
             }
 
 
-            waitingLineService.Exit(npc);
-            npc.MoveToDest(seat.transform);
+            comeInWaitingLineService.Exit(npc);
+
+            var pos = barWaitingLineService.GetNextAvailablePosition();
+            npc.MoveToBar(pos);
 
             Debug.Log("npc moving now");
 
@@ -54,6 +62,7 @@ namespace Assets._game.Npc.Controller {
         public void EndInteraction() {
             playerInteractionService.EndInteraction();
         }
+
 
 
     }

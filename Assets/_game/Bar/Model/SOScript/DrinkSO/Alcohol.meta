@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+<<<<<<<< HEAD:Assets/Art/Animations/BarmanAnimationController.controller.meta
+guid: 31235c51fdf80684fbb4e829f372d8b3
+NativeFormatImporter:
+========
+guid: 26b7bd9a58063f94187294df830b52e9
+folderAsset: yes
+DefaultImporter:
+>>>>>>>> origin/npc_interaction_bar:Assets/_game/Bar/Model/SOScript/DrinkSO/Alcohol.meta
+  externalObjects: {}
+  mainObjectFileID: 9100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

@@ -28,6 +28,8 @@ namespace Assets._game.Core.Installers
         private void BindStates()
         {
             Container.Bind<BootstrapState>().AsSingle();
+            Container.Bind<DayShiftState>().AsSingle();
+            Container.Bind<NightShiftState>().AsSingle();
         }
 
         private void BindBootstrap()

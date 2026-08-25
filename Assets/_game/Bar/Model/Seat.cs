@@ -6,14 +6,15 @@ using Zenject;
 public class Seat : MonoBehaviour{
     Transform transform;
 
-    BarService barService;
-
-    [Inject]
-    void Construct(BarService barService ) {
-        this.barService = barService;
-    }
+    OrderFactory orderFactory;
 
     public bool IsOccupied { get; private set; }
+
+    [Inject]
+    void Construct(OrderFactory orderFactory)  {
+        this.orderFactory = orderFactory;
+    }
+
 
     public void Start() {
         transform = GetComponent<Transform>();
@@ -35,16 +36,19 @@ public class Seat : MonoBehaviour{
     //and hold a list current seat or npc that already recognise 
     //to prevent trigger when passing by
     private void OnTriggerEnter( Collider other ) {
-        if ( other.CompareTag("NPC") ) {
+        //if ( other.CompareTag("NPC") ) {
 
-            var script = other.GetComponent<NPCScript>();
+        //    var script = other.GetComponent<NPCScript>();
 
-            
+        //    //read ncp preference (skip for now)
 
-            script.PlaceOrder();
+        //    //call order
+        //    var order = orderFactory.CreateRandomOrder();
+
+        //    script.PlaceOrder(order);
 
 
 
-        }
+        //}
     }
 }
