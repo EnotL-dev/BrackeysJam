@@ -1,4 +1,5 @@
 ﻿using Assets._game.Bar.Controller;
+using Assets._game.UI.View;
 using System.Collections;
 using UnityEngine;
 using Zenject;
@@ -9,6 +10,8 @@ namespace Assets._game.Interaction.View
     {
         // [Inject] private readonly IBarService barService;
         // [Inject] private readonly IEconomyService economyService;
+
+        [SerializeField] private BartenderPanelView bartenderPanelView;
 
         public bool FreezePlayer() => true;
 
@@ -21,12 +24,12 @@ namespace Assets._game.Interaction.View
 
         public void OnEndInteraction()
         {
-            
+            bartenderPanelView.HideMyself();
         }
 
         public void OnInteract()
         {
-            
+            bartenderPanelView.ShowMyself();
         }
 
         public void OnStartInteraction()
