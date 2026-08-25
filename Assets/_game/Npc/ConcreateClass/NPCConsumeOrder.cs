@@ -36,7 +36,7 @@ namespace Assets._game.Npc.ConcreateClass {
 
         
         void INPCState.UpdateState() {
-            throw new System.NotImplementedException();
+
         }
 
 

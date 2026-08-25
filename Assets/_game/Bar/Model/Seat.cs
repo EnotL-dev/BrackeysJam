@@ -8,7 +8,21 @@ public class Seat : MonoBehaviour{
 
     OrderFactory orderFactory;
 
-    public bool IsOccupied { get; private set; }
+    [Header("Seat")]
+    [SerializeField, Range(0f, 1f)]
+    private float breakChance = 0.5f;
+
+    private Renderer seatRenderer;
+
+    [SerializeField]
+    private Material normalMaterial;
+
+    [SerializeField]
+    private Material brokenMaterial;
+
+    public bool IsOccupied { get; private set; } = false;
+    public bool IsBroken { get; private set; } = false;
+
 
     [Inject]
     void Construct(OrderFactory orderFactory)  {
@@ -18,18 +32,70 @@ public class Seat : MonoBehaviour{
 
     public void Start() {
         transform = GetComponent<Transform>();
+        seatRenderer = GetComponent<MeshRenderer>();
+
+        SetBrokenVisual(false);
     }
 
-    public bool TryReserve() {
-        if ( IsOccupied ) return false;
+    //public bool TryReserve() {
+    //    if ( IsOccupied ) return false;
 
-        IsOccupied = true;
+    //    IsOccupied = true;
+    //    return true;
+    //}
+
+    public bool TryBreak() {
+        if ( IsBroken ) return false;
+
+        var chance = Random.value;
+
+        Debug.Log(chance);
+        if ( chance > breakChance ) return false;
+
+        Debug.Log("Go to break");
+
+        Break();
+
         return true;
+    }
+
+    public void Break() {
+        if ( IsBroken ) return;
+
+        IsBroken = true;
+
+        SetBrokenVisual(IsBroken);
+
+        Debug.Log($"{name} has broken!");
     }
 
     public void Release() {
         IsOccupied = false;
     }
+
+    public void Repair() {
+        if ( !IsBroken )
+            return;
+
+        IsBroken = false;
+
+        SetBrokenVisual(false);
+
+        Debug.Log($"{name} has been repaired!");
+    }
+
+    private void SetBrokenVisual( bool broken ) {
+        if ( seatRenderer == null )
+            return;
+
+        if ( broken ) {
+            seatRenderer.material = brokenMaterial;
+        }
+        else {
+            seatRenderer.material = normalMaterial;
+        }
+    }
+
 
 
     //TODO: refactor to find the best seat base on distance,
@@ -50,5 +116,12 @@ public class Seat : MonoBehaviour{
 
 
         //}
+    }
+
+    private void OnTriggerExit( Collider other ) {
+        if ( other.CompareTag("NPC") ) {
+            Debug.Log("TryBreak");
+            TryBreak();
+        }
     }
 }
