@@ -1,11 +1,12 @@
 ﻿using Assets._game.TestingScript;
 using System.Collections;
 using UnityEngine;
+using Zenject;
 
 namespace Assets._game.Npc {
     public class NPCManager : MonoBehaviour {
 
-        [SerializeField] WaitingLineScript waitingLineScript;
+        WaitingLineService waitingLineService;
         [SerializeField] NPCFactory NPCFactory;
 
         [SerializeField] private float minSpawnInterval = 1f;
@@ -14,6 +15,10 @@ namespace Assets._game.Npc {
         private float spawnTimer;
         private float nextSpawnTime;
 
+        [Inject]
+        void Construct( [Inject(Id = "ComeIn")] WaitingLineService waitingLineService ) {
+            this.waitingLineService = waitingLineService;
+        }
 
 
         private void Start() {
@@ -37,14 +42,14 @@ namespace Assets._game.Npc {
         //TODO: chagne into a service to provide the position in waitingline
         //to the npc script
         private void SpawnNPC() {
-            if ( !waitingLineScript.HasAvailableSlot() ) return;
+            if ( !waitingLineService.HasAvailableSlot() ) return;
 
-            Transform target = waitingLineScript.GetMostPosition();
+            Vector3 pos = waitingLineService.GetNextAvailablePosition();
 
             var gameObject = NPCFactory.SpawnNpc();
             var npc = gameObject.GetComponent<NPCScript>();
 
-            npc.MoveToWaitingLine(target);
+            npc.MoveToDest(pos);
 
             // For now, just spawn it.
             // Later:

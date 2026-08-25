@@ -11,7 +11,9 @@ namespace Assets._game.Core.Installers {
     public class NPCInstaller : MonoInstaller {
 
 
-        [SerializeField] WaitingLineScript waitingLineScript;
+        [SerializeField] WaitingLineScript comeInWaitingLine;
+        [SerializeField] WaitingLineScript barWaitingLine;
+
         [SerializeField] NPCInfoView NPCInfoViewInstance;
 
         public override void InstallBindings() {
@@ -21,19 +23,25 @@ namespace Assets._game.Core.Installers {
         }
 
         private void BindView() {
+            Container.Bind<SeatService>().AsSingle();
+            Container.Bind<BarService>().AsSingle();
             Container.Bind<NPCService>().AsSingle();
-            Container.Bind<WaitingLineService>().AsSingle();
             Container.Bind<OrderService>().AsSingle();
+            Container.Bind<OrderFactory>().AsSingle();
 
             Container.Bind<NPCInfoView>().
                 FromInstance(NPCInfoViewInstance).
                 AsSingle();
 
-            Container.Bind<WaitingLineScript>().
-                FromInstance(waitingLineScript).
-                AsSingle();
+            Container.Bind<WaitingLineService>()
+                .WithId("ComeIn")
+                .AsCached()
+                .WithArguments(comeInWaitingLine);
 
-
+            Container.Bind<WaitingLineService>()
+                .WithId("Bar")
+                .AsCached()
+                .WithArguments(barWaitingLine);
         }
     }
 }

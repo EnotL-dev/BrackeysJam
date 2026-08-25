@@ -10,9 +10,6 @@ namespace Assets._game.TestingScript {
 
         [SerializeField] int maxCap; //TODO: refactor this to scalable (it should support upgrade)
 
-        [Tooltip("use for position for waiting")]
-        [SerializeField] Transform[] transforms;
-
         [SerializeField] private Transform queueStartPoint;
 
         [SerializeField] private Vector3 queueDirection = Vector3.back;
@@ -50,12 +47,7 @@ namespace Assets._game.TestingScript {
         }
 
         public Vector3 GetNextAvailablePosition() {
-            return GetPosition(scripts.Count - 1);
-        }
-
-
-        public Transform GetMostPosition() {
-            return transforms[scripts.Count];
+            return GetPosition(scripts.Count);
         }
 
         public void Exit() {

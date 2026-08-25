@@ -5,21 +5,14 @@ using UnityEngine;
 
 namespace Assets._game.Bar.Model
 {
-    [System.Serializable]
+    [CreateAssetMenu(fileName = "OrderItemSO", menuName = "OrderItemSO/DrinkSO/AlcoholSO")]
     public class AlcoholSO : DrinkSO
     {
-        [SerializeField] private Sprite _icon;
         [SerializeField] private AlcoholType type;
-        [SerializeField] private int buyCost;
-        [SerializeField] private int soldCost;
-        [SerializeField] private float prepareTime;
+        
         [SerializeField] private string effect = "nothing";
 
-        public Sprite Icon => _icon;
         public AlcoholType Type => type;
-        public int BuyCost  => buyCost;
-        public int SoldCost => soldCost;
-        public float PrepareTime => prepareTime;
         public string Effect => effect;
     }
 }

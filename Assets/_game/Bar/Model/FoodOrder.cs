@@ -5,11 +5,13 @@ using UnityEngine;
 namespace Assets._game.Bar.Model {
     public class FoodOrder : Order {
 
-        public FoodType Food { get; }
+        public FoodType Type { get; }
 
-        public FoodOrder( FoodType food ) : base(OrderType.Food) {
-            Food = food;
+        public FoodOrder( FoodType type ) : base(OrderType.Food) {
+            Type = type;
         }
+
+
 
 
     }

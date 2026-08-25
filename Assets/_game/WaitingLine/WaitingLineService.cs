@@ -14,6 +14,10 @@ namespace Assets._game.TestingScript {
             this.waitingLine = waitingLine;
         }
 
+        public Vector3 GetNextAvailablePosition() {
+            return waitingLine.GetNextAvailablePosition();
+        }
+
         public bool HasAvailableSlot() {
             return waitingLine.HasAvailableSlot();
         }
