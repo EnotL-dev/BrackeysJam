@@ -3,7 +3,6 @@ using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.AI;
-using UnityEngine.InputSystem.Android;
 
 namespace Assets._game.Npc.ConcreateClass {
     public class NPCMoveScript : INPCState {
