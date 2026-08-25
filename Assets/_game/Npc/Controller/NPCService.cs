@@ -10,14 +10,17 @@ namespace Assets._game.Npc.Controller {
 
         private SeatService seatService;
         private WaitingLineService waitingLineService;
+        private OrderService orderService;
         IPlayerInteractionService playerInteractionService;
 
         [Inject]
         void Construct(SeatService seatService, 
             WaitingLineService waitingLineService,
+            OrderService orderService,
             IPlayerInteractionService playerInteractionService) {
             this.seatService = seatService;
             this.waitingLineService = waitingLineService;
+            this.orderService = orderService;
             this.playerInteractionService = playerInteractionService;
         }
 
@@ -38,7 +41,7 @@ namespace Assets._game.Npc.Controller {
 
 
             waitingLineService.Exit(npc);
-            npc.MoveToDest(seat.transform);
+            npc.MoveToDest(seat.transform.position);
 
             Debug.Log("npc moving now");
 
