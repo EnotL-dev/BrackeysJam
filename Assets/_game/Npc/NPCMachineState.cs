@@ -8,7 +8,7 @@ namespace Assets._game.Npc {
         public INPCState currentState { get; private set; }
 
 
-        public void Initialize(INPCState move, Action onComplete = null ) {
+        public void Initialize( INPCState move, Action onComplete = null ) {
             //init
             currentState = move;
             currentState?.EnterState(onComplete);
@@ -21,17 +21,8 @@ namespace Assets._game.Npc {
             currentState?.EnterState(onComplete);
         }
 
-        private void UpdateState(NPCState state) {
-
-            switch ( state ) {
-                case NPCState.MoveToLine:
-                break;
-
-
-                
-            }
-
-
+        public void UpdateState() {
+            currentState.UpdateState();
         }
 
 

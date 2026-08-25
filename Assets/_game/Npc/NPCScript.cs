@@ -5,6 +5,7 @@ using System;
 using System.Collections;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.AI;
 using Zenject;
 
 namespace Assets._game.Npc {
@@ -25,6 +26,8 @@ namespace Assets._game.Npc {
         BarService barService;
         SeatService seatService;
 
+        public NavMeshAgent agent { get; private set; }
+
         [Inject]
         void Construct( BarService barService, SeatService seatService ) {
             this.barService = barService;
@@ -35,11 +38,18 @@ namespace Assets._game.Npc {
             npcInfo = new NPCInfo(); //later will need another script for this
 
 
-            moveScript = new NPCMoveScript(this.gameObject.transform, machineState);
+            moveScript = new NPCMoveScript(this);
             waitScript = new NPCWaitingScript(machineState);
             consumeOrder = new NPCConsumeOrder(this);
 
-            //machineState.Initialize(moveScript);
+
+            agent = GetComponent<NavMeshAgent>();
+        }
+
+        public void Start() {
+
+            machineState.Initialize(moveScript);
+
         }
 
         public void ChangeState( NPCState state ) {
@@ -63,6 +73,10 @@ namespace Assets._game.Npc {
                     break;
 
             }
+        }
+
+        public void Update() {
+            machineState.UpdateState();
         }
 
 
@@ -125,8 +139,9 @@ namespace Assets._game.Npc {
             onComplete?.Invoke();
         }
 
+        //TODO: reafactor this into a real point instead of hardcode
         public void Leave() {
-            moveScript.SetDestination(new Vector3(-10, -0.5f, 5));
+            moveScript.SetDestination(new Vector3(65, -0.5f, 50));
             machineState.ChangeState(moveScript);
         }
 
