@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using UnityEngine;
 
 namespace Assets._game.Npc.ConcreateClass {
@@ -9,11 +10,11 @@ namespace Assets._game.Npc.ConcreateClass {
         //wait 
         //after a period of time left?.
 
-        public NPCWaitingScript(NPCMachineState NPCMachineState ) {
+        public NPCWaitingScript( NPCMachineState NPCMachineState ) {
             machineState = NPCMachineState;
         }
 
-        public void EnterState() {
+        public void EnterState( Action _ ) {
             throw new System.NotImplementedException();
         }
 

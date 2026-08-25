@@ -1,4 +1,5 @@
 ﻿using DG.Tweening;
+using System;
 using System.Collections;
 using UnityEngine;
 
@@ -24,13 +25,14 @@ namespace Assets._game.Npc.ConcreateClass {
 
 
 
-        public void EnterState() {
+        public void EnterState(Action onComplete) {
             //use ai navigation for this
 
             //For testing
 
             //Debug.Log($"move this npc to some {dest}");
-            transform.DOMove(dest, timeMoving);
+            transform.DOMove(dest, timeMoving)
+                .OnComplete(() => onComplete?.Invoke());
         }
 
         public void ExitState() {

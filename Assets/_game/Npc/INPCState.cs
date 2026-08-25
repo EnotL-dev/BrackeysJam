@@ -1,10 +1,11 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using UnityEngine;
 
 namespace Assets._game.Npc {
     public interface INPCState {
 
-        void EnterState();
+        void EnterState(Action onComplete);
         void ExitState(); 
         void UpdateState(); //might dont need
     }

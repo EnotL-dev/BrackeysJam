@@ -5,8 +5,9 @@ using UnityEngine.Rendering;
 namespace Assets._game.Bar.Model.SOScript.DrinkSO {
     public enum DrinkType {
 
-        Water,
+        //Water, //comment to reduce work for now
         Alcohol,
-        Soda,
+        //abc,
+        //Soda, //comment for now if need update the orderfactory too
     }
 }

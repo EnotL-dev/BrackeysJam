@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using UnityEngine;
 
 namespace Assets._game.Npc {
@@ -7,17 +8,17 @@ namespace Assets._game.Npc {
         public INPCState currentState { get; private set; }
 
 
-        public void Initialize(INPCState move) {
+        public void Initialize(INPCState move, Action onComplete = null ) {
             //init
             currentState = move;
-            currentState?.EnterState();
+            currentState?.EnterState(onComplete);
         }
 
 
-        public void ChangeState( INPCState newState ) {
+        public void ChangeState( INPCState newState, Action onComplete = null ) {
             currentState?.ExitState();
             currentState = newState;
-            currentState?.EnterState();
+            currentState?.EnterState(onComplete);
         }
 
         private void UpdateState(NPCState state) {
