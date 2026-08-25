@@ -148,11 +148,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7ad8fec574894c947868600b4e9a018f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Assets._game.NpcGenerator.View.NpcGeneratorView
-  _characterPrefabs:
-  - {fileID: 919132149155446097, guid: 92a63c72ca12f1f488ddd001868ebba7, type: 3}
-  _hatsPrefabs:
+  _characters:
+  - {fileID: 7284666807212430604, guid: 4334e50e393ca024f8589147a205b1c0, type: 3}
+  _hats:
   - {fileID: 919132149155446097, guid: 465fef9b1df54d74ca158b5488977804, type: 3}
   - {fileID: 919132149155446097, guid: dc25001a124dfa943a2c0a5253e3754c, type: 3}
+  _mustaches:
+  - {fileID: 919132149155446097, guid: 0468a49c42f70c4419456f385e99dc80, type: 3}
+  _beards:
+  - {fileID: 919132149155446097, guid: 2b84ad5cf1fcff742a1c4263bbbab73c, type: 3}
 --- !u!4 &8178698
 Transform:
   m_ObjectHideFlags: 0
