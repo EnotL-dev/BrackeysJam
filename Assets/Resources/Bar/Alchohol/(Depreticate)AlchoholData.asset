@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ed4757585d72c39458e24c2d8776c32a, type: 3}
-  m_Name: AlchoholData
+  m_Name: (Depreticate)AlchoholData
   m_EditorClassIdentifier: Assembly-CSharp::Assets._game.Bar.Model.AlchoholData
   alchohols:
   - {fileID: 11400000, guid: 459a8d19b8cbd604d8d616d2f402bfe3, type: 2}

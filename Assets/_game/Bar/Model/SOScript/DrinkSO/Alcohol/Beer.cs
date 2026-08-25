@@ -4,8 +4,7 @@ using UnityEngine;
 namespace Assets._game.Bar.Model
 {
     [CreateAssetMenu(fileName = "Beer", menuName = "Alchohol/Beer")]
-    public class Beer : Alchohol
-    {
+    public class Beer : AlcoholSO {
 
     }
 }

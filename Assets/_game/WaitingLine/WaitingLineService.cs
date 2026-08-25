@@ -15,7 +15,7 @@ namespace Assets._game.TestingScript {
         }
 
         public bool HasAvailableSlot() {
-            return npcs.Count < waitingLine.GetMaxCap();
+            return waitingLine.HasAvailableSlot();
         }
 
         public bool Enter( NPCScript npc ) {
@@ -35,8 +35,7 @@ namespace Assets._game.TestingScript {
         }
 
         public void Exit( NPCScript npc ) {
-            if ( !npcs.Remove(npc) )
-                return;
+            if ( !npcs.Remove(npc) ) return;
 
             Reorganize();
         }

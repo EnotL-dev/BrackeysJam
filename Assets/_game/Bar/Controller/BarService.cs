@@ -1,4 +1,5 @@
 ﻿using Assets._game.Bar.Model;
+using Assets._game.Bar.Model.SOScript.DrinkSO;
 using Assets._game.Npc;
 using System.Collections;
 using System.Collections.Generic;
@@ -16,7 +17,9 @@ namespace Assets._game.Bar.Controller
             this.seatService = seatService;
         }
 
-        private List<AlchoholDictionary> alchoholDictionary;
+        //private List<AlchoholDictionary> alchoholDictionary;
+        AlcoholSO[] alcohols;
+
 
         public void Initialize()
         {
@@ -25,19 +28,20 @@ namespace Assets._game.Bar.Controller
 
         private void InitAlchoholData()
         {
-            alchoholDictionary = new List<AlchoholDictionary>();
 
-            AlchoholData alchoholData = Resources.Load<AlchoholData>("Bar/Alchohol/AlchoholData");
-            foreach (Alchohol alchohol in alchoholData.alchohols)
-            {
-                alchoholDictionary.Add(new AlchoholDictionary(alchohol));
+            alcohols = Resources.LoadAll<AlcoholSO>("Bar/Alchohol");
+
+            foreach ( AlcoholSO alcohol in alcohols ) {
+                Debug.Log($"{alcohol.Type} - {alcohol.BuyCost}");
             }
+
+            //Debug.Log(alchoholDictionary.Count);
         }
 
         public IEnumerator RequestOrder (NPCScript NPCScript ,OrderType order ) {
             switch ( order ) {
                 case OrderType.Food:
-                    yield return MakeFood();
+                    yield return MakeFood(order.);
                     break;
 
                 case OrderType.Drink:
@@ -46,8 +50,15 @@ namespace Assets._game.Bar.Controller
             }
         }
 
+        
 
-        public IEnumerator MakeFood() { 
+
+
+
+
+        public IEnumerator MakeFood() {
+            
+
             yield return new WaitForSeconds(10);
 
             Debug.Log("food ready");

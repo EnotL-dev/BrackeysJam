@@ -7,9 +7,9 @@ namespace Assets._game.Bar.Model
     public class AlchoholDictionary
     {
         public int count = 0;
-        public Alchohol alchohol;
+        public AlcoholSO alchohol;
 
-        public AlchoholDictionary(Alchohol alchohol) 
+        public AlchoholDictionary( AlcoholSO alchohol ) 
         {
             this.alchohol = alchohol;
         }

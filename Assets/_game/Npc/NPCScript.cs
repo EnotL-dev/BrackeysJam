@@ -63,8 +63,8 @@ namespace Assets._game.Npc {
         }
 
 
-        public void MoveToDest(Transform transform) {
-            moveScript.SetDestination(transform.position);
+        public void MoveToDest(Vector3 pos) {
+            moveScript.SetDestination(pos);
             machineState.ChangeState(moveScript);
         }
 
