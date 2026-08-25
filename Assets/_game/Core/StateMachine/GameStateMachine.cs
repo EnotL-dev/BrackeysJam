@@ -7,10 +7,12 @@ namespace Assets._game.Core.StateMachine
     {
         private IGameState _currentState;
         private readonly DiContainer _container;
+        private readonly SignalBus _signalBus;
 
-        public GameStateMachine(DiContainer container)
+        public GameStateMachine(DiContainer container, SignalBus signalBus)
         {
             _container = container;
+            _signalBus = signalBus;
         }
 
         public async UniTask Enter<TState>() where TState : IGameState
@@ -23,6 +25,8 @@ namespace Assets._game.Core.StateMachine
 
             _currentState = _container.Resolve<TState>();
             await _currentState.Enter();
+
+            _signalBus.Fire(new StateChangedSignal(_currentState));
         }
     }
 }

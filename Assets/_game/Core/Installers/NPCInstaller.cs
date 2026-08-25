@@ -22,9 +22,7 @@ namespace Assets._game.Core.Installers {
 
         private void BindView() {
             Container.Bind<NPCService>().AsSingle();
-            Container.Bind<SeatService>().AsSingle();
             Container.Bind<WaitingLineService>().AsSingle();
-            Container.Bind<BarService>().AsSingle();
 
             Container.Bind<NPCInfoView>().
                 FromInstance(NPCInfoViewInstance).

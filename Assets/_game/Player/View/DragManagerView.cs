@@ -9,7 +9,10 @@ namespace Assets._game.Player.View
 {
     public class DragManagerView : MonoBehaviour
     {
-        [SerializeField] private float dragSpeed = 24f;
+        [SerializeField] private float dragSpeed = 5f;
+        [SerializeField] private float maxDragVelocity = 15f;
+        [SerializeField] private float dragDamping = 10f;
+        private float originalDamping;
         [Space(5)]
         [SerializeField] private Camera cam;
         private Rigidbody draggedRB;
@@ -21,6 +24,8 @@ namespace Assets._game.Player.View
                 draggedRB = (interactable as MonoBehaviour).gameObject.GetComponent<Rigidbody>();
 
             draggedRB.freezeRotation = true;
+            originalDamping = draggedRB.linearDamping;
+            draggedRB.linearDamping = dragDamping;
 
             dragDistance = Vector3.Distance(draggedRB.position, cam.transform.position);
         }
@@ -30,6 +35,10 @@ namespace Assets._game.Player.View
             if (draggedRB != null)
             {
                 draggedRB.freezeRotation = false;
+
+                draggedRB.linearDamping = originalDamping;
+                draggedRB.linearVelocity = Vector3.ClampMagnitude(draggedRB.linearVelocity, maxDragVelocity * 0.5f);
+
                 draggedRB = null;
             }
         }
@@ -44,7 +53,8 @@ namespace Assets._game.Player.View
 
                 Vector3 direction = targetPos - draggedRB.transform.position;
 
-                draggedRB.linearVelocity = direction * dragSpeed;
+                Vector3 targetVelocity = direction * dragSpeed;
+                draggedRB.linearVelocity = Vector3.ClampMagnitude(targetVelocity, maxDragVelocity);
             }
         }
     }
