@@ -7,8 +7,8 @@ namespace Assets._game.Interaction.View
 {
     public class InteractableIBartenderView : MonoBehaviour, IInteractable
     {
-        [Inject] private readonly IBarService barService;
-        [Inject] private readonly IEconomyService economyService;
+        // [Inject] private readonly IBarService barService;
+        // [Inject] private readonly IEconomyService economyService;
 
         public bool FreezePlayer() => true;
 
