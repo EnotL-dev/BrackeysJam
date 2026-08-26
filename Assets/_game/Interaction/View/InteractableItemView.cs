@@ -1,14 +1,13 @@
-﻿using System.Collections;
+﻿using Assets._game.Store.Model;
+using System.Collections;
 using UnityEngine;
 
 namespace Assets._game.Interaction.View
 {
-    public class InteractableItemView : MonoBehaviour, IInteractable
+    public class InteractableItemView : MonoBehaviour, IInteractable, IFurniture
     {
-        [SerializeField] private bool freezePlayer = false;
-        public bool FreezePlayer() => freezePlayer;
-        [SerializeField] private bool isDraggingObject = true;
-        public bool IsDraggableObject() => isDraggingObject;
+        public bool FreezePlayer() => false;
+        public bool IsDraggableObject() => true;
         public void OnContinuousInteraction()
         {
             //nothing

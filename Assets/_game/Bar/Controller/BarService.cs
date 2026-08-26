@@ -102,12 +102,11 @@ namespace Assets._game.Bar.Controller {
 
         }
 
-        public IEnumerator MakeDrink( NPCScript NPCScript, Order order ) {
+        public IEnumerator MakeDrink( NPCScript NPCScript, Order order ) 
+        {
             yield return new WaitForSeconds(5);
 
             Debug.Log("drink ready");
-
-
         }
     }
 }
