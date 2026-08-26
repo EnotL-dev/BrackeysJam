@@ -24947,6 +24947,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 294233601555621957, guid: b4f0da0f75e43964c9abbbc11d2e5043, type: 3}
+      propertyPath: alcoholCatalog
+      value: 
+      objectReference: {fileID: 11400000, guid: 3d352e94de2b19541a35be6b9a10458e, type: 2}
     - target: {fileID: 448633167412724744, guid: b4f0da0f75e43964c9abbbc11d2e5043, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -27842,7 +27846,7 @@ MonoBehaviour:
   minPitch: -80
   maxPitch: 80
   groundCheck: {fileID: 2323777705591823336}
-  groundDistance: 0.2
+  groundDistance: 0.8
   groundMask:
     serializedVersion: 2
     m_Bits: 2048

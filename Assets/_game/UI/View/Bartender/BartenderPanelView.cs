@@ -65,7 +65,7 @@ namespace Assets._game.UI.View
                 newpanel.transform.SetParent(gridLayoutGroup.transform);
                 panels.Add(newpanel);
 
-                newpanel.Initialize(alc.Type, BuyAlchohol);
+                newpanel.Initialize(alc.AlcoholType, BuyAlchohol);
             }
         }
 

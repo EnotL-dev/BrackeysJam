@@ -8,7 +8,7 @@ namespace Assets._game.Bar.Controller
     {
         int Money { get; }
 
-        void BuyAlchohol(AlcoholType alcoholType, int count);
-        void SellAlchohol(AlcoholType alcoholType, int count);
+        void BuyAlchohol(AlcoholType alcoholType, int count = 1);
+        void SellAlchohol(AlcoholType alcoholType, int count = 1);
     }
 }

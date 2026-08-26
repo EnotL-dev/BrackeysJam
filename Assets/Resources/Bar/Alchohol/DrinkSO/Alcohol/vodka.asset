@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Assets._game.Bar.Model.AlcoholSO
   _icon: {fileID: 21300000, guid: d66b65d797c51b548bb5c9825b623ced, type: 3}
   _name: Dwarven vodka
-  _prepareTime: 0
+  _prepareTime: 3
   buyCost: 50
   soldCost: 75
   drinkType: 0

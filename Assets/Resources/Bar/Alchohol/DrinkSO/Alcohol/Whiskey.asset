@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Assets._game.Bar.Model.AlcoholSO
   _icon: {fileID: 21300000, guid: 551994140bc4f6e419c11633a531ad87, type: 3}
   _name: Whiskey
-  _prepareTime: 0
+  _prepareTime: 3
   buyCost: 15
   soldCost: 25
   drinkType: 0

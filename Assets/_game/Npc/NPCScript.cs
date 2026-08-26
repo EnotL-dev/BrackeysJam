@@ -4,7 +4,6 @@ using Assets._game.Npc.Animation;
 using Assets._game.Npc.ConcreateClass;
 using System;
 using System.Collections;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
 using Zenject;
@@ -28,13 +27,17 @@ namespace Assets._game.Npc {
 
         BarService barService;
         SeatService seatService;
+        OrderFactory orderFactory;
 
         public NavMeshAgent agent { get; private set; }
 
         [Inject]
-        void Construct( BarService barService, SeatService seatService ) {
+        void Construct( BarService barService, 
+            SeatService seatService,
+            OrderFactory orderFactory) {
             this.barService = barService;
             this.seatService = seatService;
+            this.orderFactory = orderFactory;
         }
 
         void Awake() {
@@ -100,7 +103,13 @@ namespace Assets._game.Npc {
         public void MoveToBar( Vector3 pos ) {
             moveScript.SetDestination(pos);
             machineState.ChangeState(moveScript, () => {
-                PlaceOrder();
+                var order = orderFactory.GetRandomOrder();
+                if ( order == null ) {
+                    Debug.LogWarning("THIS IS A BUG OF PLACING ORDER");
+                    return;
+                }
+
+                PlaceOrder(order);
             });
 
 
@@ -112,7 +121,7 @@ namespace Assets._game.Npc {
 
             Debug.Log("Calling for order");
 
-            StartCoroutine(barService.RequestOrder(this, order, () => {
+            StartCoroutine(barService.RequestDrink((AlcoholOrder)order, () => {
                 var pos = seatService.FindBestSeat(transform.position);
                 MoveToDest(pos.transform.position);
                 machineState.ChangeState(moveScript, () => {
@@ -160,7 +169,7 @@ namespace Assets._game.Npc {
             //animationController.SetAction(NPCActionState.StandUp);
         }
 
-        
+
 
 
     }

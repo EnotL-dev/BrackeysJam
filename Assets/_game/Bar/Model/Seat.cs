@@ -66,8 +66,7 @@ public class Seat : MonoBehaviour {
     }
 
     private void SetBrokenVisual( bool broken ) {
-        if ( seatRenderer == null )
-            return;
+        if ( seatRenderer == null ) return;
 
         if ( broken ) {
             seatRenderer.material = brokenMaterial;
