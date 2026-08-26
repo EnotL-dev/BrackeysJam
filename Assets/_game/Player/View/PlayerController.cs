@@ -24,7 +24,14 @@ public class PlayerController : MonoBehaviour {
     [SerializeField] private float minPitch = -80f;
     [SerializeField] private float maxPitch = 80f;
 
+    [Header("Jump Checking")]
+    [SerializeField] private Transform groundCheck;
+    [SerializeField] private float groundDistance = 0.2f;
+    [SerializeField] private LayerMask groundMask;
+
     private CharacterController controller;
+
+    private bool isGrounded;
 
     private Vector3 velocity;
     private float cameraPitch;
@@ -106,21 +113,22 @@ public class PlayerController : MonoBehaviour {
     //BUG: stay still can't jump
     //might not use jump
     private void HandleGravity() {
-        if ( controller.isGrounded && velocity.y < 0f ) {
+        isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, groundMask);
+
+        if ( isGrounded && velocity.y < 0f ) {
             velocity.y = -2f;
         }
 
-        if ( jumpAction.action.WasPressedThisFrame() &&
-            controller.isGrounded ) {
-            velocity.y =
-                Mathf.Sqrt(jumpHeight * -2f * gravity);
+        if ( jumpAction.action.WasPressedThisFrame() && isGrounded ) {
+            velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
         }
+
 
         velocity.y += gravity * Time.deltaTime;
 
         controller.Move(
             velocity * Time.deltaTime
-        );
+            );
     }
 
     public void SetInputEnabled( bool enable ) {

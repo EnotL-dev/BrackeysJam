@@ -106,6 +106,8 @@ namespace Assets._game.Npc {
         public void PlaceOrder( Order order = null ) {
             //machineState.ChangeState(waitScript);
 
+            Debug.Log("Calling for order");
+
             StartCoroutine(barService.RequestOrder(this, order, () => {
                 var pos = seatService.FindBestSeat();
                 MoveToDest(pos.transform.position);

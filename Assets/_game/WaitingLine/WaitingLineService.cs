@@ -41,16 +41,10 @@ namespace Assets._game.TestingScript {
 
         public bool Enter( NPCScript npc ) {
             if ( npc == null ) return false;
-
             if ( !HasAvailableSlot() ) return false;
-
             if ( npcs.Contains(npc) ) return false;
 
             npcs.Add(npc);
-
-            npc.MoveToDest(
-                waitingLine.GetPosition(npcs.Count - 1)
-            );
 
             return true;
         }

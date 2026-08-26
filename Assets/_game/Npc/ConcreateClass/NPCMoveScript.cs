@@ -38,7 +38,7 @@ namespace Assets._game.Npc.ConcreateClass {
 
             //Debug.Log($"move this npc to some {dest}");
 
-            if(agent == null ) {
+            if ( agent == null ) {
                 agent = nPCScript.agent;
             }
 
@@ -57,18 +57,27 @@ namespace Assets._game.Npc.ConcreateClass {
         public void UpdateState() {
             if ( onComplete == null ) return;
 
-            if ( agent.pathPending ) return;
-
-            if ( agent.remainingDistance > agent.stoppingDistance + ArrivalThreshold )
+            if ( agent.pathPending ) {
+                Debug.Log($"[NavMesh] Path is still pending calculation for '{nPCScript.name}'.");
                 return;
+            }
 
-            if ( agent.hasPath && agent.velocity.sqrMagnitude > 0.01f )
-                return;
+            Vector3 flatAgentPos = new Vector3(agent.transform.position.x, 0, agent.transform.position.z);
+            Vector3 flatDestPos = new Vector3(dest.x, 0, dest.z);
+            float flatDistance = Vector3.Distance(flatAgentPos, flatDestPos);
 
-            Action callback = onComplete; //prevent update multiple time
-            onComplete = null;
+            bool reachedByNavMesh = !agent.hasPath || agent.remainingDistance <= (agent.stoppingDistance + ArrivalThreshold);
+            bool reachedByDistance = flatDistance <= (agent.stoppingDistance + ArrivalThreshold);
 
-            callback?.Invoke();
+            Debug.Log($"Remaining: {agent.remainingDistance:F2}m, {flatDistance}");
+
+            if ( reachedByNavMesh || reachedByDistance ) {
+                if ( agent.velocity.sqrMagnitude <= 0.01f ) {
+                    Action callback = onComplete;
+                    onComplete = null;
+                    callback?.Invoke();
+                }
+            }
         }
 
     }
