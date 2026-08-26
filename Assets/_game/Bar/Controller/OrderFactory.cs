@@ -2,9 +2,11 @@
 using Assets._game.Bar.Model.Alcohol;
 using Assets._game.Bar.Model.SOScript.DrinkSO;
 using Assets._game.Bar.Model.SOScript.FoodSO;
-using System.Collections;
-using System.Linq;
+using System;
+using System.Collections.Generic;
+using Unity.Mathematics;
 using UnityEngine;
+using Zenject;
 
 namespace Assets._game.Bar.Controller {
     public class OrderFactory {
@@ -13,6 +15,17 @@ namespace Assets._game.Bar.Controller {
         FoodType[] foodTypes;
         DrinkType[] drinkTypes;
         AlcoholType[] alcoholTypes;
+
+        BarService barService;
+
+        Dictionary<AlcoholType, int> alcohols;
+
+
+        [Inject]
+        void Constrcut( BarService barService ) {
+            this.barService = barService;
+        }
+
 
         public FoodOrder CreateFood( FoodType food ) {
             return new FoodOrder(food);
@@ -33,11 +46,13 @@ namespace Assets._game.Bar.Controller {
 
 
 
+
+
         public Order CreateRandomOrder() {
             if ( orderTypes == null ) {
                 orderTypes = (OrderType[])System.Enum.GetValues(typeof(OrderType));
             }
-            int index = Random.Range(0, orderTypes.Length); // this shuold be 2: 0 for food, 2 for drink
+            int index = UnityEngine.Random.Range(0, orderTypes.Length); // this shuold be 2: 0 for food, 2 for drink
             return index == 0 ?
                 CreateRandomFoodOrder() :
                 CreateRandomDrinkOrder();
@@ -48,7 +63,7 @@ namespace Assets._game.Bar.Controller {
                 drinkTypes = (DrinkType[])System.Enum.GetValues(typeof(DrinkType));
             }
 
-            int index = Random.Range(0, drinkTypes.Length);
+            int index = UnityEngine.Random.Range(0, drinkTypes.Length);
 
             switch ( index ) {
                 case 0:
@@ -68,7 +83,7 @@ namespace Assets._game.Bar.Controller {
                 alcoholTypes = (AlcoholType[])System.Enum.GetValues(typeof(AlcoholType));
             }
 
-            int index = Random.Range(0, alcoholTypes.Length);
+            int index = UnityEngine.Random.Range(0, alcoholTypes.Length);
             return new AlcoholOrder(alcoholTypes[index]);
         }
 
@@ -77,10 +92,33 @@ namespace Assets._game.Bar.Controller {
                 foodTypes = (FoodType[])System.Enum.GetValues(typeof(FoodType));
             }
 
-            int index = Random.Range(0, foodTypes.Length);
+            int index = UnityEngine.Random.Range(0, foodTypes.Length);
 
             return new FoodOrder(foodTypes[index]);
 
+        }
+
+
+
+
+        //TODO:later add favourise drink
+        public Order GetRandomOrder() {
+            if ( alcohols == null ) alcohols = barService.GetAlcoholDictionary();
+            if ( alcoholTypes == null ) alcoholTypes = (AlcoholType[])System.Enum.GetValues(typeof(AlcoholType));
+
+            List<AlcoholType> availableTypes = new();
+
+            for ( int i = 0; i < alcoholTypes.Length; i++ ) {
+                AlcoholType type = alcoholTypes[i];
+
+                // If dictionary is Dictionary<AlcoholType, int>:
+                if ( alcohols.TryGetValue(type, out int count) && count > 0 ) {
+                    availableTypes.Add(type);
+                }
+            }
+
+            int randomIndex = UnityEngine.Random.Range(0, availableTypes.Count);
+            return new AlcoholOrder(availableTypes[randomIndex]);
         }
 
     }

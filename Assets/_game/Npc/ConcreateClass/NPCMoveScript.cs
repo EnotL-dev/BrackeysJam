@@ -58,7 +58,7 @@ namespace Assets._game.Npc.ConcreateClass {
             if ( onComplete == null ) return;
 
             if ( agent.pathPending ) {
-                Debug.Log($"[NavMesh] Path is still pending calculation for '{nPCScript.name}'.");
+                //Debug.Log($"[NavMesh] Path is still pending calculation for '{nPCScript.name}'.");
                 return;
             }
 
@@ -69,7 +69,7 @@ namespace Assets._game.Npc.ConcreateClass {
             bool reachedByNavMesh = !agent.hasPath || agent.remainingDistance <= (agent.stoppingDistance + ArrivalThreshold);
             bool reachedByDistance = flatDistance <= (agent.stoppingDistance + ArrivalThreshold);
 
-            Debug.Log($"Remaining: {agent.remainingDistance:F2}m, {flatDistance}");
+            //Debug.Log($"Remaining: {agent.remainingDistance:F2}m, {flatDistance}");
 
             if ( reachedByNavMesh || reachedByDistance ) {
                 if ( agent.velocity.sqrMagnitude <= 0.01f ) {

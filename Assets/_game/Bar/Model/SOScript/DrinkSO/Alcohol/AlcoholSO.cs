@@ -11,7 +11,7 @@ namespace Assets._game.Bar.Model
         [SerializeField] private AlcoholType type;
         [SerializeField] private string effect = "nothing";
 
-        public AlcoholType Type => type;
+        public AlcoholType AlcoholType => type;
         public string Effect => effect;
     }
 }
