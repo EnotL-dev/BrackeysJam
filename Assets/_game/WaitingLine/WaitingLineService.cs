@@ -17,21 +17,27 @@ namespace Assets._game.TestingScript {
         }
 
         void SetUpObserver() {
-
-            //waitingLine.onEnter += Enter;
-
-
-
-        }
-        
-
-        public Vector3 GetNextAvailablePosition() {
-            return waitingLine.GetNextAvailablePosition();
+            if ( waitingLine == null ) return;
+            waitingLine.OnNpcTriggerEnter += HandleNpcTriggerEnter;
+            waitingLine.OnNpcTriggerExit += HandleNpcTriggerExit;
         }
 
-        public bool HasAvailableSlot() {
-            return waitingLine.HasAvailableSlot();
+        public void Dispose() {
+            if ( waitingLine == null ) return;
+            waitingLine.OnNpcTriggerEnter -= HandleNpcTriggerEnter;
+            waitingLine.OnNpcTriggerExit -= HandleNpcTriggerExit;
         }
+
+
+        void HandleNpcTriggerEnter( NPCScript npc ) => Enter(npc);
+
+
+        void HandleNpcTriggerExit( NPCScript npc ) => Exit(npc);
+
+
+        public bool HasAvailableSlot() => npcs.Count < waitingLine.MaxCap;
+
+        public Vector3 GetNextAvailablePosition() => waitingLine.GetPosition(npcs.Count);
 
         public bool Enter( NPCScript npc ) {
             if ( npc == null ) return false;
@@ -51,7 +57,6 @@ namespace Assets._game.TestingScript {
 
         public void Exit( NPCScript npc ) {
             if ( !npcs.Remove(npc) ) return;
-
             Reorganize();
         }
 
