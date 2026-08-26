@@ -1,4 +1,4 @@
-using Assets._game.UI.Controller;
+﻿using Assets._game.UI.Controller;
 using DG.Tweening;
 using TMPro;
 using UnityEngine;

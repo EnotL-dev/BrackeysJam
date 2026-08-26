@@ -26,6 +26,8 @@ namespace Assets._game.Interaction.View
             //nothing
         }
 
+        public bool OnceActivation() => true;
+
         public void OnInteract()
         {
             if(lastState is DayShiftState)

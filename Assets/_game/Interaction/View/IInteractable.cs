@@ -12,6 +12,7 @@ namespace Assets._game.Interaction.View
         bool FreezePlayer();
         bool ShowCursor() => false;
         bool IsDragingObject() => false;
+        bool OnceActivation() => false; // For object who dosent need end interaction and exit
         void OnStartInteraction();
         void OnContinuousInteraction();
         void OnEndInteraction();

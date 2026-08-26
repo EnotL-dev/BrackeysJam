@@ -46,6 +46,8 @@ namespace Assets._game.Player.Controller
 
         public void EndInteraction()
         {
+            if (lastInteractableObject == null) return;
+
             if ( lastInteractableObject.FreezePlayer() ) {
                 //playerController.UnFreezeMovement();
                 playerController?.SetInputEnabled(true);

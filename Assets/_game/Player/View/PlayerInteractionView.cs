@@ -3,6 +3,7 @@ using Assets._game.Player.Controller;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Rendering;
 using Zenject;
 
 namespace Assets._game.Player.View {
@@ -31,53 +32,12 @@ namespace Assets._game.Player.View {
             interactAction.action.Disable();
         }
 
-        private float timerHold = 0;
         private void Update() {
-            //CheckInteraction();
-
-            //if(holdStart && interactAction.action.WasReleasedThisFrame())
-            //{
-            //    holdStart = false;
-
-            //    interactionService.EndInteraction();
-            //}
-
             IInteractable interactable = CheckObject();
 
             UpdateInteractionUI(interactable);
             CheckInteraction(interactable);
             CheckInteractionRelease();
-
-            if(timerHold > 0)
-            {
-                timerHold -= Time.deltaTime;
-            }
-        }
-
-        //TODO: seperate code for ui and checking
-        private void CheckInteraction() {
-            if ( CheckObject() is IInteractable interactableObject ) {
-                if ( interactAction.action.WasPressedThisFrame() ) // one click
-                {
-                    if ( interactionService.IsBusy() ) return;
-
-                    holdStart = true;
-
-                    interactionService.StartInteraction(interactableObject);
-                    uiInteractionView.HideTip();
-                }
-                else if ( interactAction.action.IsPressed() ) // pressed
-                {
-                    interactionService.ContinuousInteraction();
-                }
-                else {
-                    uiInteractionView.ShowTip(interactableObject.GetTip());
-                }
-            }
-            else // cross
-            {
-                uiInteractionView.HideTip();
-            }
         }
 
         private void UpdateInteractionUI( IInteractable interactable ) {
@@ -89,47 +49,52 @@ namespace Assets._game.Player.View {
             }
         }
 
+        IInteractable lastInteractable = null;
         private void CheckInteraction( IInteractable interactable ) {
             if ( interactable == null ) return;
 
             if ( interactAction.action.WasPressedThisFrame() ) {
-                if ( interactionService.IsBusy() ) return;
+                if ( interactionService.IsBusy()) return;
 
                 holdStart = true;
-                timerHold = 0.1f;
 
                 interactionService.StartInteraction(interactable);
                 uiInteractionView.HideTip();
+
+                lastInteractable = interactable;
             }
             else if (interactAction.action.IsPressed()) {
                 if(interactable.IsDragingObject())
                     interactionService.ContinuousInteraction();
-                else
-                    timerHold = 0.1f;
             }
         }
 
-        private void CheckInteractionRelease() {
-            if (timerHold > 0) return;
+        private void CheckInteractionRelease()
+        {
+            if (!holdStart || lastInteractable == null) return;
 
-            if ( holdStart && interactAction.action.WasReleasedThisFrame() ) {
-                holdStart = false;
-                interactionService?.EndInteraction();
-            }
-            else if (holdStart)
+            if (interactClose.action.WasReleasedThisFrame() && !lastInteractable.IsDragingObject())
             {
-                if(interactClose.action.WasReleasedThisFrame())
-                {
-                    holdStart = false;
-                    interactionService?.EndInteraction();
-                }
+                EndInteraction();
             }
+            else if (interactAction.action.WasReleasedThisFrame() && (lastInteractable.OnceActivation() || lastInteractable.IsDragingObject())) 
+            {
+                EndInteraction();
+            }
+        }
+
+        private void EndInteraction()
+        {
+            holdStart = false;
+            interactionService?.EndInteraction();
+            lastInteractable = null;
         }
 
         public void ForcedInteractionRelease() // May use from any space if use container
         {
             holdStart = false;
             interactionService?.EndInteraction();
+            lastInteractable = null;
         }
 
         private IInteractable CheckObject() {
