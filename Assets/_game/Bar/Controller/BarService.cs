@@ -92,7 +92,7 @@ namespace Assets._game.Bar.Controller {
 
 
 
-        //TOOD: it shuold read the SO instead of hardcode
+        //TOOD: it should read the SO instead of hardcode
         public IEnumerator MakeFood( NPCScript NPCScript, Order order ) {
 
             yield return new WaitForSeconds(10);

@@ -8,11 +8,13 @@ public class PlayerController : MonoBehaviour {
     [SerializeField] private InputActionReference moveAction;
     [SerializeField] private InputActionReference lookAction;
     [SerializeField] private InputActionReference jumpAction;
+    [SerializeField] private InputActionReference runAction;
 
     [Header("Movement")]
     private bool freezeMovemet = false;
     public void FreezeMovement() => freezeMovemet = true;
     public void UnFreezeMovement() => freezeMovemet = false;
+
     [SerializeField] private float moveSpeed = 5f;
     [SerializeField] private float rotationSpeed = 15f;
     [SerializeField] private float gravity = -20f;
@@ -29,8 +31,10 @@ public class PlayerController : MonoBehaviour {
     [SerializeField] private float groundDistance = 0.2f;
     [SerializeField] private LayerMask groundMask;
 
-    private CharacterController controller;
+    [SerializeField] private float speedboost = 1.5f;
 
+    private CharacterController controller;
+    bool isRunning;
     private bool isGrounded;
 
     private Vector3 velocity;
@@ -47,6 +51,7 @@ public class PlayerController : MonoBehaviour {
         moveAction.action.Enable();
         lookAction.action.Enable();
         jumpAction.action.Enable();
+        runAction.action.Enable();
 
         SetMouseFocus(true);
     }
@@ -55,6 +60,7 @@ public class PlayerController : MonoBehaviour {
         moveAction.action.Disable();
         lookAction.action.Disable();
         jumpAction.action.Disable();
+        runAction.action.Disable();
 
         SetMouseFocus(false);
     }
@@ -63,10 +69,24 @@ public class PlayerController : MonoBehaviour {
 
         //this should lock the look input too
         if ( !freezeMovemet ) {
+            HandleRun();
             HandleMovement();
             HandleLook();
         }
         HandleGravity();
+    }
+
+    void HandleRun() {
+        if ( isRunning ) {
+            if ( runAction.action.WasReleasedThisFrame() ) {
+                isRunning = false;
+            }
+        }
+        else if ( runAction.action.WasPerformedThisFrame() ) {
+            isRunning = true;
+        }
+
+
     }
 
     private void HandleLook() {
@@ -105,6 +125,10 @@ public class PlayerController : MonoBehaviour {
 
         move = Vector3.ClampMagnitude(move, 1f);
 
+        if ( isRunning ) {
+            controller.Move(move * moveSpeed * speedboost * Time.deltaTime);
+        }
+
         controller.Move(
             move * moveSpeed * Time.deltaTime
         );
@@ -113,7 +137,7 @@ public class PlayerController : MonoBehaviour {
     //BUG: stay still can't jump
     //might not use jump
     private void HandleGravity() {
-        isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, groundMask);
+        isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, groundMask, QueryTriggerInteraction.Ignore);
 
         if ( isGrounded && velocity.y < 0f ) {
             velocity.y = -2f;
