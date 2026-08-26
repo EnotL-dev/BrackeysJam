@@ -1,5 +1,6 @@
 ﻿using Assets._game.Bar.Controller;
 using Assets._game.Bar.Model;
+using Assets._game.Npc.Animation;
 using Assets._game.Npc.ConcreateClass;
 using System;
 using System.Collections;
@@ -14,6 +15,8 @@ namespace Assets._game.Npc {
         readonly NPCMachineState machineState = new NPCMachineState(); //might use DI
 
         public NPCInfo npcInfo;
+
+        public NPCAnimationController animationController { get; private set; }
 
         public NPCMoveScript moveScript;
         public NPCWaitingScript waitScript;
@@ -35,15 +38,16 @@ namespace Assets._game.Npc {
         }
 
         void Awake() {
-            npcInfo = new NPCInfo(); //later will need another script for this
+            Animator animator = GetComponent<Animator>();
+            agent = GetComponent<NavMeshAgent>();
 
+            npcInfo = new NPCInfo(); //later will need another script for this
 
             moveScript = new NPCMoveScript(this);
             waitScript = new NPCWaitingScript(machineState);
             consumeOrder = new NPCConsumeOrder(this);
 
-
-            agent = GetComponent<NavMeshAgent>();
+            animationController = new NPCAnimationController(this);
         }
 
         public void Start() {
@@ -109,7 +113,7 @@ namespace Assets._game.Npc {
             Debug.Log("Calling for order");
 
             StartCoroutine(barService.RequestOrder(this, order, () => {
-                var pos = seatService.FindBestSeat();
+                var pos = seatService.FindBestSeat(transform.position);
                 MoveToDest(pos.transform.position);
                 machineState.ChangeState(moveScript, () => {
 
@@ -126,6 +130,7 @@ namespace Assets._game.Npc {
 
         public void ConsumeOrder( float second ) {
             machineState.ChangeState(consumeOrder); //TODO: make the method use the second
+            //animationController.SetAction(NPCActionState.ConsumeOrder);
         }
 
         public void WaitForConsumeOrder( float seconds, Action onComplete ) {
@@ -146,6 +151,17 @@ namespace Assets._game.Npc {
             moveScript.SetDestination(new Vector3(65, -0.5f, 50));
             machineState.ChangeState(moveScript);
         }
+
+        public void SitDown() {
+            //animationController.SetAction(NPCActionState.Sit);
+        }
+
+        public void StandUP() {
+            //animationController.SetAction(NPCActionState.StandUp);
+        }
+
+        
+
 
     }
 }

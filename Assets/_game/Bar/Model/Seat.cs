@@ -3,14 +3,10 @@ using Assets._game.Npc;
 using UnityEngine;
 using Zenject;
 
-public class Seat : MonoBehaviour{
-    Transform transform;
+public class Seat : MonoBehaviour {
 
     OrderFactory orderFactory;
 
-    [Header("Seat")]
-    [SerializeField, Range(0f, 1f)]
-    private float breakChance = 0.5f;
 
     private Renderer seatRenderer;
 
@@ -25,13 +21,12 @@ public class Seat : MonoBehaviour{
 
 
     [Inject]
-    void Construct(OrderFactory orderFactory)  {
+    void Construct( OrderFactory orderFactory ) {
         this.orderFactory = orderFactory;
     }
 
 
     public void Start() {
-        transform = GetComponent<Transform>();
         seatRenderer = GetComponent<MeshRenderer>();
 
         SetBrokenVisual(false);
@@ -44,20 +39,6 @@ public class Seat : MonoBehaviour{
     //    return true;
     //}
 
-    public bool TryBreak() {
-        if ( IsBroken ) return false;
-
-        var chance = Random.value;
-
-        Debug.Log(chance);
-        if ( chance > breakChance ) return false;
-
-        Debug.Log("Go to break");
-
-        Break();
-
-        return true;
-    }
 
     public void Break() {
         if ( IsBroken ) return;
@@ -102,26 +83,38 @@ public class Seat : MonoBehaviour{
     //and hold a list current seat or npc that already recognise 
     //to prevent trigger when passing by
     private void OnTriggerEnter( Collider other ) {
-        //if ( other.CompareTag("NPC") ) {
+        //make sit down animation in here
+        if ( other.CompareTag("NPC") ) {
 
-        //    var script = other.GetComponent<NPCScript>();
+            var script = other.GetComponent<NPCScript>();
 
-        //    //read ncp preference (skip for now)
+            //read ncp preference (skip for now)
 
-        //    //call order
-        //    var order = orderFactory.CreateRandomOrder();
+            //call order
+            //var order = orderFactory.CreateRandomOrder();
 
-        //    script.PlaceOrder(order);
+            //script.PlaceOrder(order);
+
+            script.SitDown();
 
 
 
-        //}
+            //}
+        }
     }
 
     private void OnTriggerExit( Collider other ) {
         if ( other.CompareTag("NPC") ) {
-            Debug.Log("TryBreak");
-            TryBreak();
+            Release();
+
         }
+    }
+
+    public bool TryReserve() {
+        if ( IsOccupied || IsBroken )
+            return false;
+
+        IsOccupied = true;
+        return true;
     }
 }

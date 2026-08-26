@@ -13,10 +13,12 @@ namespace Assets._game.Bar.Controller {
             seats = list;
         }
 
+        /// <summary>
+        /// return a random Seat
+        /// Depreciated Method, pass pos to find the best seat
+        /// </summary>
+        /// <returns></returns>
         public Seat FindBestSeat() {
-
-            //random for now
-
             if ( seats.Count == 0 ) {
                 Debug.LogWarning("There is no Seat");
                 return null;
@@ -28,8 +30,27 @@ namespace Assets._game.Bar.Controller {
 
         //find base on best distance
         public Seat FindBestSeat( Vector3 pos ) {
-            return seats[0];
+            Seat bestSeat = null;
+            float bestDistanceSqr = float.MaxValue;
+
+            foreach ( Seat seat in seats ) {
+                if ( seat == null ) continue;
+                if ( seat.IsOccupied || seat.IsBroken ) continue;
+
+                float distanceSqr = (seat.transform.position - pos).sqrMagnitude;
+
+                if ( distanceSqr < bestDistanceSqr ) {
+                    bestDistanceSqr = distanceSqr;
+                    bestSeat = seat;
+                }
+            }
+
+            if ( bestSeat != null ) bestSeat.TryReserve();
+
+            return bestSeat;
         }
+
+
 
     }
 }

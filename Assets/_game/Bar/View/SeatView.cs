@@ -36,10 +36,4 @@ public class SeatView : MonoBehaviour {
     }
 
 
-    public Seat FindBestSeat() {
-        return seatService.FindBestSeat();
-    }
-
-
-
 }

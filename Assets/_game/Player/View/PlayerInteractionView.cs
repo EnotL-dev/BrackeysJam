@@ -35,8 +35,14 @@ namespace Assets._game.Player.View {
         private void Update() {
             IInteractable interactable = CheckObject();
 
-            UpdateInteractionUI(interactable);
-            CheckInteraction(interactable);
+            bool hasTarget = interactable != null;
+            bool canInteract = hasTarget && interactable.CanInteractThisFrame;
+
+            if ( canInteract ) UpdateInteractionUI(interactable);
+            else uiInteractionView.HideTip();
+
+            if ( canInteract ) CheckInteraction(interactable);
+
             CheckInteractionRelease();
         }
 
@@ -54,7 +60,7 @@ namespace Assets._game.Player.View {
             if ( interactable == null ) return;
 
             if ( interactAction.action.WasPressedThisFrame() ) {
-                if ( interactionService.IsBusy()) return;
+                if ( interactionService.IsBusy() ) return;
 
                 holdStart = true;
 
@@ -63,28 +69,24 @@ namespace Assets._game.Player.View {
 
                 lastInteractable = interactable;
             }
-            else if (interactAction.action.IsPressed()) {
-                if(interactable.IsDragingObject())
+            else if ( interactAction.action.IsPressed() ) {
+                if ( interactable.IsDraggableObject() )
                     interactionService.ContinuousInteraction();
             }
         }
 
-        private void CheckInteractionRelease()
-        {
-            if (!holdStart || lastInteractable == null) return;
+        private void CheckInteractionRelease() {
+            if ( !holdStart || lastInteractable == null ) return;
 
-            if (interactClose.action.WasReleasedThisFrame() && !lastInteractable.IsDragingObject())
-            {
+            if ( interactClose.action.WasReleasedThisFrame() && !lastInteractable.IsDraggableObject() ) {
                 EndInteraction();
             }
-            else if (interactAction.action.WasReleasedThisFrame() && (lastInteractable.OnceActivation() || lastInteractable.IsDragingObject())) 
-            {
+            else if ( interactAction.action.WasReleasedThisFrame() && (lastInteractable.OnceActivation() || lastInteractable.IsDraggableObject()) ) {
                 EndInteraction();
             }
         }
 
-        private void EndInteraction()
-        {
+        private void EndInteraction() {
             holdStart = false;
             interactionService?.EndInteraction();
             lastInteractable = null;

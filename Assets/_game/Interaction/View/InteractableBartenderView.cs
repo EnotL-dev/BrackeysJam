@@ -15,7 +15,7 @@ namespace Assets._game.Interaction.View
 
         public bool FreezePlayer() => true;
 
-        public bool IsDragingObject() => false;
+        public bool IsDraggableObject() => false;
 
         public void OnContinuousInteraction()
         {

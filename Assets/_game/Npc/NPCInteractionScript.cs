@@ -11,6 +11,12 @@ namespace Assets._game.Npc {
         NPCScript NPCScript;
         NPCInfoView NPCInfoView;
 
+        bool canInteracThisFrame = true;
+        [SerializeField] private bool isDraggingObject = false;
+
+        public bool CanInteractThisFrame => canInteracThisFrame;
+
+        public bool IsDraggableObject() => isDraggingObject;
         [Inject]
         void Construct(NPCInfoView NPCInfoView) {
             this.NPCInfoView = NPCInfoView;
@@ -43,8 +49,8 @@ namespace Assets._game.Npc {
             return true; //for now
         }
 
-        [SerializeField] private bool isDraggingObject = false;
-        public bool IsDragingObject() => isDraggingObject;
+
+
 
         public void OnContinuousInteraction() {
             //throw new System.NotImplementedException();
@@ -57,5 +63,7 @@ namespace Assets._game.Npc {
         public void OnStartInteraction() {
             //throw new System.NotImplementedException();
         }
+
+        public void ModifyCanInteract() => canInteracThisFrame = false;
     }
 }

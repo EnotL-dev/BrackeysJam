@@ -32,7 +32,7 @@ namespace Assets._game.Player.Controller
             lastInteractableObject = interactableObject;
             interactableObject?.OnInteract();
 
-            if (lastInteractableObject.IsDragingObject())
+            if (lastInteractableObject.IsDraggableObject())
                 dragManagerView.Grab(lastInteractableObject);
 
             if (lastInteractableObject.ShowCursor())
@@ -55,7 +55,7 @@ namespace Assets._game.Player.Controller
 
             lastInteractableObject?.OnEndInteraction();
 
-            if (lastInteractableObject.IsDragingObject())
+            if (lastInteractableObject.IsDraggableObject())
                 dragManagerView.Drop();
 
             if (lastInteractableObject.ShowCursor())

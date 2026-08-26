@@ -14,7 +14,7 @@ namespace Assets._game.Interaction.View
         [SerializeField] private Transform signObject;
 
         public bool FreezePlayer() => false;
-        public bool IsDragingObject() => false;
+        public bool IsDraggableObject() => false;
 
         public void OnContinuousInteraction()
         {
