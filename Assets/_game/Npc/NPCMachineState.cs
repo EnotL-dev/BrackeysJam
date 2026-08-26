@@ -27,6 +27,5 @@ namespace Assets._game.Npc {
 
 
 
-
     }
 }
