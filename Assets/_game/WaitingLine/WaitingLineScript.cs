@@ -18,17 +18,26 @@ namespace Assets._game.TestingScript {
 
         List<NPCScript> scripts = new();
 
+        public event Action<NPCScript> onEnter;
+        public event Action<NPCScript> onExit;
+
 
 
         public void OnTriggerEnter( Collider other ) {
             if ( other.CompareTag("NPC") ) {
-                if ( scripts.Count > maxCap ) return;
+                if ( scripts.Count > maxCap ) return; //TODO: add features to come in and get out 
                 Debug.Log("triggered npc and waiting line");
-
                 var script = other.GetComponent<NPCScript>();
-                scripts.Add(script);
+                onEnter?.Invoke(script);
                 //EnterLine(script);
 
+            }
+        }
+
+        public void OnTriggerExit( Collider other ) {
+            if ( other.CompareTag("NPC") ) {
+                var script = other.GetComponent<NPCScript>();
+                onExit?.Invoke(script);
             }
         }
 

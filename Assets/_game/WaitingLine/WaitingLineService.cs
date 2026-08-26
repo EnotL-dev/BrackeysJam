@@ -12,7 +12,18 @@ namespace Assets._game.TestingScript {
 
         public WaitingLineService( WaitingLineScript waitingLine ) {
             this.waitingLine = waitingLine;
+
+            SetUpObserver();
         }
+
+        void SetUpObserver() {
+
+            //waitingLine.onEnter += Enter;
+
+
+
+        }
+        
 
         public Vector3 GetNextAvailablePosition() {
             return waitingLine.GetNextAvailablePosition();
