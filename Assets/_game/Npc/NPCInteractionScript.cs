@@ -19,6 +19,8 @@ namespace Assets._game.Npc {
 
         public void Start() {
             NPCScript = GetComponent<NPCScript>();
+
+            if ( NPCScript == null ) Debug.Log("NPCScipt inNPCInteractionScript is null ");
         }
 
         public string GetTip() => "E to talk";

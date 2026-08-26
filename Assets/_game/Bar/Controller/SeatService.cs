@@ -9,7 +9,7 @@ namespace Assets._game.Bar.Controller {
         List<Seat> seats = new();
 
 
-        public void InitializeListSeat(List<Seat> list) {
+        public void InitializeListSeat( List<Seat> list ) {
             seats = list;
         }
 
@@ -17,12 +17,17 @@ namespace Assets._game.Bar.Controller {
 
             //random for now
 
+            if ( seats.Count == 0 ) {
+                Debug.LogWarning("There is no Seat");
+                return null;
+            }
+
             int index = Random.Range(0, seats.Count);
             return seats[index];
         }
 
         //find base on best distance
-        public Seat FindBestSeat(Vector3 pos) {
+        public Seat FindBestSeat( Vector3 pos ) {
             return seats[0];
         }
 

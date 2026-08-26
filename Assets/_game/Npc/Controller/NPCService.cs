@@ -55,7 +55,7 @@ namespace Assets._game.Npc.Controller {
 
         public void RejectNpc( NPCScript npc ) {
 
-            //npc.Leave();
+            npc.Leave();
             EndInteraction();
         }
 

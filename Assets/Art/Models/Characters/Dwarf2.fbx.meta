@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: fb4b3ea0c967be2468fcfb1fcc4c6112
+guid: 532dd95d9e0bc2546b671e21e6953fe1
 ModelImporter:
   serializedVersion: 24501
   internalIDToNameTable: []
@@ -7,7 +7,7 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
-      name: Material
+      name: Material.001
     second: {fileID: 2100000, guid: b74fefe3accea5844856b4c914ec0f12, type: 2}
   materials:
     materialImportMode: 2
@@ -56,7 +56,7 @@ ModelImporter:
     useFileUnits: 1
     keepQuads: 0
     weldVertices: 1
-    bakeAxisConversion: 1
+    bakeAxisConversion: 0
     preserveHierarchy: 0
     skinWeightsMode: 0
     maxBonesPerVertex: 4
@@ -92,37 +92,7 @@ ModelImporter:
   humanDescription:
     serializedVersion: 3
     human: []
-    skeleton:
-    - name: Dwarf(Clone)
-      parentName: 
-      position: {x: 0, y: 0, z: 0}
-      rotation: {x: 0, y: 0, z: 0, w: 1}
-      scale: {x: 1, y: 1, z: 1}
-    - name: beard
-      parentName: Dwarf(Clone)
-      position: {x: -0, y: 0, z: 0}
-      rotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071067}
-      scale: {x: 100, y: 100, z: 100}
-    - name: body
-      parentName: Dwarf(Clone)
-      position: {x: -0, y: 0, z: 0}
-      rotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071067}
-      scale: {x: 100, y: 100, z: 100}
-    - name: helmet1
-      parentName: Dwarf(Clone)
-      position: {x: 1.7763568e-15, y: 7.1054274e-15, z: 2.1175824e-22}
-      rotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071067}
-      scale: {x: 100, y: 100, z: 100}
-    - name: mustache
-      parentName: Dwarf(Clone)
-      position: {x: -0, y: 0, z: 0}
-      rotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071067}
-      scale: {x: 100, y: 100, z: 100}
-    - name: pads
-      parentName: Dwarf(Clone)
-      position: {x: 1.1832914e-30, y: 0, z: 1.7763568e-15}
-      rotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071067}
-      scale: {x: 100, y: 100, z: 100}
+    skeleton: []
     armTwist: 0.5
     foreArmTwist: 0.5
     upperLegTwist: 0.5

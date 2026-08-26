@@ -378,7 +378,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b94e9aac88c24fb4cab00cf55907838a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Assets._game.Npc.NPCFactory
-  prefab: {fileID: 4932035927952652038, guid: ea17f6d0c5f6bb04ca0b6fc48b961a8d, type: 3}
+  prefab: {fileID: 4050741749394943751, guid: 2beed3893ec80a94faf09b258e3fc6fa, type: 3}
   spawnParent: {fileID: 988172731}
 --- !u!4 &39051094
 Transform:
@@ -5345,6 +5345,17 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1200641373}
   m_CullTransparentMesh: 1
+--- !u!114 &1226852019 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3653499071471127847, guid: b4f0da0f75e43964c9abbbc11d2e5043, type: 3}
+  m_PrefabInstance: {fileID: 6066954298375836871}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Button
 --- !u!114 &1232083338 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 7389987720472510144, guid: b4f0da0f75e43964c9abbbc11d2e5043, type: 3}
@@ -16487,6 +16498,30 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1342932858}
   m_CullTransparentMesh: 1
+--- !u!1 &1356889331 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8975720449936991208, guid: b4f0da0f75e43964c9abbbc11d2e5043, type: 3}
+  m_PrefabInstance: {fileID: 6066954298375836871}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1356889336
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1356889331}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9e385c932c433e64b81493809ad471e2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Assets._game.Npc.View.NPCInfoView
+  nameText: {fileID: 0}
+  ageText: {fileID: 0}
+  sexText: {fileID: 0}
+  heightText: {fileID: 0}
+  weightText: {fileID: 0}
+  acceptBtn: {fileID: 1226852019}
+  cancelBtn: {fileID: 1641380322}
 --- !u!1001 &1369193190
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -17690,6 +17725,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TextMeshProUGUI
+--- !u!114 &1641380322 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4171684995318698266, guid: b4f0da0f75e43964c9abbbc11d2e5043, type: 3}
+  m_PrefabInstance: {fileID: 6066954298375836871}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Button
 --- !u!1 &1684928907
 GameObject:
   m_ObjectHideFlags: 0
@@ -25757,7 +25803,7 @@ PrefabInstance:
     - target: {fileID: 8684797842722058558, guid: b4f0da0f75e43964c9abbbc11d2e5043, type: 3}
       propertyPath: NPCInfoViewInstance
       value: 
-      objectReference: {fileID: 8068356272136553829}
+      objectReference: {fileID: 0}
     - target: {fileID: 8697490912626429727, guid: b4f0da0f75e43964c9abbbc11d2e5043, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -25830,11 +25876,15 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: -100
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 5598355840866222078, guid: b4f0da0f75e43964c9abbbc11d2e5043, type: 3}
     m_RemovedGameObjects:
     - {fileID: 8418044200234723746, guid: b4f0da0f75e43964c9abbbc11d2e5043, type: 3}
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 8975720449936991208, guid: b4f0da0f75e43964c9abbbc11d2e5043, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1356889336}
   m_SourcePrefab: {fileID: 100100000, guid: b4f0da0f75e43964c9abbbc11d2e5043, type: 3}
 --- !u!23 &6108538283642703046
 MeshRenderer:
@@ -26316,6 +26366,63 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.0025, y: 0.0024999995, z: 0.004999999}
   m_Center: {x: 0, y: 0, z: 0.0024999995}
+--- !u!1001 &6492160209885380875
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 3710104644168971709, guid: 2beed3893ec80a94faf09b258e3fc6fa, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 21.023
+      objectReference: {fileID: 0}
+    - target: {fileID: 3710104644168971709, guid: 2beed3893ec80a94faf09b258e3fc6fa, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 2.413
+      objectReference: {fileID: 0}
+    - target: {fileID: 3710104644168971709, guid: 2beed3893ec80a94faf09b258e3fc6fa, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 62.454
+      objectReference: {fileID: 0}
+    - target: {fileID: 3710104644168971709, guid: 2beed3893ec80a94faf09b258e3fc6fa, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3710104644168971709, guid: 2beed3893ec80a94faf09b258e3fc6fa, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3710104644168971709, guid: 2beed3893ec80a94faf09b258e3fc6fa, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3710104644168971709, guid: 2beed3893ec80a94faf09b258e3fc6fa, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3710104644168971709, guid: 2beed3893ec80a94faf09b258e3fc6fa, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3710104644168971709, guid: 2beed3893ec80a94faf09b258e3fc6fa, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3710104644168971709, guid: 2beed3893ec80a94faf09b258e3fc6fa, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4050741749394943751, guid: 2beed3893ec80a94faf09b258e3fc6fa, type: 3}
+      propertyPath: m_Name
+      value: Dwarf2
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 2beed3893ec80a94faf09b258e3fc6fa, type: 3}
 --- !u!23 &6513838757913120155
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -27696,17 +27803,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &8068356272136553829 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 5598355840866222078, guid: b4f0da0f75e43964c9abbbc11d2e5043, type: 3}
-  m_PrefabInstance: {fileID: 6066954298375836871}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9e385c932c433e64b81493809ad471e2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Assets._game.Npc.View.NPCInfoView
 --- !u!33 &8096997083929145943
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -29524,4 +29620,5 @@ SceneRoots:
   - {fileID: 983027836}
   - {fileID: 988172731}
   - {fileID: 807606036}
+  - {fileID: 6492160209885380875}
   - {fileID: 1972783921540948537}
