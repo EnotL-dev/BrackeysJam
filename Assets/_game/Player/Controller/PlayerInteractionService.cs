@@ -26,16 +26,17 @@ namespace Assets._game.Player.Controller
             Debug.Log("interact");
 
             if ( interactableObject.FreezePlayer() ) {
-                //playerController?.FreezeMovement();
                 playerController?.SetInputEnabled(false);
             }
 
-            //interactableObject?.OnStartInteraction();
             lastInteractableObject = interactableObject;
             interactableObject?.OnInteract();
 
             if (lastInteractableObject.IsDragingObject())
                 dragManagerView.Grab(lastInteractableObject);
+
+            if (lastInteractableObject.ShowCursor())
+                playerController.SetMouseFocus(true);
         }
 
         public void ContinuousInteraction()
@@ -54,6 +55,9 @@ namespace Assets._game.Player.Controller
 
             if (lastInteractableObject.IsDragingObject())
                 dragManagerView.Drop();
+
+            if (lastInteractableObject.ShowCursor())
+                playerController.SetMouseFocus(false);
 
             Busy = false;
         }

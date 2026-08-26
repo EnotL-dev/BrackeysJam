@@ -649,7 +649,7 @@ MonoBehaviour:
   m_CharacterValidation: 2
   m_RegexValue: 
   m_GlobalPointSize: 14
-  m_CharacterLimit: 0
+  m_CharacterLimit: 3
   m_OnEndEdit:
     m_PersistentCalls:
       m_Calls: []
@@ -704,6 +704,7 @@ GameObject:
   - component: {fileID: 4579859040935593725}
   - component: {fileID: 2364692716233479571}
   - component: {fileID: 4896917606381311660}
+  - component: {fileID: 9015113446299386254}
   m_Layer: 7
   m_Name: alc_panel
   m_TagString: Untagged
@@ -797,6 +798,24 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
+--- !u!114 &9015113446299386254
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2348936049141622407}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6e0445f74d3b7f1428a4002fabc436a5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Assets._game.UI.View.AlchoholPanelView
+  iconDrink: {fileID: 6161868194343522667}
+  textNameDrink: {fileID: 4472204827658875995}
+  textBuy: {fileID: 5032351724316980385}
+  textSell: {fileID: 5036028983747856631}
+  textCount: {fileID: 1666249191225398203}
+  buyButtonView: {fileID: 6790345478233347836}
 --- !u!1 &2899513456727591346
 GameObject:
   m_ObjectHideFlags: 0
@@ -889,10 +908,10 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 36
+  m_fontSize: 33.95
   m_fontSizeBase: 36
   m_fontWeight: 400
-  m_enableAutoSizing: 0
+  m_enableAutoSizing: 1
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 1
@@ -928,7 +947,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0, z: 0, w: 0}
+  m_margin: {x: 7.0315933, y: 6.9880066, z: 6.3369293, w: 5.3928833}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -2022,7 +2041,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: +1
+  m_text: 1
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: fe86482c94a67c14f9f73ab8bc639959, type: 2}
   m_sharedMaterial: {fileID: 4898985069127706069, guid: fe86482c94a67c14f9f73ab8bc639959, type: 2}
@@ -2031,8 +2050,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 2164260863
-  m_fontColor: {r: 1, g: 1, b: 1, a: 0.5}
+    rgba: 2868903935
+  m_fontColor: {r: 1, g: 1, b: 1, a: 0.6666667}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -2126,8 +2145,9 @@ GameObject:
   - component: {fileID: 3600265120840698852}
   - component: {fileID: 7014415197255464731}
   - component: {fileID: 899966253895754647}
+  - component: {fileID: 6790345478233347836}
   m_Layer: 7
-  m_Name: Button
+  m_Name: ButtonBuy
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2234,7 +2254,32 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 7014415197255464731}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 6790345478233347836}
+        m_TargetAssemblyTypeName: Assets._game.UI.View.BuyButtonView, Assembly-CSharp
+        m_MethodName: BuyAlc
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &6790345478233347836
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6376069205447412854}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a65fae8c521af3046aa933613e50b4d3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Assets._game.UI.View.BuyButtonView
+  inputField: {fileID: 8635992405088131724}
 --- !u!1 &7066967635193623108
 GameObject:
   m_ObjectHideFlags: 0
@@ -2352,7 +2397,7 @@ GameObject:
   - component: {fileID: 5324730900681006815}
   - component: {fileID: 8882790574970954909}
   m_Layer: 7
-  m_Name: panel_sold
+  m_Name: panel_sell
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2776,15 +2821,15 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 46
-  m_fontSizeBase: 46
+  m_fontSize: 36
+  m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
-  m_fontStyle: 1
-  m_HorizontalAlignment: 1
-  m_VerticalAlignment: 256
+  m_fontStyle: 3
+  m_HorizontalAlignment: 2
+  m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
   m_characterHorizontalScale: 1

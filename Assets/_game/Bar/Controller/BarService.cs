@@ -7,6 +7,7 @@ using Assets._game.TestingScript;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using Zenject;
 
@@ -26,9 +27,31 @@ namespace Assets._game.Bar.Controller {
             this.seatService = seatService;
         }
 
-        //private List<AlchoholDictionary> alchoholDictionary;
-        AlcoholSO[] alcohols;
+        private List<AlchoholDictionary> alchohols = new List<AlchoholDictionary>();
 
+        public AlchoholDictionary GetAlcoholDictionary(AlcoholType alcoholType) => alchohols.Find(a => a.alchohol.Type == alcoholType);
+
+        public void AddAlchohol(AlcoholType alcoholType, int count)
+        {
+            AlchoholDictionary addedAlc = alchohols.Find(a => a.alchohol.Type == alcoholType);
+            if (addedAlc != null)
+            {
+                addedAlc.count += count;
+            }
+
+            Debug.Log($"<color=yellow>Added {addedAlc.alchohol.Name} +{count}</color>");
+        }
+
+        public void ReduceAlchohol(AlcoholType alcoholType, int count)
+        {
+            AlchoholDictionary addedAlc = alchohols.Find(a => a.alchohol.Type == alcoholType);
+            if (addedAlc != null)
+            {
+                addedAlc.count -= count;
+            }
+
+            Debug.Log($"<color=yellow>Reduce {addedAlc.alchohol.Name} -{count}</color>");
+        }
 
         public void Initialize() {
             InitAlchoholData();
@@ -36,13 +59,12 @@ namespace Assets._game.Bar.Controller {
 
         private void InitAlchoholData() {
 
-            alcohols = Resources.LoadAll<AlcoholSO>("Bar/Alchohol");
-
-            foreach ( AlcoholSO alcohol in alcohols ) {
-                Debug.Log($"{alcohol.Type} - {alcohol.BuyCost}");
+            AlcoholSO[] newAlcohols = Resources.LoadAll<AlcoholSO>("Bar/Alchohol/DrinkSO/Alcohol");
+            Array.Sort(newAlcohols, (a, b) => a.BuyCost.CompareTo(b.BuyCost));
+            
+            foreach ( AlcoholSO alcohol in newAlcohols ) {
+                alchohols.Add(new AlchoholDictionary(alcohol));
             }
-
-            //Debug.Log(alchoholDictionary.Count);
         }
         
 

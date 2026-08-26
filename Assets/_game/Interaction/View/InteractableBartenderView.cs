@@ -6,7 +6,7 @@ using Zenject;
 
 namespace Assets._game.Interaction.View
 {
-    public class InteractableIBartenderView : MonoBehaviour, IInteractable
+    public class InteractableBartenderView : MonoBehaviour, IInteractable
     {
         // [Inject] private readonly IBarService barService;
         // [Inject] private readonly IEconomyService economyService;
@@ -24,12 +24,12 @@ namespace Assets._game.Interaction.View
 
         public void OnEndInteraction()
         {
-            bartenderPanelView.HideMyself();
+            bartenderPanelView.ClosePanel();
         }
 
         public void OnInteract()
         {
-            bartenderPanelView.ShowMyself();
+            bartenderPanelView.OpenPanel();
         }
 
         public void OnStartInteraction()

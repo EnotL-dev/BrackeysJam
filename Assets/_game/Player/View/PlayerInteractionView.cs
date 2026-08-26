@@ -9,6 +9,7 @@ namespace Assets._game.Player.View {
     public class PlayerInteractionView : MonoBehaviour {
         [Inject] IPlayerInteractionService interactionService;
 
+        [SerializeField] private InputActionReference interactClose;
         [SerializeField] private InputActionReference interactAction;
         [Space(5)]
         [SerializeField] private PlayerController playerController;
@@ -30,6 +31,7 @@ namespace Assets._game.Player.View {
             interactAction.action.Disable();
         }
 
+        private float timerHold = 0;
         private void Update() {
             //CheckInteraction();
 
@@ -46,6 +48,10 @@ namespace Assets._game.Player.View {
             CheckInteraction(interactable);
             CheckInteractionRelease();
 
+            if(timerHold > 0)
+            {
+                timerHold -= Time.deltaTime;
+            }
         }
 
         //TODO: seperate code for ui and checking
@@ -90,22 +96,40 @@ namespace Assets._game.Player.View {
                 if ( interactionService.IsBusy() ) return;
 
                 holdStart = true;
+                timerHold = 0.1f;
 
                 interactionService.StartInteraction(interactable);
                 uiInteractionView.HideTip();
             }
-
-            //might not use
-            else if ( interactAction.action.IsPressed() ) {
-                interactionService.ContinuousInteraction();
+            else if (interactAction.action.IsPressed()) {
+                if(interactable.IsDragingObject())
+                    interactionService.ContinuousInteraction();
+                else
+                    timerHold = 0.1f;
             }
         }
 
         private void CheckInteractionRelease() {
+            if (timerHold > 0) return;
+
             if ( holdStart && interactAction.action.WasReleasedThisFrame() ) {
                 holdStart = false;
                 interactionService?.EndInteraction();
             }
+            else if (holdStart)
+            {
+                if(interactClose.action.WasReleasedThisFrame())
+                {
+                    holdStart = false;
+                    interactionService?.EndInteraction();
+                }
+            }
+        }
+
+        public void ForcedInteractionRelease() // May use from any space if use container
+        {
+            holdStart = false;
+            interactionService?.EndInteraction();
         }
 
         private IInteractable CheckObject() {

@@ -19,8 +19,6 @@ namespace Assets._game.Core.Installers
                      .AsSingle()
                      .NonLazy();
 
-            Container.Bind<SeatService>().AsSingle();
-
             Container.Bind<IEconomyService>()
                      .To<EconomyService>()
                      .AsSingle();
