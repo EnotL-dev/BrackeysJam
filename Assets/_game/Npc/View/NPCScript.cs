@@ -167,7 +167,7 @@ namespace Assets._game.Npc.View {
 
         //TODO: reafactor this into a real point instead of hardcode
         public void Leave() {
-            if ( npcInfo.npcProperties.Contains(NPCProperty.HotTemper) ) {
+            if ( npcInfo.npcProperties == (NPCProperty.HotTemper) ) {
                 barService.ReduceChaos(0.1f);
             }
 

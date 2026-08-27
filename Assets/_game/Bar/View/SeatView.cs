@@ -30,14 +30,6 @@ public class SeatView : MonoBehaviour {
             }
         }
 
-        foreach( var child in matchedObjects ) {
-            Debug.Log(
-                    $"Seat: {child.name} | " +
-                    $"Occupied: {child.IsOccupied} | " +
-                    $"Broken: {child.IsBroken}"
-                );
-        }
-
         Debug.Log($"find {matchedObjects.Count} seat");
 
         return matchedObjects;

@@ -69,10 +69,7 @@ namespace Assets._game.Npc.View {
             }
 
             if ( characteristicText != null ) {
-                characteristicText.text =
-                    info.npcProperties != null && info.npcProperties.Count > 0
-                        ? $"{string.Join(", ", info.npcProperties)}"
-                        : "None";
+                characteristicText.text = $"{info.npcProperties}";
             }
 
             if ( favoriteDrinkText != null ) {

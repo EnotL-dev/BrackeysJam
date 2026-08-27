@@ -28,6 +28,7 @@ namespace Assets._game.Core.Installers {
             Container.Bind<NPCService>().AsSingle();
             Container.Bind<OrderService>().AsSingle();
             Container.Bind<OrderFactory>().AsSingle();
+            Container.Bind<NPCInfoGenerator>().AsSingle();
 
             Container.Bind<NPCInfoView>().
                 FromInstance(NPCInfoViewInstance).

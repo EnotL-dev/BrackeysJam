@@ -10,7 +10,7 @@ namespace Assets._game.Npc {
 
         WaitingLineService waitingLineService;
         [SerializeField] NPCFactory NPCFactory;
-        NPCInfoGenerator npcInfoGenerator = new();
+        NPCInfoGenerator npcInfoGenerator;
 
         [SerializeField] private float minSpawnInterval = 1f;
         [SerializeField] private float maxSpawnInterval = 3f;
@@ -19,8 +19,10 @@ namespace Assets._game.Npc {
         private float nextSpawnTime;
 
         [Inject]
-        void Construct( [Inject(Id = "ComeIn")] WaitingLineService waitingLineService ) {
+        void Construct( [Inject(Id = "ComeIn")] WaitingLineService waitingLineService,
+            NPCInfoGenerator npcInfoGenerator ) {
             this.waitingLineService = waitingLineService;
+            this.npcInfoGenerator = npcInfoGenerator;
         }
 
 
@@ -53,11 +55,6 @@ namespace Assets._game.Npc {
 
             var gameObject = NPCFactory.SpawnNpc();
             var npc = gameObject.GetComponent<NPCScript>();
-
-            if ( npcInfoGenerator == null ) {
-                Debug.Log("somwhow infogenerator is null");
-                npcInfoGenerator = new NPCInfoGenerator();
-            }
 
             NPCInfo info = npcInfoGenerator.Generate();
 

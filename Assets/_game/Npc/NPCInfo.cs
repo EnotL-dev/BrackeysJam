@@ -12,7 +12,7 @@ namespace Assets._game.Npc {
         public float height { get; private set; }
         public float weight { get; private set; }
         public NPCWealthType wealth { get; private set; }
-        public List<NPCProperty> npcProperties { get; private set; }
+        public NPCProperty npcProperties { get; private set; }
 
         public AlcoholType farDrink { get; private set; }
 
@@ -25,7 +25,7 @@ namespace Assets._game.Npc {
             height = 1.8f;
             weight = 75.7f;
             wealth = NPCWealthType.normal;
-            npcProperties = new List<NPCProperty>();
+            npcProperties = NPCProperty.Drunkard;
             farDrink = AlcoholType.Beer;
         }
 
@@ -35,8 +35,8 @@ namespace Assets._game.Npc {
             float height,
             float weight,
             NPCWealthType walth,
-            List<NPCProperty> nPCProperties,
-            AlcoholType farDrink) {
+            NPCProperty nPCProperties,
+            AlcoholType farDrink ) {
             this.name = name;
             this.age = age;
             this.sex = sex;

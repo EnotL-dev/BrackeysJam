@@ -32,17 +32,13 @@ namespace Assets._game.Npc.Controller {
             npcProperties ??= (NPCProperty[])System.Enum.GetValues(typeof(NPCProperty));
             alcoholTypes ??= (AlcoholType[])System.Enum.GetValues(typeof(AlcoholType));
 
-            var wealth = wealthTypes[UnityEngine.Random.Range(0, wealthTypes.Length)];
+            float vibe = barService.GetVibe().vibe;
 
-            List<NPCProperty> properties = GenerateProperties(barService.GetVibe().vibe);
+            var wealth = GenerateWealth(vibe);
 
-            //foreach ( var property in nPCProperties ) {
-            //    npcProperties.Add( property );
-            //}
+            var property = GenerateProperty(vibe);
 
             var farDrink = alcoholTypes[UnityEngine.Random.Range(0, alcoholTypes.Length)];
-
-
 
 
             float height = sex == "Male"
@@ -58,24 +54,77 @@ namespace Assets._game.Npc.Controller {
                 height,
                 weight,
                 wealth,
-                properties,
+                property,
                 farDrink
             );
         }
 
-        private List<NPCProperty> GenerateProperties( float currentVibe ) {
-            var selectedProperties = new HashSet<NPCProperty>();
+        private NPCWealthType GenerateWealth( float vibe ) {
 
-            // Roll for how many traits this NPC gets (e.g., 1 to 2 traits)
-            int traitCount = UnityEngine.Random.Range(1, 3);
+            float badWeight;
+            float normalWeight;
+            float goodWeight;
 
-            // TODO: Replace this loop with your vibe-based probability weights later
-            while ( selectedProperties.Count < traitCount && selectedProperties.Count < npcProperties.Length ) {
-                NPCProperty randomProperty = npcProperties[UnityEngine.Random.Range(0, npcProperties.Length)];
-                selectedProperties.Add(randomProperty);
+            if ( vibe < 30f ) {
+                badWeight = 70f;
+                normalWeight = 20f;
+                goodWeight = 10f;
+            }
+            else if ( vibe < 70f ) {
+                badWeight = 50f;
+                normalWeight = 30f;
+                goodWeight = 20f;
+            }
+            else {
+                badWeight = 20f;
+                normalWeight = 50f;
+                goodWeight = 30f;
             }
 
-            return selectedProperties.ToList();
+            float roll = UnityEngine.Random.Range(0f, 100f);
+
+            if ( roll < badWeight )
+                return NPCWealthType.poor;
+
+            if ( roll < badWeight + normalWeight )
+                return NPCWealthType.normal;
+
+            return NPCWealthType.rich;
+        }
+
+        private NPCProperty GenerateProperty( float vibe ) {
+
+            float roll = UnityEngine.Random.Range(0f, 100f);
+
+            if ( vibe < 30f ) {
+
+                if ( roll < 40f )
+                    return NPCProperty.Drunkard;
+
+                if ( roll < 60f )
+                    return NPCProperty.HotTemper;
+
+                return NPCProperty.Rogue;
+            }
+            else if ( vibe < 70f ) {
+
+                if ( roll < 35f )
+                    return NPCProperty.Drunkard;
+
+                if ( roll < 65f )
+                    return NPCProperty.HotTemper;
+
+                return NPCProperty.Rogue;
+            }
+            else {
+                if ( roll < 35f )
+                    return NPCProperty.Drunkard;
+
+                if ( roll < 70f )
+                    return NPCProperty.HotTemper;
+            }
+
+            return NPCProperty.Rogue;
         }
     }
 }
