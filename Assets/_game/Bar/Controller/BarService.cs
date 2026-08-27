@@ -53,6 +53,11 @@ namespace Assets._game.Bar.Controller {
             foreach ( AlcoholSO alcohol in newAlcohols ) {
                 alcohols.Add(alcohol.AlcoholType, 0);
             }
+
+            //FOR TEST
+            AlcoholType alcAdd = AlcoholType.Beer;
+            AddAlcohol(alcAdd, 10);
+            //FOR TEST
         }
 
         public Dictionary<AlcoholType, int> GetAlcoholDictionary() => alcohols;
