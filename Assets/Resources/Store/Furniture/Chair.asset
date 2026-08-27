@@ -13,5 +13,6 @@ MonoBehaviour:
   m_Name: Chair
   m_EditorClassIdentifier: Assembly-CSharp::Assets._game.Store.Model.Chair
   _name: Chair
+  _cost: 50
   _description: node
   furnitureType: 0

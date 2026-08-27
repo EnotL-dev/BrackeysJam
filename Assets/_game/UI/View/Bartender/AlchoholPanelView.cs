@@ -49,8 +49,8 @@ namespace Assets._game.UI.View {
 
             if ( iconDrink != null ) iconDrink.sprite = alcoholData.Icon;
             if ( textNameDrink != null ) textNameDrink.text = alcoholData.Name;
-            if ( textBuy != null ) textBuy.text = $"${alcoholData.BuyCost}";
-            if ( textSell != null ) textSell.text = $"${alcoholData.SoldCost}";
+            if ( textBuy != null ) textBuy.text = $"{alcoholData.BuyCost}$";
+            if ( textSell != null ) textSell.text = $"{alcoholData.SoldCost}$";
             if ( textCount != null ) textCount.text = count.ToString();
         }
     }

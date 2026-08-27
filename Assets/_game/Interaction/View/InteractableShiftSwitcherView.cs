@@ -1,4 +1,6 @@
 ﻿using Assets._game.Core.StateMachine;
+using Assets._game.Player.View;
+using Assets._game.Shift.Controller;
 using DG.Tweening;
 using System.Collections;
 using UnityEngine;
@@ -8,11 +10,12 @@ namespace Assets._game.Interaction.View
 {
     public class InteractableShiftSwitcherView : MonoBehaviour, IInteractable
     {
-        [Inject] private SignalBus signalBus;
-        [Inject] private IGameStateMachine gameStateMachine;
+        [Inject] SignalBus signalBus;
+        [Inject] IShiftService shiftService;
 
         [SerializeField] private Transform signObject;
 
+        public string GetTip() => canSwitch ? "[E] - change the shift to night" : "It's already the night shift";
         public bool FreezePlayer() => false;
         public bool IsDraggableObject() => false;
 
@@ -28,14 +31,12 @@ namespace Assets._game.Interaction.View
 
         public bool OnceActivation() => true;
 
+        bool canSwitch = true;
         public void OnInteract()
         {
-            if(lastState is DayShiftState)
-                gameStateMachine.Enter<NightShiftState>();
-            else
-                gameStateMachine.Enter<DayShiftState>();
+            if (!canSwitch) return;
 
-            FlipSign();
+            shiftService.StartNightShift();
         }
 
         public void OnStartInteraction()
@@ -60,15 +61,22 @@ namespace Assets._game.Interaction.View
             signalBus.Unsubscribe<StateChangedSignal>(StateChanged);
         }
 
-        IGameState lastState; // FOR DEBUG
         public void StateChanged(StateChangedSignal stateChangedSignal)
         {
             if (stateChangedSignal.gameState is DayShiftState)
-                print("day");
-            else if (stateChangedSignal.gameState is NightShiftState)
-                print("night");
+            {
+                canSwitch = true;
+                FlipSign();
 
-            lastState = stateChangedSignal.gameState;
+                Debug.Log("<color=magenta>Day shift</color>");
+            }
+            else if (stateChangedSignal.gameState is NightShiftState)
+            {
+                canSwitch = false;
+                FlipSign();
+
+                Debug.Log("<color=magenta>Night shift</color>");
+            }
         }
     }
 }

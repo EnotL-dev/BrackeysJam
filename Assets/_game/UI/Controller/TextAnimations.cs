@@ -68,5 +68,10 @@ namespace Assets._game.UI.Controller
             });
             seq.Play();
         }
+
+        public static void AnimateTimerShake(this TextMeshProUGUI text)
+        {
+            text.transform.DOShakePosition(0.3f, 5f, 10, 90, false, true).OnComplete(() => text.transform.localPosition = Vector3.zero);
+        }
     }
 }

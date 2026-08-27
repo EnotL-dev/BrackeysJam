@@ -76,5 +76,29 @@ namespace Assets._game.Player.View
             textSeats.text = $"{currentSeats} / {maxSeats}";
             textSeats.transform.DOScale(1.3f, 0.2f).SetEase(Ease.OutBack).OnComplete(() => textSeats.transform.DOScale(1f, 0.3f).SetEase(Ease.InBack));
         }
+
+        public void UpdateTimer(int seconds)
+        {
+            string timeString = string.Format("{0:00}:{1:00}", seconds / 60, seconds % 60);
+            textShiftTimer.text = timeString;
+
+            if(seconds % 60 ==0 || seconds <= 30)
+            {
+                DOTween.Kill(textShiftTimer.gameObject);
+                textShiftTimer.AnimateTimerShake();
+            }
+        }
+
+        public void StopTimer()
+        {
+            textShiftTimer.text = "--:--";
+        }
+
+        public void SetShiftCount(int count)
+        {
+            DOTween.Kill(textShift.gameObject);
+            textShift.text = count.ToString();
+            textShift.AnimateTimerShake();
+        }
     }
 }

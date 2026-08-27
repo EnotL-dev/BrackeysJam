@@ -13,5 +13,6 @@ MonoBehaviour:
   m_Name: Painting
   m_EditorClassIdentifier: Assembly-CSharp::Assets._game.Store.Model.Painting
   _name: Painting
+  _cost: 25
   _description: node
   furnitureType: 1
