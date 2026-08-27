@@ -117,6 +117,8 @@ namespace Assets._game.Bar.Controller {
                 }
             }
 
+            if ( availableTypes.Count <= 0 ) return null;
+
             int randomIndex = UnityEngine.Random.Range(0, availableTypes.Count);
             return new AlcoholOrder(availableTypes[randomIndex]);
         }

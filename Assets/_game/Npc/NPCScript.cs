@@ -1,5 +1,6 @@
 ﻿using Assets._game.Bar.Controller;
 using Assets._game.Bar.Model;
+using Assets._game.Bar.Model.SOScript.DrinkSO.Alcohol;
 using Assets._game.Npc.Animation;
 using Assets._game.Npc.ConcreateClass;
 using System;
@@ -30,17 +31,19 @@ namespace Assets._game.Npc
         BarService barService;
         SeatService seatService;
         OrderFactory orderFactory;
+        public AlcoholCatalog alcoholCatalog { get; private set; }
 
         public NavMeshAgent agent { get; private set; }
 
         [Inject]
-        void Construct(BarService barService,
+        void Construct( BarService barService,
             SeatService seatService,
-            OrderFactory orderFactory)
-        {
+            OrderFactory orderFactory,
+            AlcoholCatalog alcoholCatalog) {
             this.barService = barService;
             this.seatService = seatService;
             this.orderFactory = orderFactory;
+            this.alcoholCatalog = alcoholCatalog;
         }
 
         void Awake()
@@ -138,6 +141,7 @@ namespace Assets._game.Npc
                 MoveToDest(pos.transform.position);
                 machineState.ChangeState(moveScript, () => {
 
+                    consumeOrder.ChangeAlcoholSO(order);
                     machineState.ChangeState(consumeOrder, () => {
 
                         Leave();
@@ -149,8 +153,8 @@ namespace Assets._game.Npc
 
         }
 
-        public void ConsumeOrder(float second)
-        {
+        public void ConsumeOrder( Order oder ) {
+            //consumeOrder.ChangeAlcoholSO(oder);
             machineState.ChangeState(consumeOrder); //TODO: make the method use the second
             //animationController.SetAction(NPCActionState.ConsumeOrder);
         }

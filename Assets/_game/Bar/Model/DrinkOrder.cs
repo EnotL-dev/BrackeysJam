@@ -4,10 +4,10 @@ using UnityEngine;
 
 namespace Assets._game.Bar.Model {
     public class DrinkOrder : Order {
-        public DrinkType Type { get; }
+        public DrinkType drinkType { get; }
 
         public DrinkOrder( DrinkType type ) : base(OrderType.Drink) {
-            Type = type;
+            drinkType = type;
         }
     }
 }

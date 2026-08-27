@@ -1,29 +1,49 @@
 ﻿using Assets._game.Bar.Model;
+using Assets._game.Bar.Model.SOScript.DrinkSO.Alcohol;
 using System;
 using System.Collections;
 using Unity.VisualScripting;
 using UnityEngine;
+using Zenject;
 
 namespace Assets._game.Npc.ConcreateClass {
     public class NPCConsumeOrder : INPCState {
 
 
         readonly NPCScript NPCScript;
+        AlcoholOrder alcoholOrder;
 
-        OrderType orderType;
+        AlcoholCatalog alcoholCatalog;
 
-        
-
-        public NPCConsumeOrder(NPCScript NPCScript ) {
+        public NPCConsumeOrder( NPCScript NPCScript) {
             this.NPCScript = NPCScript;
         }
 
-        void INPCState.EnterState(Action _) {
+        public void ChangeAlcoholSO( Order order ) {
+            alcoholOrder = (AlcoholOrder)order;
+        }
 
-            Debug.Log($"Start consume {orderType}");
+        void INPCState.EnterState( Action _ ) {
+            if ( alcoholCatalog == null ) {
+                Debug.Log("Alcoholcatalog is null");
+                alcoholCatalog = NPCScript.alcoholCatalog;
+            }
 
-            NPCScript.WaitForConsumeOrder(5f, () => //hard code for now
-            {
+            if ( alcoholOrder == null ) {
+                Debug.Log("alcohol order is null");
+                return;
+            }
+
+            var so = alcoholCatalog.Get(alcoholOrder.alcoholType);
+
+            if ( so == null ) {
+                Debug.Log("so is null");
+                return;
+            }
+
+            Debug.Log($"Start consume {so.AlcoholType}, start waiting for {so.ConsumeTime}");
+
+            NPCScript.WaitForConsumeOrder(so.ConsumeTime, () => {
                 NPCScript.Leave();
             });
 
@@ -34,7 +54,7 @@ namespace Assets._game.Npc.ConcreateClass {
             Debug.Log("Finish consume");
         }
 
-        
+
         void INPCState.UpdateState() {
 
         }

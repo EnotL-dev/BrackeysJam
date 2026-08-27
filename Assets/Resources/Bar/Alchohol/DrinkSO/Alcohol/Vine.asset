@@ -15,6 +15,7 @@ MonoBehaviour:
   _icon: {fileID: 21300000, guid: 5f4cf1f9113acfb4db8890077145970d, type: 3}
   _name: Wine
   _prepareTime: 3
+  consumeTime: 10
   buyCost: 25
   soldCost: 40
   drinkType: 0
