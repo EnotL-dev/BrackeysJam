@@ -1,12 +1,15 @@
 using Assets._game.Bar.Controller;
 using Assets._game.Npc;
+using Assets._game.Npc.Enum;
+using Assets._game.Npc.View;
 using UnityEngine;
 using Zenject;
 
 public class Seat : MonoBehaviour {
 
-    OrderFactory orderFactory;
+    NPCInfo npcInfo;
 
+    IBarService barService;
 
     private Renderer seatRenderer;
 
@@ -21,8 +24,8 @@ public class Seat : MonoBehaviour {
 
 
     [Inject]
-    void Construct( OrderFactory orderFactory ) {
-        this.orderFactory = orderFactory;
+    void Construct( IBarService barService ) {
+        this.barService = barService;
     }
 
 
@@ -39,8 +42,11 @@ public class Seat : MonoBehaviour {
     //    return true;
     //}
 
+    void TryBreak( float chance ) {
+        if ( Random.value < chance ) Break();
+    }
 
-    public void Break() {
+    void Break() {
         if ( IsBroken ) return;
 
         IsBroken = true;
@@ -50,9 +56,7 @@ public class Seat : MonoBehaviour {
         Debug.Log($"{name} has broken!");
     }
 
-    public void Release() {
-        IsOccupied = false;
-    }
+
 
     public void Repair() {
         if ( !IsBroken )
@@ -87,6 +91,8 @@ public class Seat : MonoBehaviour {
 
             var script = other.GetComponent<NPCScript>();
 
+            npcInfo = script.npcInfo;
+
             //read ncp preference (skip for now)
 
             //call order
@@ -106,12 +112,24 @@ public class Seat : MonoBehaviour {
         if ( other.CompareTag("NPC") ) {
             Release();
 
+            if ( npcInfo.npcProperties.Contains(NPCProperty.Drunkard) ) {
+
+                float chaosScale = barService.GetChaosStatus().chaosScale;
+                float chance = 0.1f * (1 + chaosScale);
+
+                Debug.Log($"Try break chair {chance}, and chaos scale {chaosScale}");
+                TryBreak(chance);
+            }
+
         }
     }
 
+    public void Release() {
+        IsOccupied = false;
+    }
+
     public bool TryReserve() {
-        if ( IsOccupied || IsBroken )
-            return false;
+        if ( IsOccupied || IsBroken ) return false;
 
         IsOccupied = true;
         return true;

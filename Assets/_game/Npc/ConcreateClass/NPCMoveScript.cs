@@ -1,4 +1,5 @@
-﻿using DG.Tweening;
+﻿using Assets._game.Npc.View;
+using DG.Tweening;
 using System;
 using System.Collections;
 using UnityEngine;
@@ -27,11 +28,14 @@ namespace Assets._game.Npc.ConcreateClass {
 
         public void SetDestination( Vector3 pos ) {
             dest = pos;
+            //Debug.Log($"[{nPCScript.name}] Move SetDestination: {pos}");
         }
 
 
 
         public void EnterState( Action onComplete ) {
+            //Debug.Log($"[{nPCScript.name}] MOVE EnterState");
+
             //use ai navigation for this
 
             //For testing

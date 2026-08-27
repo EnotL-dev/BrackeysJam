@@ -94,7 +94,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 4050741749394943751}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b612685feaffb5043a321437d3a9e85e, type: 3}
+  m_Script: {fileID: 11500000, guid: 2387160fc82deec4a873b287d4aff880, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Assets._game.Npc.NPCScript
   LeavePos: {fileID: 0}
@@ -107,10 +107,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 4050741749394943751}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e5e0f63ce92039e43bd4f6175488b5f3, type: 3}
+  m_Script: {fileID: 11500000, guid: b146b0f495dfaea469a4fa8bd1b8ac94, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Assets._game.Npc.NPCInteractionScript
-  dialoge: hell o i gay
+  dialoge: hello igay
   isDraggingObject: 0
 --- !u!195 &7861247882111986964
 NavMeshAgent:

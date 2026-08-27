@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using UnityEngine;
 
-namespace Assets._game.Bar.Model
+namespace Assets._game.Bar.Model.BarStatus
 {
     public class BarStats
     {

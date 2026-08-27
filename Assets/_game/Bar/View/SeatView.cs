@@ -9,7 +9,7 @@ public class SeatView : MonoBehaviour {
 
     SeatService seatService;
 
-    
+
 
     [Inject]
     void Construct( SeatService seatService ) {
@@ -28,6 +28,14 @@ public class SeatView : MonoBehaviour {
             if ( allChildren[i].CompareTag("Seat") ) {
                 matchedObjects.Add(allChildren[i].gameObject.GetComponent<Seat>());
             }
+        }
+
+        foreach( var child in matchedObjects ) {
+            Debug.Log(
+                    $"Seat: {child.name} | " +
+                    $"Occupied: {child.IsOccupied} | " +
+                    $"Broken: {child.IsBroken}"
+                );
         }
 
         Debug.Log($"find {matchedObjects.Count} seat");

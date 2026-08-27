@@ -1,5 +1,6 @@
 ﻿using Assets._game.Bar.Model;
 using Assets._game.Bar.Model.SOScript.DrinkSO.Alcohol;
+using Assets._game.Npc.View;
 using System;
 using System.Collections;
 using Unity.VisualScripting;
@@ -15,7 +16,9 @@ namespace Assets._game.Npc.ConcreateClass {
 
         AlcoholCatalog alcoholCatalog;
 
-        public NPCConsumeOrder( NPCScript NPCScript) {
+        Action onComplete;
+
+        public NPCConsumeOrder( NPCScript NPCScript ) {
             this.NPCScript = NPCScript;
         }
 
@@ -23,11 +26,11 @@ namespace Assets._game.Npc.ConcreateClass {
             alcoholOrder = (AlcoholOrder)order;
         }
 
-        void INPCState.EnterState( Action _ ) {
-            if ( alcoholCatalog == null ) {
-                Debug.Log("Alcoholcatalog is null");
-                alcoholCatalog = NPCScript.alcoholCatalog;
-            }
+        void INPCState.EnterState( Action onComplete ) {
+            this.onComplete = onComplete;
+
+            if ( alcoholCatalog == null ) alcoholCatalog = NPCScript.alcoholCatalog;
+
 
             if ( alcoholOrder == null ) {
                 Debug.Log("alcohol order is null");
@@ -51,7 +54,7 @@ namespace Assets._game.Npc.ConcreateClass {
         }
 
         void INPCState.ExitState() {
-            Debug.Log("Finish consume");
+            Debug.Log("Finish consume, start to go out");
         }
 
 

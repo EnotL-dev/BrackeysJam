@@ -1,9 +1,8 @@
 ﻿using Assets._game.Interaction.View;
-using Assets._game.Npc.View;
 using UnityEngine;
 using Zenject;
 
-namespace Assets._game.Npc {
+namespace Assets._game.Npc.View {
     public class NPCInteractionScript : MonoBehaviour, IInteractable {
 
         [SerializeField] string dialoge; //TODO use a sperate script for this
