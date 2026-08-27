@@ -13,12 +13,12 @@ namespace Assets._game.Core.Installers
         [SerializeField] private ShiftManagerView shiftManagerView;
         public override void InstallBindings()
         {
-            Container.Bind<IShiftService>()
-                     .To<ShiftService>()
-                     .AsSingle();
-
             Container.Bind<ShiftManagerView>()
                  .FromComponentOn(shiftManagerView.gameObject)
+                 .AsSingle();
+
+            Container.Bind<IShiftService>()
+                 .To<ShiftService>()
                  .AsSingle();
         }
     }

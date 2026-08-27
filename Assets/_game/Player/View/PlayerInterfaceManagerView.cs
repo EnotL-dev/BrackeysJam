@@ -8,7 +8,6 @@ namespace Assets._game.Player.View
 {
     public class PlayerInterfaceManagerView : MonoBehaviour
     {
-        [SerializeField] private TextMeshProUGUI textShift;
         [SerializeField] private TextMeshProUGUI textSeats;
         int currentSeats = 0;
         int maxSeats = 5;
@@ -17,6 +16,7 @@ namespace Assets._game.Player.View
         [SerializeField] private Color normalColor;
         [SerializeField] private Color reduceColor;
         [SerializeField] private TextMeshProUGUI textMoney;
+        [SerializeField] private TextMeshProUGUI textQuotaMoney;
         [SerializeField] private TextMeshProUGUI textShiftTimer;
 
         [SerializeField] private InputActionReference testInput;
@@ -24,8 +24,8 @@ namespace Assets._game.Player.View
         public void Start()
         {
             textMoney.text = "10,000 $";
+            textQuotaMoney.text = "0$ / 0$";
 
-            textShift.text = "0";
             textSeats.text = $"{currentSeats} / {maxSeats}";
 
             textShiftTimer.text = "--:--";
@@ -45,8 +45,21 @@ namespace Assets._game.Player.View
         {
             if (testInput.action.WasPressedThisFrame())
             {
-                
+                AddQuotaMoney(1000, 2333, 3000);
+                AddMoney(1000, 3333);
             }
+        }
+
+        public void AddQuotaMoney(int startCount, int endCount, int quotaMax)
+        {
+            DOTween.Kill(textMoney.gameObject);
+            textQuotaMoney.AnimateQuotaText(startCount, endCount, quotaMax, 1f);
+        }
+
+        public void ReduceQuotaMoney(int startCount, int endCount, int quotaMax)
+        {
+            DOTween.Kill(textMoney.gameObject);
+            textQuotaMoney.AnimateQuotaText(startCount, endCount, quotaMax, 1f);
         }
 
         public void AddMoney(int startCount, int endCount)
@@ -92,13 +105,6 @@ namespace Assets._game.Player.View
         public void StopTimer()
         {
             textShiftTimer.text = "--:--";
-        }
-
-        public void SetShiftCount(int count)
-        {
-            DOTween.Kill(textShift.gameObject);
-            textShift.text = count.ToString();
-            textShift.AnimateTimerShake();
         }
     }
 }

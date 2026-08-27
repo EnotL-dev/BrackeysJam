@@ -6,6 +6,10 @@ namespace Assets._game.Bar.Controller
 {
     public interface IEconomyService
     {
+        int QuotaCurrentValue();
+        int QuotaMaxValue();
+        void IncreaseQuota();
+        void AcceptMaintainingMoney(); // when day start
         int Money { get; }
 
         void BuyAlchohol(AlcoholType alcoholType, int count = 1);
