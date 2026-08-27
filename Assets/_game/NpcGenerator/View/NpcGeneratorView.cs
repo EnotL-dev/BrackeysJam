@@ -13,13 +13,13 @@ namespace Assets._game.NpcGenerator.View
         [SerializeField] private GameObject[] _hairs;
 
 
-        // private void Start()
-        // {
-        //     for (var i = 0; i < 20; i++)
-        //     {
-        //         GenerateCharacter(new Vector3(0, 0, i * .75f));
-        //     }
-        // }
+        private void Start()
+        {
+            for (var i = 0; i < 20; i++)
+            {
+                GenerateCharacter(new Vector3(0, 0, i * .75f));
+            }
+        }
 
 
         public NpcGeneratedCharacterView GenerateCharacter(Vector3 pos)
