@@ -15,6 +15,7 @@ namespace Assets._game.Shift.View
         private bool enabledTimer = false;
         private float timer = 0;
         private int seconds = 0;
+        public int GetSeconds() => seconds;
 
         void Update()
         {
