@@ -1,4 +1,4 @@
-﻿using Assets._game.Npc;
+﻿using Assets._game.Npc.View;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
@@ -27,6 +27,7 @@ namespace Assets._game.TestingScript {
         public void OnTriggerEnter( Collider other ) {
             if ( other.CompareTag("NPC") ) {
                 Debug.Log("triggered npc and waiting line");
+                CurrentOccupiedCount++;
                 var script = other.GetComponent<NPCScript>();
                 OnNpcTriggerEnter?.Invoke(script);
                 //EnterLine(script);
@@ -36,6 +37,7 @@ namespace Assets._game.TestingScript {
 
         public void OnTriggerExit( Collider other ) {
             if ( other.CompareTag("NPC") ) {
+                CurrentOccupiedCount--;
                 var script = other.GetComponent<NPCScript>();
                 OnNpcTriggerExit?.Invoke(script);
             }

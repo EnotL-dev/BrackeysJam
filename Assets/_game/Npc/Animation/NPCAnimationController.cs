@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using Assets._game.Npc.View;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.AI;
 
