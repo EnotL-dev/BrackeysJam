@@ -22,7 +22,7 @@ public class SeatView : MonoBehaviour {
 
     public List<Seat> GetChildrenWithTag() {
         List<Seat> matchedObjects = new List<Seat>();
-        Transform[] allChildren = this.gameObject.GetComponentsInChildren<Transform>(includeInactive: true);
+        Transform[] allChildren = this.gameObject.GetComponentsInChildren<Transform>(true);
 
         for ( int i = 0; i < allChildren.Length; i++ ) {
             if ( allChildren[i].CompareTag("Seat") ) {

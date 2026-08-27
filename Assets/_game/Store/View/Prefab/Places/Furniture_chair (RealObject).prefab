@@ -9,9 +9,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1445109755722356901}
+  - component: {fileID: 373309201904134239}
   m_Layer: 0
   m_Name: Furniture_chair (RealObject)
-  m_TagString: Untagged
+  m_TagString: Seat
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -32,6 +33,20 @@ Transform:
   - {fileID: 5939500446365009132}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &373309201904134239
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5145025020179855045}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fbe53d241ada03b42a4c537928f3ecad, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Seat
+  normalMaterial: {fileID: 2100000, guid: b74fefe3accea5844856b4c914ec0f12, type: 2}
+  brokenMaterial: {fileID: 2100000, guid: 2b4f548f427906c468873dfbb5a93fcb, type: 2}
 --- !u!1001 &6190163957670552327
 PrefabInstance:
   m_ObjectHideFlags: 0
