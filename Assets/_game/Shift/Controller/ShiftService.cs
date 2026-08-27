@@ -4,6 +4,7 @@ using Assets._game.Bar.View;
 using Assets._game.Core.StateMachine;
 using Assets._game.Player.View;
 using Assets._game.Shift.View;
+using Assets._game.Sound.EnumInterface;
 using System.Collections;
 using UnityEngine;
 using Zenject;
@@ -41,9 +42,10 @@ namespace Assets._game.Shift.Controller
                 firstStart = false;
         }
 
-        public void StartNightShift()
-        {
+        public void StartNightShift() {
             gameStateMachine.Enter<NightShiftState>();
+            musicService.Play(MusicType.Night);
+
             shiftManagerView.StartTimer();
 
             currentShift++;

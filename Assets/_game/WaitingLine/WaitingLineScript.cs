@@ -26,7 +26,7 @@ namespace Assets._game.TestingScript {
 
         public void OnTriggerEnter( Collider other ) {
             if ( other.CompareTag("NPC") ) {
-                Debug.Log("triggered npc and waiting line");
+                //Debug.Log("triggered npc and waiting line");
                 CurrentOccupiedCount++;
                 var script = other.GetComponent<NPCScript>();
                 OnNpcTriggerEnter?.Invoke(script);

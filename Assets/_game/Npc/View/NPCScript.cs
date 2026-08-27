@@ -4,6 +4,8 @@ using Assets._game.Bar.Model.SOScript.DrinkSO.Alcohol;
 using Assets._game.Npc.Animation;
 using Assets._game.Npc.ConcreateClass;
 using Assets._game.Npc.Enum;
+using Assets._game.Sound.Controller;
+using Assets._game.Sound.EnumInterface;
 using System;
 using System.Collections;
 using UnityEngine;
@@ -34,6 +36,7 @@ namespace Assets._game.Npc.View {
         BarService barService;
         SeatService seatService;
         OrderFactory orderFactory;
+        ISFXService sFXService;
         public AlcoholCatalog alcoholCatalog { get; private set; }
         public NavMeshAgent agent { get; private set; }
 
@@ -41,11 +44,13 @@ namespace Assets._game.Npc.View {
         void Construct( BarService barService,
             SeatService seatService,
             OrderFactory orderFactory,
-            AlcoholCatalog alcoholCatalog ) {
+            AlcoholCatalog alcoholCatalog,
+            ISFXService sFXService ) {
             this.barService = barService;
             this.seatService = seatService;
             this.orderFactory = orderFactory;
             this.alcoholCatalog = alcoholCatalog;
+            this.sFXService = sFXService;
         }
 
         void Awake() {
@@ -188,6 +193,8 @@ namespace Assets._game.Npc.View {
         private IEnumerator WaitForConsumeOrderRoutine(
             float seconds,
             Action onComplete ) {
+            sFXService.Play(SFXType.NPCDrink);
+
             yield return new WaitForSeconds(seconds);
 
             onComplete?.Invoke();

@@ -1,4 +1,5 @@
 ﻿using Assets._game.Interaction.View;
+using Assets._game.Sound.EnumInterface;
 using UnityEngine;
 using Zenject;
 
@@ -10,6 +11,8 @@ namespace Assets._game.Npc.View {
         NPCScript NPCScript;
         NPCInfoView NPCInfoView;
 
+        ISFXService sFXService;
+
         bool canInteracThisFrame = true;
         [SerializeField] private bool isDraggingObject = false;
 
@@ -17,8 +20,10 @@ namespace Assets._game.Npc.View {
 
         public bool IsDraggableObject() => isDraggingObject;
         [Inject]
-        void Construct(NPCInfoView NPCInfoView) {
+        void Construct( NPCInfoView NPCInfoView,
+            ISFXService sFXService ) {
             this.NPCInfoView = NPCInfoView;
+            this.sFXService = sFXService;
         }
 
 
@@ -37,7 +42,7 @@ namespace Assets._game.Npc.View {
 
             NPCInfoView.Show(NPCScript);
 
-
+            sFXService.Play(SFXType.NPCSpeech);
 
         }
 
