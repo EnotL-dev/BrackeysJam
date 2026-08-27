@@ -1,7 +1,6 @@
 ﻿<Solution>
-  <Project Path="Zenject.csproj" />
-  <Project Path="Unity.ProBuilder.Poly2Tri.csproj" />
   <Project Path="Assembly-CSharp.csproj" />
+  <Project Path="Zenject.csproj" />
   <Project Path="Zenject-IntegrationTests-Editor.csproj" />
   <Project Path="UniTask.csproj" />
   <Project Path="Zenject-ReflectionBaking-Editor.csproj" />
@@ -9,16 +8,6 @@
   <Project Path="Zenject-UnitTests-Editor.csproj" />
   <Project Path="Zenject-Editor.csproj" />
   <Project Path="Zenject-IntegrationTests.csproj" />
-  <Project Path="Unity.AI.Navigation.Editor.ConversionSystem.csproj" />
-  <Project Path="Unity.VisualScripting.State.Editor.csproj" />
-  <Project Path="Unity.Burst.CodeGen.csproj" />
-  <Project Path="Unity.VisualScripting.Flow.csproj" />
-  <Project Path="Unity.PerformanceTesting.csproj" />
-  <Project Path="Unity.InputSystem.ForUI.csproj" />
-  <Project Path="Unity.Burst.Editor.csproj" />
-  <Project Path="Unity.Rider.Editor.csproj" />
-  <Project Path="Unity.VisualScripting.State.csproj" />
-  <Project Path="Unity.AI.Navigation.Updater.csproj" />
   <Project Path="UniTask.Addressables.csproj" />
   <Project Path="Assembly-CSharp-firstpass.csproj" />
   <Project Path="Zenject-TestFramework.csproj" />

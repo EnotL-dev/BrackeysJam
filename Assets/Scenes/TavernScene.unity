@@ -37635,6 +37635,22 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6427787507908166070, guid: b4f0da0f75e43964c9abbbc11d2e5043, type: 3}
+      propertyPath: m_text
+      value: 'Shift:'
+      objectReference: {fileID: 0}
+    - target: {fileID: 6427787507908166070, guid: b4f0da0f75e43964c9abbbc11d2e5043, type: 3}
+      propertyPath: m_fontAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: fe86482c94a67c14f9f73ab8bc639959, type: 2}
+    - target: {fileID: 6427787507908166070, guid: b4f0da0f75e43964c9abbbc11d2e5043, type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: 4898985069127706069, guid: fe86482c94a67c14f9f73ab8bc639959, type: 2}
+    - target: {fileID: 6427787507908166070, guid: b4f0da0f75e43964c9abbbc11d2e5043, type: 3}
+      propertyPath: m_hasFontAssetChanged
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6616643957132873722, guid: b4f0da0f75e43964c9abbbc11d2e5043, type: 3}
       propertyPath: m_AnchorMax.y
       value: 1
