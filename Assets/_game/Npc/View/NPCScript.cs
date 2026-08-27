@@ -115,7 +115,7 @@ namespace Assets._game.Npc.View {
 
                 var order = orderFactory.GetRandomOrder();
                 if ( order == null ) {
-                    Debug.LogWarning("THIS IS A BUG OF PLACING ORDER");
+                    Debug.LogWarning("THIS IS A BUG OF PLACING ORDER, THERE IS NO DRINK IN THE BAR RIGHT NOW");
                     return;
                 }
 
