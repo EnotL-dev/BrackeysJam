@@ -10,5 +10,6 @@ namespace Assets._game.Bar.Controller
 
         void BuyAlchohol(AlcoholType alcoholType, int count = 1);
         void SellAlchohol(AlcoholType alcoholType, int count = 1);
+        void BuyFurniture(int cost);
     }
 }

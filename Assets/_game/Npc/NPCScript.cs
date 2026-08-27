@@ -8,8 +8,10 @@ using UnityEngine;
 using UnityEngine.AI;
 using Zenject;
 
-namespace Assets._game.Npc {
-    public class NPCScript : MonoBehaviour {
+namespace Assets._game.Npc
+{
+    public class NPCScript : MonoBehaviour
+    {
 
         readonly NPCMachineState machineState = new NPCMachineState(); //might use DI
 
@@ -32,15 +34,17 @@ namespace Assets._game.Npc {
         public NavMeshAgent agent { get; private set; }
 
         [Inject]
-        void Construct( BarService barService, 
+        void Construct(BarService barService,
             SeatService seatService,
-            OrderFactory orderFactory) {
+            OrderFactory orderFactory)
+        {
             this.barService = barService;
             this.seatService = seatService;
             this.orderFactory = orderFactory;
         }
 
-        void Awake() {
+        void Awake()
+        {
             Animator animator = GetComponent<Animator>();
             agent = GetComponent<NavMeshAgent>();
 
@@ -53,14 +57,17 @@ namespace Assets._game.Npc {
             animationController = new NPCAnimationController(this);
         }
 
-        public void Start() {
+        public void Start()
+        {
 
             machineState.Initialize(moveScript);
 
         }
 
-        public void ChangeState( NPCState state ) {
-            switch ( state ) {
+        public void ChangeState(NPCState state)
+        {
+            switch (state)
+            {
                 case NPCState.MoveToLine:
                 case NPCState.MoveToBar:
 
@@ -82,12 +89,14 @@ namespace Assets._game.Npc {
             }
         }
 
-        public void Update() {
+        public void Update()
+        {
             machineState.UpdateState();
         }
 
 
-        public void MoveToDest( Vector3 pos ) {
+        public void MoveToDest(Vector3 pos)
+        {
             moveScript.SetDestination(pos);
             machineState.ChangeState(moveScript);
         }
@@ -100,11 +109,13 @@ namespace Assets._game.Npc {
         //    machineState.ChangeState(moveScript);
         //}
 
-        public void MoveToBar( Vector3 pos ) {
+        public void MoveToBar(Vector3 pos)
+        {
             moveScript.SetDestination(pos);
             machineState.ChangeState(moveScript, () => {
                 var order = orderFactory.GetRandomOrder();
-                if ( order == null ) {
+                if (order == null)
+                {
                     Debug.LogWarning("THIS IS A BUG OF PLACING ORDER");
                     return;
                 }
@@ -116,7 +127,8 @@ namespace Assets._game.Npc {
         }
 
 
-        public void PlaceOrder( Order order = null ) {
+        public void PlaceOrder(Order order = null)
+        {
             //machineState.ChangeState(waitScript);
 
             Debug.Log("Calling for order");
@@ -137,35 +149,41 @@ namespace Assets._game.Npc {
 
         }
 
-        public void ConsumeOrder( float second ) {
+        public void ConsumeOrder(float second)
+        {
             machineState.ChangeState(consumeOrder); //TODO: make the method use the second
             //animationController.SetAction(NPCActionState.ConsumeOrder);
         }
 
-        public void WaitForConsumeOrder( float seconds, Action onComplete ) {
+        public void WaitForConsumeOrder(float seconds, Action onComplete)
+        {
             StartCoroutine(WaitForConsumeOrderRoutine(seconds, onComplete));
 
         }
 
         private IEnumerator WaitForConsumeOrderRoutine(
             float seconds,
-            Action onComplete ) {
+            Action onComplete)
+        {
             yield return new WaitForSeconds(seconds);
 
             onComplete?.Invoke();
         }
 
         //TODO: reafactor this into a real point instead of hardcode
-        public void Leave() {
+        public void Leave()
+        {
             moveScript.SetDestination(new Vector3(65, -0.5f, 50));
             machineState.ChangeState(moveScript);
         }
 
-        public void SitDown() {
+        public void SitDown()
+        {
             //animationController.SetAction(NPCActionState.Sit);
         }
 
-        public void StandUP() {
+        public void StandUP()
+        {
             //animationController.SetAction(NPCActionState.StandUp);
         }
 

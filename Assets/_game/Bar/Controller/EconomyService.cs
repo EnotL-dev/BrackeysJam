@@ -52,10 +52,19 @@ namespace Assets._game.Bar.Controller {
 
             if ( count < 1 && alcoholDictionary[alcoholType] < count ) return;
 
+            playerInterfaceManagerView.AddMoney(_money, _money + cost);
+
             barService.ReduceAlchohol(alcoholType, count);
             _money += cost;
 
             Debug.Log(_money);
+        }
+
+        public void BuyFurniture(int cost)
+        {
+            playerInterfaceManagerView.ReduceMoney(_money, _money - cost);
+
+            _money -= cost;
         }
     }
 }

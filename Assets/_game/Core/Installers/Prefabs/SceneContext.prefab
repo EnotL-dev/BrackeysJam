@@ -44,6 +44,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d9f520402396ff54681df23921d318b0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Assets._game.Core.Installers.StoreInstaller
+  furnitureManagerView: {fileID: 203183061014929066}
 --- !u!1 &2533852158172139143
 GameObject:
   m_ObjectHideFlags: 0
@@ -231,6 +232,50 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2d4a7d38e4328014694e395b44b0bf26, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Assets._game.Core.Installers.BarInstaller
+--- !u!1 &6212580404258497236
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3015112918183220164}
+  - component: {fileID: 203183061014929066}
+  m_Layer: 0
+  m_Name: FurnitureManagerView
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3015112918183220164
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6212580404258497236}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2260214039358002481}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &203183061014929066
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6212580404258497236}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e337cc9707f332f418d2e2802aae6903, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Assets._game.Store.View.FurnitureManagerView
 --- !u!1 &8726398237220314446
 GameObject:
   m_ObjectHideFlags: 0
@@ -265,6 +310,7 @@ Transform:
   - {fileID: 676091094569511595}
   - {fileID: 6431692824205801224}
   - {fileID: 8374104913594104784}
+  - {fileID: 3015112918183220164}
   - {fileID: 1613544336049949896}
   - {fileID: 348033625632617830}
   - {fileID: 6963482857616379807}

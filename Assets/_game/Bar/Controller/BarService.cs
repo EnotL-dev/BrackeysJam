@@ -8,52 +8,63 @@ using System.Collections.Generic;
 using UnityEngine;
 using Zenject;
 
-namespace Assets._game.Bar.Controller {
-    public class BarService : IBarService, IInitializable {
+namespace Assets._game.Bar.Controller
+{
+    public class BarService : IBarService, IInitializable
+    {
 
         IEconomyService economyService;
         WaitingLineService waitingLineService;
         SeatService seatService;
         AlcoholCatalog alcoholCatalogSO;
 
-        Dictionary<AlcoholType,int> alcohols = new();
-
+        Dictionary<AlcoholType, int> alcohols = new();
+        Vibe vibe = new();
+        public Vibe GetVibe() => vibe;
+        public void AddVibe(int count) => vibe.AddVibe(count);
+        public void ReduceVibe(int count) => vibe.ReduceVibe(count);
 
         [Inject]
-        void Construct( IEconomyService economyService,
+        void Construct(IEconomyService economyService,
             [Inject(Id = "Bar")] WaitingLineService waitingLine,
             SeatService seatService,
-            AlcoholCatalog alcoholCatalogSO) {
+            AlcoholCatalog alcoholCatalogSO)
+        {
             this.economyService = economyService;
             this.waitingLineService = waitingLine;
             this.seatService = seatService;
             this.alcoholCatalogSO = alcoholCatalogSO;
         }
 
-        public void Initialize() {
+        public void Initialize()
+        {
             InitAlchoholData();
         }
 
-        private void InitAlchoholData() {
+        private void InitAlchoholData()
+        {
 
             AlcoholSO[] newAlcohols = Resources.LoadAll<AlcoholSO>("Bar/Alchohol/DrinkSO/Alcohol");
-            Array.Sort(newAlcohols, ( a, b ) => a.BuyCost.CompareTo(b.BuyCost));
+            Array.Sort(newAlcohols, (a, b) => a.BuyCost.CompareTo(b.BuyCost));
 
-            foreach ( AlcoholSO alcohol in newAlcohols ) {
+            foreach (AlcoholSO alcohol in newAlcohols)
+            {
                 alcohols.Add(alcohol.AlcoholType, 0);
             }
         }
 
         public Dictionary<AlcoholType, int> GetAlcoholDictionary() => alcohols;
 
-        public void AddAlcohol( AlcoholType alcoholType, int count ) {
+        public void AddAlcohol(AlcoholType alcoholType, int count)
+        {
 
             alcohols[alcoholType] += count;
 
             Debug.Log($"<color=yellow>Added {alcoholType} +{count}</color>");
         }
 
-        public void ReduceAlchohol( AlcoholType alcoholType, int count ) {
+        public void ReduceAlchohol(AlcoholType alcoholType, int count)
+        {
             alcohols[alcoholType] -= count;
 
             Debug.Log($"<color=yellow>Reduce {alcoholType} -{count}</color>");
@@ -105,7 +116,8 @@ namespace Assets._game.Bar.Controller {
         //}
 
 
-        public IEnumerator RequestDrink( AlcoholOrder alcoholorder, Action onOrderReady ) {
+        public IEnumerator RequestDrink(AlcoholOrder alcoholorder, Action onOrderReady)
+        {
             var so = alcoholCatalogSO.Get(alcoholorder.alcoholType);
 
             Debug.Log($"Order {alcoholorder.alcoholType}");

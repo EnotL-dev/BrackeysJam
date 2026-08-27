@@ -6,6 +6,9 @@ using UnityEngine;
 
 namespace Assets._game.Bar.Controller {
     public interface IBarService {
+        Vibe GetVibe();
+        void AddVibe(int count);
+        void ReduceVibe(int count);
         Dictionary<AlcoholType, int> GetAlcoholDictionary();
         void AddAlcohol( AlcoholType alcoholType, int count );
         void ReduceAlchohol( AlcoholType alcoholType, int count );

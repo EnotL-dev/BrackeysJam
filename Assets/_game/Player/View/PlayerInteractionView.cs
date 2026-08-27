@@ -1,5 +1,6 @@
 ﻿using Assets._game.Interaction.View;
 using Assets._game.Player.Controller;
+using Assets._game.Store.Model;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -47,7 +48,7 @@ namespace Assets._game.Player.View {
         }
 
         private void UpdateInteractionUI( IInteractable interactable ) {
-            if ( interactable != null ) {
+            if ( interactable != null && lastInteractable == null) {
                 uiInteractionView.ShowTip(interactable.GetTip());
             }
             else {
@@ -60,7 +61,9 @@ namespace Assets._game.Player.View {
             if ( interactable == null ) return;
 
             if ( interactAction.action.WasPressedThisFrame() ) {
-                if ( interactionService.IsBusy() ) return;
+                IFurniture furniture = interactable as IFurniture;
+                if ( interactionService.IsBusy() || (furniture != null && !furniture.CanBuy()))
+                    return;
 
                 holdStart = true;
 
@@ -70,8 +73,10 @@ namespace Assets._game.Player.View {
                 lastInteractable = interactable;
             }
             else if ( interactAction.action.IsPressed() ) {
-                if ( interactable.IsDraggableObject() )
+                if (interactable.IsDraggableObject())
+                {
                     interactionService.ContinuousInteraction();
+                }
             }
         }
 

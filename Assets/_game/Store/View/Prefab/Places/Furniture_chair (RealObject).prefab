@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &1831147862562963177
+--- !u!1 &5145025020179855045
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,37 +8,37 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 7920174641283070377}
+  - component: {fileID: 1445109755722356901}
   m_Layer: 0
-  m_Name: Furniture_chair
+  m_Name: Furniture_chair (RealObject)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &7920174641283070377
+--- !u!4 &1445109755722356901
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1831147862562963177}
+  m_GameObject: {fileID: 5145025020179855045}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 24.805, y: 0.629, z: 46.907}
+  m_LocalPosition: {x: 25.629704, y: 0.68350786, z: 47.83149}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 266749994313673548}
+  - {fileID: 5939500446365009132}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1001 &304299505058712743
+--- !u!1001 &6190163957670552327
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 7920174641283070377}
+    m_TransformParent: {fileID: 1445109755722356901}
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 37d42bb97392a1f479c14fbeb17c2b8a, type: 3}
       propertyPath: m_LocalPosition.x
@@ -86,7 +86,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 37d42bb97392a1f479c14fbeb17c2b8a, type: 3}
       propertyPath: m_Layer
-      value: 7
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -94,31 +94,25 @@ PrefabInstance:
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 37d42bb97392a1f479c14fbeb17c2b8a, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 1215127685090650828}
-    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 37d42bb97392a1f479c14fbeb17c2b8a, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 2306328673747454247}
-    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 37d42bb97392a1f479c14fbeb17c2b8a, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 3952363990142423706}
+      addedObject: {fileID: 1947392392541757720}
   m_SourcePrefab: {fileID: 100100000, guid: 37d42bb97392a1f479c14fbeb17c2b8a, type: 3}
---- !u!4 &266749994313673548 stripped
+--- !u!4 &5939500446365009132 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 37d42bb97392a1f479c14fbeb17c2b8a, type: 3}
-  m_PrefabInstance: {fileID: 304299505058712743}
+  m_PrefabInstance: {fileID: 6190163957670552327}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &646406288730173942 stripped
+--- !u!1 &6423972016632372822 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 37d42bb97392a1f479c14fbeb17c2b8a, type: 3}
-  m_PrefabInstance: {fileID: 304299505058712743}
+  m_PrefabInstance: {fileID: 6190163957670552327}
   m_PrefabAsset: {fileID: 0}
---- !u!64 &1215127685090650828
+--- !u!64 &1947392392541757720
 MeshCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 646406288730173942}
+  m_GameObject: {fileID: 6423972016632372822}
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
@@ -134,42 +128,3 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: -4753976898039024662, guid: 37d42bb97392a1f479c14fbeb17c2b8a, type: 3}
---- !u!54 &2306328673747454247
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 646406288730173942}
-  serializedVersion: 5
-  m_Mass: 5
-  m_LinearDamping: 0
-  m_AngularDamping: 0.05
-  m_CenterOfMass: {x: 0, y: 0, z: 0}
-  m_InertiaTensor: {x: 1, y: 1, z: 1}
-  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ImplicitCom: 1
-  m_ImplicitTensor: 1
-  m_UseGravity: 1
-  m_IsKinematic: 0
-  m_Interpolate: 0
-  m_Constraints: 0
-  m_CollisionDetection: 0
---- !u!114 &3952363990142423706
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 646406288730173942}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 04dda627794a8954fb91fbeb0919370e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Assets._game.Interaction.View.InteractableItemView
