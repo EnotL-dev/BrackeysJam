@@ -22,6 +22,7 @@ public class Seat : MonoBehaviour {
     public bool IsOccupied { get; private set; } = false;
     public bool IsBroken { get; private set; } = false;
 
+    public bool IsBuy { get; private set; } = false;
 
     [Inject]
     void Construct( IBarService barService ) {
@@ -134,4 +135,6 @@ public class Seat : MonoBehaviour {
         IsOccupied = true;
         return true;
     }
+
+    public void BuyThisSeat() => IsBuy = true;
 }

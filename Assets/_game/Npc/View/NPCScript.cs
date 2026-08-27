@@ -32,8 +32,8 @@ namespace Assets._game.Npc.View {
         SeatService seatService;
         OrderFactory orderFactory;
         public AlcoholCatalog alcoholCatalog { get; private set; }
-
         public NavMeshAgent agent { get; private set; }
+        public Animator animator { get; private set; }
 
         [Inject]
         void Construct( BarService barService,
@@ -47,7 +47,7 @@ namespace Assets._game.Npc.View {
         }
 
         void Awake() {
-            Animator animator = GetComponent<Animator>();
+            animator = GetComponentInChildren<Animator>();
             agent = GetComponent<NavMeshAgent>();
 
             moveScript = new NPCMoveScript(this);
@@ -92,12 +92,18 @@ namespace Assets._game.Npc.View {
 
         public void Update() {
             machineState.UpdateState();
+            animationController.UpdateAnimation();
         }
 
 
         public void MoveToDest( Vector3 pos ) {
             moveScript.SetDestination(pos);
             machineState.ChangeState(moveScript);
+        }
+
+        public void MoveToSeat( Vector3 pos, Action onComplete ) {
+            moveScript.SetDestination(pos);
+            machineState.ChangeState(moveScript, () => { onComplete?.Invoke(); });
         }
 
 
@@ -132,16 +138,18 @@ namespace Assets._game.Npc.View {
             Debug.Log("Calling for order");
 
             StartCoroutine(barService.RequestDrink((AlcoholOrder)order, () => {
-                MoveToDest(pos);
-                machineState.ChangeState(moveScript, () => {
-
-                    consumeOrder.ChangeAlcoholSO(order);
-                    machineState.ChangeState(consumeOrder, () => {
-                        Leave();
-                    });
+                MoveToSeat(pos, () => {
+                    animationController.SetAction(NPCActionState.Sit);
                 });
 
-            }));
+                consumeOrder.ChangeAlcoholSO(order);
+
+                machineState.ChangeState(consumeOrder, () => {
+                    Leave();
+                });
+            })
+
+        );
 
 
         }

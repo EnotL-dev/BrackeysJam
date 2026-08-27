@@ -30,6 +30,7 @@ namespace Assets._game.Bar.Controller {
         }
 
         //find base on best distance
+
         public Seat FindBestSeat( Vector3 pos ) {
 
             if ( seats.Count == 0 ) {

@@ -1,7 +1,9 @@
 ﻿using Assets._game.Npc.View;
+using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.InputSystem.Android;
 
 namespace Assets._game.Npc.Animation {
     public class NPCAnimationController {
@@ -10,39 +12,42 @@ namespace Assets._game.Npc.Animation {
         private Animator animator;
         private NavMeshAgent agent;
 
-        private readonly int LocomotionState = Animator.StringToHash("LocomotionState");
-
-        private readonly int ActionState = Animator.StringToHash("ActionState");
+        private static readonly int IsMovingHash = Animator.StringToHash("IsMoving");
+        private static readonly int IsSittingHash = Animator.StringToHash("IsSitting");
 
         public NPCAnimationController( NPCScript script ) {
             this.npcScript = script;
         }
 
-        public void UpdateLocomotion( ) {
-            if ( agent == null ) agent = npcScript.agent;
+        public void UpdateAnimation() {
+            UpdateLocomotion();
+        }
+
+
+        void UpdateLocomotion() {
+            agent ??= npcScript.agent;
+            animator ??= npcScript.animator;
 
             bool moving = agent.velocity.sqrMagnitude > 0.01f;
 
-            animator.SetInteger(
-                LocomotionState,
-                moving
-                    ? (int)NPCLocomotionState.Walk
-                    : (int)NPCLocomotionState.Idle
-            );
+            SetLocomotion(moving);
         }
 
 
-
-        public void SetLocomotion( NPCActionState state ) {
-            animator.SetInteger(LocomotionState, (int)state);
+        void SetLocomotion( bool move ) {
+            animator.SetBool(IsMovingHash, move);
         }
+
 
         public void SetAction( NPCActionState state ) {
-            animator.SetInteger(ActionState, (int)state);
+            if ( state == NPCActionState.Sit ) {
+                animator.SetBool(IsSittingHash, true);
+            }
+            else if ( state == NPCActionState.StandUp ) {
+                animator.SetBool(IsSittingHash, false);
+            }
+
         }
-
-
-
 
     }
 }
