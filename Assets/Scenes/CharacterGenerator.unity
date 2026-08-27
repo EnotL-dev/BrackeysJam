@@ -149,14 +149,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Assets._game.NpcGenerator.View.NpcGeneratorView
   _characters:
-  - {fileID: 7284666807212430604, guid: 4334e50e393ca024f8589147a205b1c0, type: 3}
+  - {fileID: 3839828053255489797, guid: a7fe77bac5fbab34a867ae4ffad13e43, type: 3}
+  - {fileID: 5261732046600882667, guid: 758c0b8333eb8e64c84f5edb4617e197, type: 3}
   _hats:
-  - {fileID: 919132149155446097, guid: 465fef9b1df54d74ca158b5488977804, type: 3}
-  - {fileID: 919132149155446097, guid: dc25001a124dfa943a2c0a5253e3754c, type: 3}
+  - {fileID: 919132149155446097, guid: f69d02df4797b1b438e4a62976d423b6, type: 3}
+  - {fileID: 919132149155446097, guid: 1347cf1a178844946bfcce299776a55c, type: 3}
   _mustaches:
   - {fileID: 919132149155446097, guid: 0468a49c42f70c4419456f385e99dc80, type: 3}
   _beards:
   - {fileID: 919132149155446097, guid: 2b84ad5cf1fcff742a1c4263bbbab73c, type: 3}
+  _hairs:
+  - {fileID: 919132149155446097, guid: f4015c20a776e9a4390ddb8f58d29f13, type: 3}
+  - {fileID: 919132149155446097, guid: 68466e63fb713ee40a49d63b1eb3caf8, type: 3}
 --- !u!4 &8178698
 Transform:
   m_ObjectHideFlags: 0
@@ -385,8 +389,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1219590840}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.09431032, y: 0.6776387, z: -0.08837188, w: 0.7239487}
-  m_LocalPosition: {x: -2.625713, y: 1.7886971, z: -0.030388497}
+  m_LocalRotation: {x: -0.02801016, y: -0.89925474, z: 0.05972129, w: -0.43242326}
+  m_LocalPosition: {x: -2.0789495, y: 1.2219082, z: 13.373661}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
