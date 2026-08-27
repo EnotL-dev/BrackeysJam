@@ -42,21 +42,18 @@ namespace Assets._game.Npc.Controller {
                 return;
             }
 
-            var pos = barWaitingLineService.GetNextAvailablePosition();
-
-            if ( pos == null ) {
-                Debug.Log("there is no bar wait line, or full");
+            if ( barWaitingLineService.TryReserve(out Vector3 targetPos) ) {
+                npc.MoveToBar(targetPos, seat.gameObject.transform.position);
+            }
+            else {
+                Debug.Log("Bar waiting line is full or unavailable.");
                 RejectNpc(npc);
-                return;
             }
 
             var info = npc.npcInfo;
             if ( info.npcProperties == NPCProperty.HotTemper ) {
                 barService.AddChaos(0.1f);
             }
-
-
-            npc.MoveToBar(pos, seat.gameObject.transform.position);
 
             EndInteraction(npc);
         }

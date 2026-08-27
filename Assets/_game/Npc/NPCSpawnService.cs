@@ -47,25 +47,24 @@ namespace Assets._game.Npc {
         //TODO: chagne into a service to provide the position in waitingline
         //to the npc script
         private void SpawnNPC() {
-            if ( !waitingLineService.HasAvailableSlot() ) return;
 
+            if ( !waitingLineService.TryReserve(out Vector3 targetPos) ) {
+                return;
+            }
 
-
-            Vector3 pos = waitingLineService.GetNextAvailablePosition();
+            NPCInfo info = npcInfoGenerator.Generate();
+            if ( info == null ) {
+                Debug.Log("Can't get info");
+                // Revert the reservation if NPC creation fails
+                waitingLineService.CancelReservation();
+                return;
+            }
 
             var gameObject = NPCFactory.SpawnNpc();
             var npc = gameObject.GetComponent<NPCScript>();
 
-            NPCInfo info = npcInfoGenerator.Generate();
-
-            if ( info == null ) {
-                Debug.Log("can't get info");
-                return;
-            }
-
             npc.Initialize(info);
-
-            npc.MoveToDest(pos);
+            npc.MoveToDest(targetPos);
 
             // For now, just spawn it.
             // Later:

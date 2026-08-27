@@ -17,6 +17,7 @@ namespace Assets._game.Npc.View {
         readonly NPCMachineState machineState = new NPCMachineState(); //might use DI
 
         public NPCInfo npcInfo;
+        private Coroutine waitForDrinkCoroutine;
 
         public NPCAnimationController animationController { get; private set; }
 
@@ -26,13 +27,14 @@ namespace Assets._game.Npc.View {
 
 
         [SerializeField] GameObject LeavePos;
+        [SerializeField] private float maxWaitDrinkTimeout = 60f;
+        [SerializeField] private float checkDrinkInterval = 0.5f;
 
 
         BarService barService;
         SeatService seatService;
         OrderFactory orderFactory;
         public AlcoholCatalog alcoholCatalog { get; private set; }
-
         public NavMeshAgent agent { get; private set; }
 
         [Inject]
@@ -113,16 +115,42 @@ namespace Assets._game.Npc.View {
             machineState.ChangeState(moveScript, () => {
                 Debug.Log("Moving to bar Done");
 
-                var order = orderFactory.GetRandomOrder();
-                if ( order == null ) {
-                    Debug.LogWarning("THIS IS A BUG OF PLACING ORDER");
-                    return;
-                }
+                if ( waitForDrinkCoroutine != null ) StopCoroutine(waitForDrinkCoroutine);
 
-                PlaceOrder(pos2, order);
+                waitForDrinkCoroutine = StartCoroutine(WaitForAvailableDrinkRoutine(pos2));
             });
 
 
+        }
+
+        private IEnumerator WaitForAvailableDrinkRoutine( Vector3 seatPos ) {
+            float elapsed = 0f;
+
+            // Optional: Switch to an idle/waiting animation state while waiting at the counter
+            // machineState.ChangeState(waitScript);
+
+            while ( elapsed < maxWaitDrinkTimeout ) {
+                var order = orderFactory.GetRandomOrder();
+                if ( order != null ) {
+                    Debug.Log("Drink restocked, placing order.");
+                    waitForDrinkCoroutine = null;
+                    PlaceOrder(seatPos, order);
+                    yield break;
+                }
+
+                Debug.Log($"Waiting for drinks to be stocked... ({elapsed:F1}s/{maxWaitDrinkTimeout}s)");
+                yield return new WaitForSeconds(checkDrinkInterval);
+                elapsed += checkDrinkInterval;
+            }
+
+            // Patience ran out because the player never restocked
+            Debug.Log("NPC waited too long for a drink and is leaving.");
+            waitForDrinkCoroutine = null;
+
+            // Optional: Add negative bar vibe/reputation penalty here
+            // barService.ReduceVibe(5);
+
+            Leave();
         }
 
 
