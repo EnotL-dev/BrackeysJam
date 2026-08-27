@@ -12,35 +12,45 @@ namespace Assets._game.TestingScript {
 
         public WaitingLineService( WaitingLineScript waitingLine ) {
             this.waitingLine = waitingLine;
+
+            SetUpObserver();
         }
 
-        public Vector3 GetNextAvailablePosition() {
-            return waitingLine.GetNextAvailablePosition();
+        void SetUpObserver() {
+            if ( waitingLine == null ) return;
+            waitingLine.OnNpcTriggerEnter += HandleNpcTriggerEnter;
+            waitingLine.OnNpcTriggerExit += HandleNpcTriggerExit;
         }
 
-        public bool HasAvailableSlot() {
-            return waitingLine.HasAvailableSlot();
+        public void Dispose() {
+            if ( waitingLine == null ) return;
+            waitingLine.OnNpcTriggerEnter -= HandleNpcTriggerEnter;
+            waitingLine.OnNpcTriggerExit -= HandleNpcTriggerExit;
         }
+
+
+        void HandleNpcTriggerEnter( NPCScript npc ) => Enter(npc);
+
+
+        void HandleNpcTriggerExit( NPCScript npc ) => Exit(npc);
+
+
+        public bool HasAvailableSlot() => npcs.Count < waitingLine.MaxCap;
+
+        public Vector3 GetNextAvailablePosition() => waitingLine.GetPosition(npcs.Count);
 
         public bool Enter( NPCScript npc ) {
             if ( npc == null ) return false;
-
             if ( !HasAvailableSlot() ) return false;
-
             if ( npcs.Contains(npc) ) return false;
 
             npcs.Add(npc);
-
-            npc.MoveToDest(
-                waitingLine.GetPosition(npcs.Count - 1)
-            );
 
             return true;
         }
 
         public void Exit( NPCScript npc ) {
             if ( !npcs.Remove(npc) ) return;
-
             Reorganize();
         }
 

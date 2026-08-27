@@ -16,19 +16,28 @@ namespace Assets._game.TestingScript {
 
         [SerializeField] private float spacing = 1.5f;
 
-        List<NPCScript> scripts = new();
+        public int CurrentOccupiedCount { get; set; }
+        public int MaxCap => maxCap;
+
+        public event Action<NPCScript> OnNpcTriggerEnter;
+        public event Action<NPCScript> OnNpcTriggerExit;
 
 
 
         public void OnTriggerEnter( Collider other ) {
             if ( other.CompareTag("NPC") ) {
-                if ( scripts.Count > maxCap ) return;
                 Debug.Log("triggered npc and waiting line");
-
                 var script = other.GetComponent<NPCScript>();
-                scripts.Add(script);
+                OnNpcTriggerEnter?.Invoke(script);
                 //EnterLine(script);
 
+            }
+        }
+
+        public void OnTriggerExit( Collider other ) {
+            if ( other.CompareTag("NPC") ) {
+                var script = other.GetComponent<NPCScript>();
+                OnNpcTriggerExit?.Invoke(script);
             }
         }
 
@@ -46,26 +55,13 @@ namespace Assets._game.TestingScript {
             return origin.position + (worldDirection * (index * spacing));
         }
 
-        public Vector3 GetNextAvailablePosition() {
-            return GetPosition(scripts.Count);
-        }
-
-        public void Exit() {
-
-        }
-
-
-        public bool HasAvailableSlot() => scripts.Count < maxCap;
 
         private void OnDrawGizmosSelected() {
             for ( int i = 0; i < maxCap; i++ ) {
-                Gizmos.color = (i < scripts.Count) ? Color.red : Color.green;
+                Gizmos.color = (i < CurrentOccupiedCount) ? Color.red : Color.green;
                 Gizmos.DrawWireSphere(GetPosition(i), 0.3f);
             }
         }
-
-        public int GetMaxCap() => maxCap;
-
         //public Transform GetPosition( int index ) {
         //    return transforms[index];
         //}

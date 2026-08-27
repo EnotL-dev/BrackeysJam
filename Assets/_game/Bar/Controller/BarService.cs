@@ -1,8 +1,6 @@
 ﻿using Assets._game.Bar.Model;
 using Assets._game.Bar.Model.Alcohol;
-using Assets._game.Bar.Model.SOScript.DrinkSO;
-using Assets._game.Bar.Model.SOScript.FoodSO;
-using Assets._game.Npc;
+using Assets._game.Bar.Model.SOScript.DrinkSO.Alcohol;
 using Assets._game.TestingScript;
 using System;
 using System.Collections;
@@ -10,82 +8,124 @@ using System.Collections.Generic;
 using UnityEngine;
 using Zenject;
 
-namespace Assets._game.Bar.Controller {
-    public class BarService : IBarService, IInitializable {
+namespace Assets._game.Bar.Controller
+{
+    public class BarService : IBarService, IInitializable
+    {
 
+        IEconomyService economyService;
         WaitingLineService waitingLineService;
-
-
         SeatService seatService;
+        AlcoholCatalog alcoholCatalogSO;
 
+        Dictionary<AlcoholType, int> alcohols = new();
+        Vibe vibe = new();
+        public Vibe GetVibe() => vibe;
+        public void AddVibe(int count) => vibe.AddVibe(count);
+        public void ReduceVibe(int count) => vibe.ReduceVibe(count);
 
         [Inject]
-        void Construct( [Inject(Id = "Bar")] WaitingLineService waitingLine
-            , SeatService seatService ) {
+        void Construct(IEconomyService economyService,
+            [Inject(Id = "Bar")] WaitingLineService waitingLine,
+            SeatService seatService,
+            AlcoholCatalog alcoholCatalogSO)
+        {
+            this.economyService = economyService;
             this.waitingLineService = waitingLine;
             this.seatService = seatService;
+            this.alcoholCatalogSO = alcoholCatalogSO;
         }
 
-        //private List<AlchoholDictionary> alchoholDictionary;
-        AlcoholSO[] alcohols;
-
-
-        public void Initialize() {
+        public void Initialize()
+        {
             InitAlchoholData();
         }
 
-        private void InitAlchoholData() {
+        private void InitAlchoholData()
+        {
 
-            alcohols = Resources.LoadAll<AlcoholSO>("Bar/Alchohol");
+            AlcoholSO[] newAlcohols = Resources.LoadAll<AlcoholSO>("Bar/Alchohol/DrinkSO/Alcohol");
+            Array.Sort(newAlcohols, (a, b) => a.BuyCost.CompareTo(b.BuyCost));
 
-            foreach ( AlcoholSO alcohol in alcohols ) {
-                Debug.Log($"{alcohol.Type} - {alcohol.BuyCost}");
+            foreach (AlcoholSO alcohol in newAlcohols)
+            {
+                alcohols.Add(alcohol.AlcoholType, 0);
             }
-
-            //Debug.Log(alchoholDictionary.Count);
         }
-        
 
-        
-        public IEnumerator RequestOrder( NPCScript NPCScript, Order order, Action onOrderReady ) {
-            switch ( order ) {
-                case FoodOrder:
-                    yield return MakeFood(NPCScript, order);
-                    break;
+        public Dictionary<AlcoholType, int> GetAlcoholDictionary() => alcohols;
 
-                case DrinkOrder:
-                    yield return MakeDrink(NPCScript, order);
-                    break;
+        public void AddAlcohol(AlcoholType alcoholType, int count)
+        {
 
-                default:
-                    yield return MakeFood(NPCScript, null);
-                    break;
-            }
+            alcohols[alcoholType] += count;
 
+            Debug.Log($"<color=yellow>Added {alcoholType} +{count}</color>");
+        }
+
+        public void ReduceAlchohol(AlcoholType alcoholType, int count)
+        {
+            alcohols[alcoholType] -= count;
+
+            Debug.Log($"<color=yellow>Reduce {alcoholType} -{count}</color>");
+        }
+
+
+
+
+
+        //public IEnumerator RequestOrder( NPCScript NPCScript, Order order, Action onOrderReady ) {
+        //    switch ( order ) {
+        //        case FoodOrder:
+        //            yield return MakeFood(NPCScript, order);
+        //            break;
+
+        //        case DrinkOrder:
+        //            yield return MakeDrink(NPCScript, order);
+        //            break;
+
+        //        default:
+        //            yield return MakeFood(NPCScript, null);
+        //            break;
+        //    }
+
+        //    onOrderReady?.Invoke();
+        //}
+
+
+
+
+
+
+        ////TOOD: it should read the SO instead of hardcode
+        //public IEnumerator MakeFood( NPCScript NPCScript, Order order ) {
+
+        //    yield return new WaitForSeconds(10);
+
+        //    Debug.Log("food ready");
+
+
+        //}
+
+        //public IEnumerator MakeDrink( NPCScript NPCScript, Order order ) {
+        //    yield return new WaitForSeconds(5);
+
+        //    Debug.Log("drink ready");
+
+
+        //}
+
+
+        public IEnumerator RequestDrink(AlcoholOrder alcoholorder, Action onOrderReady)
+        {
+            var so = alcoholCatalogSO.Get(alcoholorder.alcoholType);
+
+            Debug.Log($"Order {alcoholorder.alcoholType}");
+            yield return new WaitForSeconds(so.PrepareTime);
+
+            economyService.SellAlchohol(alcoholorder.alcoholType);
             onOrderReady?.Invoke();
         }
 
-
-
-
-
-
-        //TOOD: it shuold read the SO instead of hardcode
-        public IEnumerator MakeFood( NPCScript NPCScript, Order order ) {
-
-            yield return new WaitForSeconds(10);
-
-            Debug.Log("food ready");
-
-
-        }
-
-        public IEnumerator MakeDrink( NPCScript NPCScript, Order order ) {
-            yield return new WaitForSeconds(5);
-
-            Debug.Log("drink ready");
-
-
-        }
     }
 }

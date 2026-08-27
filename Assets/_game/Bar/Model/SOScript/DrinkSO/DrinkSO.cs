@@ -8,6 +8,6 @@ namespace Assets._game.Bar.Model.SOScript.FoodSO {
         [Tooltip("please ref to the correct the enum (if water then set water) else dont care")]
         [SerializeField] private DrinkType drinkType;
 
-        public DrinkType Type => drinkType;
+        public DrinkType DrinkType => drinkType;
     }
 }

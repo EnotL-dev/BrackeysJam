@@ -1,18 +1,24 @@
 ﻿using Assets._game.Bar.Controller;
 using Assets._game.Bar.Model;
+using Assets._game.Bar.Model.SOScript.DrinkSO.Alcohol;
+using Assets._game.Npc.Animation;
 using Assets._game.Npc.ConcreateClass;
 using System;
 using System.Collections;
-using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.AI;
 using Zenject;
 
-namespace Assets._game.Npc {
-    public class NPCScript : MonoBehaviour {
+namespace Assets._game.Npc
+{
+    public class NPCScript : MonoBehaviour
+    {
 
         readonly NPCMachineState machineState = new NPCMachineState(); //might use DI
 
         public NPCInfo npcInfo;
+
+        public NPCAnimationController animationController { get; private set; }
 
         public NPCMoveScript moveScript;
         public NPCWaitingScript waitScript;
@@ -24,26 +30,47 @@ namespace Assets._game.Npc {
 
         BarService barService;
         SeatService seatService;
+        OrderFactory orderFactory;
+        public AlcoholCatalog alcoholCatalog { get; private set; }
+
+        public NavMeshAgent agent { get; private set; }
 
         [Inject]
-        void Construct( BarService barService, SeatService seatService ) {
+        void Construct( BarService barService,
+            SeatService seatService,
+            OrderFactory orderFactory,
+            AlcoholCatalog alcoholCatalog) {
             this.barService = barService;
             this.seatService = seatService;
+            this.orderFactory = orderFactory;
+            this.alcoholCatalog = alcoholCatalog;
         }
 
-        void Awake() {
+        void Awake()
+        {
+            Animator animator = GetComponent<Animator>();
+            agent = GetComponent<NavMeshAgent>();
+
             npcInfo = new NPCInfo(); //later will need another script for this
 
-
-            moveScript = new NPCMoveScript(this.gameObject.transform, machineState);
+            moveScript = new NPCMoveScript(this);
             waitScript = new NPCWaitingScript(machineState);
             consumeOrder = new NPCConsumeOrder(this);
 
-            //machineState.Initialize(moveScript);
+            animationController = new NPCAnimationController(this);
         }
 
-        public void ChangeState( NPCState state ) {
-            switch ( state ) {
+        public void Start()
+        {
+
+            machineState.Initialize(moveScript);
+
+        }
+
+        public void ChangeState(NPCState state)
+        {
+            switch (state)
+            {
                 case NPCState.MoveToLine:
                 case NPCState.MoveToBar:
 
@@ -65,8 +92,14 @@ namespace Assets._game.Npc {
             }
         }
 
+        public void Update()
+        {
+            machineState.UpdateState();
+        }
 
-        public void MoveToDest( Vector3 pos ) {
+
+        public void MoveToDest(Vector3 pos)
+        {
             moveScript.SetDestination(pos);
             machineState.ChangeState(moveScript);
         }
@@ -79,24 +112,36 @@ namespace Assets._game.Npc {
         //    machineState.ChangeState(moveScript);
         //}
 
-        public void MoveToBar( Vector3 pos ) {
+        public void MoveToBar(Vector3 pos)
+        {
             moveScript.SetDestination(pos);
             machineState.ChangeState(moveScript, () => {
-                PlaceOrder();
+                var order = orderFactory.GetRandomOrder();
+                if (order == null)
+                {
+                    Debug.LogWarning("THIS IS A BUG OF PLACING ORDER");
+                    return;
+                }
+
+                PlaceOrder(order);
             });
 
 
         }
 
 
-        public void PlaceOrder( Order order = null ) {
+        public void PlaceOrder(Order order = null)
+        {
             //machineState.ChangeState(waitScript);
 
-            StartCoroutine(barService.RequestOrder(this, order, () => {
-                var pos = seatService.FindBestSeat();
+            Debug.Log("Calling for order");
+
+            StartCoroutine(barService.RequestDrink((AlcoholOrder)order, () => {
+                var pos = seatService.FindBestSeat(transform.position);
                 MoveToDest(pos.transform.position);
                 machineState.ChangeState(moveScript, () => {
 
+                    consumeOrder.ChangeAlcoholSO(order);
                     machineState.ChangeState(consumeOrder, () => {
 
                         Leave();
@@ -108,27 +153,46 @@ namespace Assets._game.Npc {
 
         }
 
-        public void ConsumeOrder( float second ) {
+        public void ConsumeOrder( Order oder ) {
+            //consumeOrder.ChangeAlcoholSO(oder);
             machineState.ChangeState(consumeOrder); //TODO: make the method use the second
+            //animationController.SetAction(NPCActionState.ConsumeOrder);
         }
 
-        public void WaitForConsumeOrder( float seconds, Action onComplete ) {
+        public void WaitForConsumeOrder(float seconds, Action onComplete)
+        {
             StartCoroutine(WaitForConsumeOrderRoutine(seconds, onComplete));
 
         }
 
         private IEnumerator WaitForConsumeOrderRoutine(
             float seconds,
-            Action onComplete ) {
+            Action onComplete)
+        {
             yield return new WaitForSeconds(seconds);
 
             onComplete?.Invoke();
         }
 
-        public void Leave() {
-            moveScript.SetDestination(new Vector3(-10, -0.5f, 5));
+        //TODO: reafactor this into a real point instead of hardcode
+        public void Leave()
+        {
+            moveScript.SetDestination(new Vector3(65, -0.5f, 50));
             machineState.ChangeState(moveScript);
         }
+
+        public void SitDown()
+        {
+            //animationController.SetAction(NPCActionState.Sit);
+        }
+
+        public void StandUP()
+        {
+            //animationController.SetAction(NPCActionState.StandUp);
+        }
+
+
+
 
     }
 }

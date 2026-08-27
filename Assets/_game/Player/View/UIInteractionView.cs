@@ -19,7 +19,7 @@ namespace Assets._game.Player.View
 
             textTip.alpha = 0;
             textTip.DOKill();
-            textTip.DOFade(1f, 0.7f).SetEase(Ease.OutQuad);
+            textTip.DOFade(0.9f, 0.7f).SetEase(Ease.OutQuad);
         }
 
         public void HideTip()

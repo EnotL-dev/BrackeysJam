@@ -36,19 +36,21 @@ namespace Assets._game.Npc.View {
 
         public void Show( NPCScript script) {
 
+            Debug.Log("open npc info");
+
             lastNpc = script;
 
             NPCInfo info = script.npcInfo;
 
             if ( info == null ) return;
 
-            nameText.text = $"name: {info.name}";
-            ageText.text = $"Age: {info.age}";
-            sexText.text = $"Sex: {info.sex}";
-            heightText.text = $"Height: {info.height:F2} m";
-            weightText.text = $"Weight: {info.weight:F1} kg";
-
             gameObject.SetActive(true);
+
+            if ( nameText != null ) nameText.text = $"name: {info.name}";
+            if ( ageText != null ) ageText.text = $"Age: {info.age}";
+            if ( sexText != null ) sexText.text = $"Sex: {info.sex}";
+            if ( heightText != null ) heightText.text = $"Height: {info.height:F2} m";
+            if ( weightText != null ) weightText.text = $"Weight: {info.weight:F1} kg";
         }
 
         public void Hide() {

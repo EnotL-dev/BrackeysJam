@@ -1,14 +1,16 @@
 using Assets._game.Interaction.View;
 using System.Drawing;
 using TMPro;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using Zenject;
 
 namespace Assets._game.Player.View
 {
     public class DragManagerView : MonoBehaviour
     {
+        [Inject] PlayerInteractionView interactionView;
+
         [SerializeField] private float dragSpeed = 5f;
         [SerializeField] private float maxDragVelocity = 15f;
         [SerializeField] private float dragDamping = 10f;
@@ -55,6 +57,12 @@ namespace Assets._game.Player.View
 
                 Vector3 targetVelocity = direction * dragSpeed;
                 draggedRB.linearVelocity = Vector3.ClampMagnitude(targetVelocity, maxDragVelocity);
+
+                float distance = Vector3.Distance(targetPos, draggedRB.position);
+                if (distance > 4.5f)
+                {
+                    interactionView.ForcedInteractionRelease();
+                }
             }
         }
     }

@@ -31,7 +31,7 @@ namespace Assets._game.Npc.Controller {
         public void AcceptNpc( NPCScript npc ) {
 
 
-            Seat seat = seatService.FindBestSeat();
+            Seat seat = seatService.FindBestSeat(npc.transform.position);
 
             Debug.Log("done find best seat");
 
@@ -50,16 +50,22 @@ namespace Assets._game.Npc.Controller {
 
             Debug.Log("npc moving now");
 
-            EndInteraction();
+            EndInteraction(npc);
         }
 
         public void RejectNpc( NPCScript npc ) {
 
-            //npc.Leave();
-            EndInteraction();
+            npc.Leave();
+
+
+            EndInteraction(npc);
         }
 
-        public void EndInteraction() {
+        public void EndInteraction( NPCScript npc ) {
+
+            var script = npc.GetComponent<NPCInteractionScript>();
+            script.ModifyCanInteract();
+
             playerInteractionService.EndInteraction();
         }
 
