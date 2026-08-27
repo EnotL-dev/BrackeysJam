@@ -51,7 +51,7 @@ namespace Assets._game.Npc.Controller {
             }
 
             var info = npc.npcInfo;
-            if ( info.npcProperties.Contains(NPCProperty.HotTemper) ) {
+            if ( info.npcProperties == NPCProperty.HotTemper ) {
                 barService.AddChaos(0.1f);
             }
 

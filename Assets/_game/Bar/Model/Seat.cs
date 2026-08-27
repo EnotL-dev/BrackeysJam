@@ -112,7 +112,7 @@ public class Seat : MonoBehaviour {
         if ( other.CompareTag("NPC") ) {
             Release();
 
-            if ( npcInfo.npcProperties.Contains(NPCProperty.Drunkard) ) {
+            if ( npcInfo.npcProperties == NPCProperty.Drunkard ) {
 
                 float chaosScale = barService.GetChaosStatus().chaosScale;
                 float chance = 0.1f * (1 + chaosScale);

@@ -6,7 +6,6 @@ using UnityEngine;
 using Zenject;
 
 namespace Assets._game.Bar.Model.SOScript.DrinkSO.Alcohol {
-    [CreateAssetMenu(fileName = "AlcoholCatalog", menuName = "Catalog/AlcoholCatalog")]
     public class AlcoholCatalog {
 
         private readonly Dictionary<AlcoholType, AlcoholSO> lookup = new();
