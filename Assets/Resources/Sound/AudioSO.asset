@@ -1,0 +1,42 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b306a95b258d6414a9ea7dec84b92d65, type: 3}
+  m_Name: AudioSO
+  m_EditorClassIdentifier: Assembly-CSharp::Assets._game.Sound.SO.SFXConfigSO
+  npcDrink:
+    Guid:
+      Data1: -1802856861
+      Data2: 1121608838
+      Data3: -1325220422
+      Data4: 2091564656
+    Path: event:/Drink
+  bartenderPourBeer:
+    Guid:
+      Data1: -425814141
+      Data2: 1133535095
+      Data3: 238381241
+      Data4: 1478659046
+    Path: event:/PourDrink
+  cashIn:
+    Guid:
+      Data1: -1958285636
+      Data2: 1280198872
+      Data3: -303163998
+      Data4: 1836246167
+    Path: event:/Cash
+  npcSpeech:
+    Guid:
+      Data1: 1049213994
+      Data2: 1298899916
+      Data3: 796536476
+      Data4: 572188404
+    Path: event:/Speech

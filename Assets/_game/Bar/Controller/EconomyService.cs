@@ -2,6 +2,7 @@
 using Assets._game.Bar.Model.Alcohol;
 using Assets._game.Bar.Model.SOScript.DrinkSO.Alcohol;
 using Assets._game.Player.View;
+using Assets._game.Sound.EnumInterface;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -10,6 +11,7 @@ using Zenject;
 namespace Assets._game.Bar.Controller {
     public class EconomyService : IEconomyService {
         IBarService barService;
+        ISFXService sFXService;
         PlayerInterfaceManagerView playerInterfaceManagerView;
         AlcoholCatalog alcoholCatalogSO;
 
@@ -18,9 +20,11 @@ namespace Assets._game.Bar.Controller {
 
         [Inject]
         void Construct( IBarService barService,
-        PlayerInterfaceManagerView playerInterfaceManagerView,
-        AlcoholCatalog alcoholCatalogSO ) {
+            ISFXService sFXService,
+            PlayerInterfaceManagerView playerInterfaceManagerView,
+            AlcoholCatalog alcoholCatalogSO ) {
             this.barService = barService;
+            this.sFXService = sFXService;
             this.playerInterfaceManagerView = playerInterfaceManagerView;
             this.alcoholCatalogSO = alcoholCatalogSO;
         }
@@ -39,6 +43,8 @@ namespace Assets._game.Bar.Controller {
 
             playerInterfaceManagerView.ReduceMoney(_money, _money - cost);
 
+            sFXService.Play(SFXType.CashIn);
+
             barService.AddAlcohol(alcoholType, count);
             _money -= cost;
 
@@ -53,6 +59,7 @@ namespace Assets._game.Bar.Controller {
             if ( count < 1 && alcoholDictionary[alcoholType] < count ) return;
 
             playerInterfaceManagerView.AddMoney(_money, _money + cost);
+            sFXService.Play(SFXType.CashIn);
 
             barService.ReduceAlchohol(alcoholType, count);
             _money += cost;
@@ -60,8 +67,7 @@ namespace Assets._game.Bar.Controller {
             Debug.Log(_money);
         }
 
-        public void BuyFurniture(int cost)
-        {
+        public void BuyFurniture( int cost ) {
             playerInterfaceManagerView.ReduceMoney(_money, _money - cost);
 
             _money -= cost;
