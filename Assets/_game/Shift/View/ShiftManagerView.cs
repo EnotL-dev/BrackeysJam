@@ -1,5 +1,6 @@
 using Assets._game.Player.View;
 using Assets._game.Shift.Controller;
+using Assets._game.Sound.EnumInterface;
 using DG.Tweening;
 using UnityEngine;
 using Zenject;
@@ -7,10 +8,21 @@ using static UnityEngine.Rendering.DebugUI;
 
 namespace Assets._game.Shift.View
 {
-    public class ShiftManagerView : MonoBehaviour
-    {
-        [Inject] IShiftService shiftService;
-        [Inject] PlayerInterfaceManagerView playerInterfaceManagerView;
+    public class ShiftManagerView : MonoBehaviour {
+        IShiftService shiftService;
+        IMusicService musicService;
+        PlayerInterfaceManagerView playerInterfaceManagerView;
+
+
+        [Inject]
+        public void Construct( IShiftService shiftService, 
+            IMusicService musicService, 
+            PlayerInterfaceManagerView playerInterfaceManagerView ) {
+            this.shiftService = shiftService;
+            this.musicService = musicService;
+            this.playerInterfaceManagerView = playerInterfaceManagerView;
+        }
+
 
         [SerializeField] private Transform light;
         [Space(5)]
@@ -21,24 +33,21 @@ namespace Assets._game.Shift.View
         private int seconds = 0;
         public int GetSeconds() => seconds;
 
-        void Update()
-        {
-            if (!enabledTimer) return;
+        void Update() {
+            if ( !enabledTimer ) return;
 
             timer += Time.deltaTime;
-            if (timer >= 1f)
-            {
+            if ( timer >= 1f ) {
                 timer = 0f;
                 seconds--;
                 playerInterfaceManagerView.UpdateTimer(seconds);
 
-                if (seconds <= 0)
+                if ( seconds <= 0 )
                     shiftService.StartDayShift();
             }
         }
 
-        public void StartTimer()
-        {
+        public void StartTimer() {
             enabledTimer = true;
             timer = 1;
             seconds = ShiftCycleTime;
@@ -46,16 +55,14 @@ namespace Assets._game.Shift.View
             ChangeSkyBoxAndLighting(0, 1, 0.5f, 0.25f, 40, 0, 0.9f, 0);
         }
 
-        public void StopTimer()
-        {
+        public void StopTimer() {
             playerInterfaceManagerView.StopTimer();
             enabledTimer = false;
 
             ChangeSkyBoxAndLighting(1, 0, 0.25f, 0.5f, 0, 40, 0, 0.9f);
         }
 
-        public void SetShiftCount(int count)
-        {
+        public void SetShiftCount( int count ) {
             playerInterfaceManagerView.SetShiftCount(count);
         }
 
@@ -64,8 +71,8 @@ namespace Assets._game.Shift.View
         private Tween rotationTween;
         private Tween lightIntensityTween;
 
-        public void ChangeSkyBoxAndLighting(float from, float to, float fromIntensity, float toIntensity, float fromRotation, float toRotation, float fromLightIntensity, float toLightIntensity, float duration = 5f, System.Action onComplete = null)
-        {
+
+        public void ChangeSkyBoxAndLighting( float from, float to, float fromIntensity, float toIntensity, float fromRotation, float toRotation, float fromLightIntensity, float toLightIntensity, float duration = 5f, System.Action onComplete = null ) {
             transitionTween?.Kill();
             intensityTween?.Kill();
             rotationTween?.Kill();
@@ -82,8 +89,7 @@ namespace Assets._game.Shift.View
                 toIntensity, duration).SetEase(Ease.InOutCubic);
 
             Light sun = RenderSettings.sun;
-            if (sun != null)
-            {
+            if ( sun != null ) {
                 Vector3 startRot = sun.transform.eulerAngles;
                 startRot.x = fromRotation;
                 sun.transform.eulerAngles = startRot;
@@ -101,15 +107,14 @@ namespace Assets._game.Shift.View
                     toLightIntensity, duration).SetEase(Ease.InOutCubic);
             }
 
-            if (onComplete != null)
-            {
+            if ( onComplete != null ) {
                 transitionTween.OnComplete(() => onComplete?.Invoke());
             }
         }
 
-        private void Start()
-        {
+        private void Start() {
             ChangeSkyBoxAndLighting(1, 0, 0.25f, 0.5f, 0, 40, 0, 0.9f);
+            musicService.Play(MusicType.Day);
         }
     }
 }
