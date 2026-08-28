@@ -95,12 +95,10 @@ namespace Assets._game.Npc {
             if (stateChangedSignal.gameState is DayShiftState)
             {
                 IsNight = false;
-                Debug.Log("<color=magenta>Day shift</color>");
             }
             else if (stateChangedSignal.gameState is NightShiftState)
             {
                 IsNight = true;
-                Debug.Log("<color=magenta>Night shift</color>");
             }
         }
     }
