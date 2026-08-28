@@ -1,16 +1,21 @@
-﻿using Assets._game.UI.Controller;
+﻿using Assets._game.Bar.Controller;
+using Assets._game.UI.Controller;
 using DG.Tweening;
+using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using Zenject;
 
 namespace Assets._game.Player.View
 {
     public class PlayerInterfaceManagerView : MonoBehaviour
     {
+        [Inject] ISeatService seatService;
+
         [SerializeField] private TextMeshProUGUI textSeats;
-        int currentSeats = 0;
-        int maxSeats = 5;
+        //int currentSeats = 0;
+        //int maxSeats = 5;
 
         [Space(5)]
         [SerializeField] private Color normalColor;
@@ -26,9 +31,11 @@ namespace Assets._game.Player.View
             textMoney.text = "10,000 $";
             textQuotaMoney.text = "0$ / 0$";
 
-            textSeats.text = $"{currentSeats} / {maxSeats}";
+            textSeats.text = $"0 / 5";
 
             textShiftTimer.text = "--:--";
+
+            seatService.OnSeatCountChanged += UpdateSeatsText;
         }
 
         private void OnEnable()
@@ -73,6 +80,7 @@ namespace Assets._game.Player.View
             textMoney.AnimateDecrease(startCount, endCount, 0.5f, reduceColor, normalColor);
         }
 
+        /*
         public void AddCurrentSeats(int count) // If visitor accepted in bar
         {
             DOTween.Kill(textSeats.gameObject);
@@ -104,6 +112,13 @@ namespace Assets._game.Player.View
             if (maxSeats > 1)
                 maxSeats -= count;
             textSeats.text = $"{currentSeats} / {maxSeats}";
+            textSeats.transform.DOScale(1.3f, 0.2f).SetEase(Ease.OutBack).OnComplete(() => textSeats.transform.DOScale(1f, 0.3f).SetEase(Ease.InBack));
+        }
+        */
+        
+        public void UpdateSeatsText(int current, int max)
+        {
+            textSeats.text = $"{current} / {max}";
             textSeats.transform.DOScale(1.3f, 0.2f).SetEase(Ease.OutBack).OnComplete(() => textSeats.transform.DOScale(1f, 0.3f).SetEase(Ease.InBack));
         }
 

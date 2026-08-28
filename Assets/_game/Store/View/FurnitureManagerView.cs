@@ -67,7 +67,7 @@ namespace Assets._game.Store.View
             {
                 if(furniture.GetFurnitureType() == FurnitureType.chair)
                 {
-                    playerInterfaceManager.AddMaxSeats(1);
+                    //playerInterfaceManager.AddMaxSeats(1);
                     Debug.Log("<color=yellow>New SEAT added</color>");
                 }
                 if (furniture.GetFurnitureType() == FurnitureType.plant)

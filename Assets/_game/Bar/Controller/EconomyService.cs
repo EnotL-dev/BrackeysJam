@@ -93,6 +93,8 @@ namespace Assets._game.Bar.Controller {
         }
 
         public void BuyFurniture(int cost ) {
+            if (cost <= 0) return;
+
             playerInterfaceManagerView.ReduceMoney(_money, _money - cost);
 
             _money -= cost;
