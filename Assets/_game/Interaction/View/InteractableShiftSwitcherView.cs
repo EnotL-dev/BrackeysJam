@@ -68,13 +68,14 @@ namespace Assets._game.Interaction.View {
             if ( stateChangedSignal.gameState is DayShiftState ) {
                 canSwitch = true;
                 FlipSign();
+                musicService.Play(MusicType.Day);
 
                 Debug.Log("<color=magenta>Day shift</color>");
             }
             else if ( stateChangedSignal.gameState is NightShiftState ) {
                 canSwitch = false;
                 FlipSign();
-
+                musicService.Play(MusicType.Night);
                 Debug.Log("<color=magenta>Night shift</color>");
             }
         }
