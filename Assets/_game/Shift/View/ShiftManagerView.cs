@@ -66,10 +66,6 @@ namespace Assets._game.Shift.View
             ChangeSkyBoxAndLighting(1, 0, 0.25f, 0.5f, posx, addedPosx, 0, 0.9f);
         }
 
-        public void SetShiftCount( int count ) {
-            playerInterfaceManagerView.SetShiftCount(count);
-        }
-
         private Tween transitionTween;
         private Tween intensityTween;
         private Tween rotationTween;

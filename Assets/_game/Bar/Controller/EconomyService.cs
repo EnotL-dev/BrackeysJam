@@ -3,6 +3,7 @@ using Assets._game.Bar.Model.Alcohol;
 using Assets._game.Bar.Model.SOScript.DrinkSO.Alcohol;
 using Assets._game.Bar.View;
 using Assets._game.Player.View;
+using Assets._game.Sound.EnumInterface;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -19,7 +20,7 @@ namespace Assets._game.Bar.Controller {
         Dictionary<AlcoholType,int> alcoholDictionary;
 
         [Inject]
-        void Construct(IBarService barService,
+        void Construct(IBarService barService, ISFXService sFXService,
         PlayerInterfaceManagerView playerInterfaceManagerView,
         AlcoholCatalog alcoholCatalogSO, DeskManagerView deskManagerView) {
             this.barService = barService;

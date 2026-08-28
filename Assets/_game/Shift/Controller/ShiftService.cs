@@ -44,7 +44,7 @@ namespace Assets._game.Shift.Controller
 
         public void StartNightShift() {
             gameStateMachine.Enter<NightShiftState>();
-            musicService.Play(MusicType.Night);
+            //musicService.Play(MusicType.Night);
 
             shiftManagerView.StartTimer();
 
