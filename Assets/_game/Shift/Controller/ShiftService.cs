@@ -4,6 +4,7 @@ using Assets._game.Bar.View;
 using Assets._game.Core.StateMachine;
 using Assets._game.Player.View;
 using Assets._game.Shift.View;
+using Assets._game.Sound.Controller;
 using Assets._game.Sound.EnumInterface;
 using System.Collections;
 using UnityEngine;
@@ -13,6 +14,7 @@ namespace Assets._game.Shift.Controller
 {
     public class ShiftService : IShiftService
     {
+        //[Inject] MusicService musicService;
         IEconomyService economyService;
         DeskManagerView deskManagerView;
         [Inject] IGameStateMachine gameStateMachine;
@@ -33,6 +35,7 @@ namespace Assets._game.Shift.Controller
         {
             gameStateMachine.Enter<DayShiftState>();
             shiftManagerView.StopTimer();
+            //musicService.Play(MusicType.Day);
 
             CheckLose();
 

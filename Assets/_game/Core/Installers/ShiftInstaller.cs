@@ -20,6 +20,8 @@ namespace Assets._game.Core.Installers
             Container.Bind<IShiftService>()
                  .To<ShiftService>()
                  .AsSingle();
+
+            Debug.Log("<color=green>Shifts initialized</color>");
         }
     }
 }

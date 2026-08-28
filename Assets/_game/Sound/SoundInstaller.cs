@@ -22,6 +22,8 @@ namespace Assets._game.Sound {
             Container.Bind<ISFXService>()
                 .To<SFXService>()
                 .AsSingle();
+
+            Debug.Log("<color=green>Sounds initialized</color>");
         }
     }
 }

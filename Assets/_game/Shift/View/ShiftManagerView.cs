@@ -4,24 +4,13 @@ using Assets._game.Sound.EnumInterface;
 using DG.Tweening;
 using UnityEngine;
 using Zenject;
-using static UnityEngine.Rendering.DebugUI;
 
 namespace Assets._game.Shift.View
 {
     public class ShiftManagerView : MonoBehaviour {
-        IShiftService shiftService;
-        IMusicService musicService;
-        PlayerInterfaceManagerView playerInterfaceManagerView;
-
-
-        [Inject]
-        public void Construct( IShiftService shiftService, 
-            IMusicService musicService, 
-            PlayerInterfaceManagerView playerInterfaceManagerView ) {
-            this.shiftService = shiftService;
-            this.musicService = musicService;
-            this.playerInterfaceManagerView = playerInterfaceManagerView;
-        }
+        [Inject] IShiftService shiftService;
+        [Inject] IMusicService musicService;
+        [Inject] PlayerInterfaceManagerView playerInterfaceManagerView;
 
 
         [SerializeField] private Transform light;

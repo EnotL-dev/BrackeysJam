@@ -186,8 +186,8 @@ MonoBehaviour:
   textSeats: {fileID: 5137210939219812588}
   normalColor: {r: 0.21975511, g: 1, b: 0, a: 1}
   reduceColor: {r: 1, g: 0, b: 0, a: 1}
-  textMoney: {fileID: 5557097075624036736}
-  textQuotaMoney: {fileID: 0}
+  textMoney: {fileID: 6426534387777856083}
+  textQuotaMoney: {fileID: 5557097075624036736}
   textShiftTimer: {fileID: 6619183902988507556}
   testInput: {fileID: -2099379676528639254, guid: 052faaac586de48259a63d0c4782560b, type: 3}
 --- !u!1 &4589880623998038020
@@ -465,6 +465,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b9e5f5806515fe6458e7be7f10fa61d2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Assets._game.Shift.View.ShiftManagerView
+  light: {fileID: 0}
   ShiftCycleTime: 300
 --- !u!1 &8726398237220314446
 GameObject:
@@ -496,6 +497,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 2713601236128947744}
   - {fileID: 8103677700132198584}
   - {fileID: 676091094569511595}
   - {fileID: 6431692824205801224}
@@ -506,7 +508,6 @@ Transform:
   - {fileID: 3650812598928419639}
   - {fileID: 348033625632617830}
   - {fileID: 6963482857616379807}
-  - {fileID: 2713601236128947744}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &4530390991275242210
@@ -523,12 +524,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: Zenject::Zenject.SceneContext
   _scriptableObjectInstallers: []
   _monoInstallers:
+  - {fileID: 9176981158661842458}
   - {fileID: 7389987720472510144}
   - {fileID: 8684797842722058558}
   - {fileID: 294233601555621957}
   - {fileID: 4976614129603895087}
   - {fileID: 772108090312590194}
-  - {fileID: 9176981158661842458}
   _installerPrefabs: []
   _autoRun: 1
   OnPreInstall:
@@ -1679,6 +1680,17 @@ MonoBehaviour:
 --- !u!114 &5557097075624036736 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 2466639217497123087, guid: db48a95242618bd48836e13ed70d0392, type: 3}
+  m_PrefabInstance: {fileID: 8008953834856013967}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TextMeshProUGUI
+--- !u!114 &6426534387777856083 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3893968729449202396, guid: db48a95242618bd48836e13ed70d0392, type: 3}
   m_PrefabInstance: {fileID: 8008953834856013967}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
