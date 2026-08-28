@@ -3,6 +3,9 @@ using Assets._game.Player.Controller;
 using Assets._game.Store.Model;
 using Assets._game.UI.View;
 using System.Collections;
+using Unity.VisualScripting.FullSerializer;
+using UnityEditor;
+using UnityEditor.Timeline.Actions;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Rendering;
@@ -12,6 +15,7 @@ namespace Assets._game.Player.View {
     public class PlayerInteractionView : MonoBehaviour {
         [Inject] IPlayerInteractionService interactionService;
 
+        [SerializeField] private InputActionReference attackAction;
         [SerializeField] private InputActionReference interactClose;
         [SerializeField] private InputActionReference interactAction;
 
@@ -34,15 +38,23 @@ namespace Assets._game.Player.View {
 
         private void Start() {
             interactionService.Init(playerController, dragManagerView);
+            attackAction.action.Enable();
             interactAction.action.Enable();
             interactClose.action.Enable();
 
             interactClose.action.performed += OnEscape;
         }
 
+        private void OnEnable() {
+            attackAction.action.performed += TryAttack;
+        }
+
+
         private void OnDisable() {
             interactClose.action.performed -= OnEscape;
-
+            attackAction.action.performed -= TryAttack
+;
+            attackAction.action.Disable();
             interactAction.action.Disable();
             interactClose.action.Enable();
 
@@ -176,6 +188,15 @@ namespace Assets._game.Player.View {
 
             playerController.SetInputEnabled(false);
             playerController.SetMouseFocus(false);
+        }
+
+        private void TryAttack( InputAction.CallbackContext _ ) {
+            IInteractable interactable = CheckObject();
+
+            if ( interactable == null ) return;
+            if ( interactable.IsDameableObject() ) {
+                interactable.TryAttack();
+            }
         }
     }
 }

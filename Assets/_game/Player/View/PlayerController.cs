@@ -51,7 +51,7 @@ public class PlayerController : MonoBehaviour {
     private float cameraPitch;
 
     [Inject]
-    void Construct(ISettingConfigService settingConfigService) {
+    void Construct( ISettingConfigService settingConfigService ) {
         this.settingConfigService = settingConfigService;
     }
 
@@ -197,9 +197,9 @@ public class PlayerController : MonoBehaviour {
 
 
 
-    void ChangeSensivity(float sensivity) => lookSensitivity = sensivity;
-        
-    void ChangeFov(float value) => camera.fieldOfView = value;
+    void ChangeSensivity( float sensivity ) => lookSensitivity = sensivity;
+
+    void ChangeFov( float value ) => camera.fieldOfView = value;
 
 
 }

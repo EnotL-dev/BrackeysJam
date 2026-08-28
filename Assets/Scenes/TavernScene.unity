@@ -39152,6 +39152,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ee1d107968ca05941a1ae9bb5567881c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Assets._game.Player.View.PlayerInteractionView
+  attackAction: {fileID: 1120369429361536294, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   interactClose: {fileID: -6359574638208159183, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   interactAction: {fileID: 1781555164194001046, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   playerController: {fileID: 8018771265426338485}
