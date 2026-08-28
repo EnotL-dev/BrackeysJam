@@ -16,7 +16,7 @@ namespace Assets._game.Npc.View {
         bool canInteracThisFrame = true;
         [SerializeField] private bool isDraggingObject = false;
 
-        public bool CanInteractThisFrame => canInteracThisFrame;
+        public bool CanInteractThisFrame() => canInteracThisFrame;
 
         public bool IsDraggableObject() => isDraggingObject;
         public bool ShowCursor() => true;
@@ -66,7 +66,7 @@ namespace Assets._game.Npc.View {
         }
 
         public void OnStartInteraction() {
-            
+
         }
 
         public void ModifyCanInteract() => canInteracThisFrame = false;

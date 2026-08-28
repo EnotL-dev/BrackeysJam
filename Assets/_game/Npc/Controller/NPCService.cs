@@ -2,6 +2,7 @@
 using Assets._game.Npc.Enum;
 using Assets._game.Npc.View;
 using Assets._game.Player.Controller;
+using Assets._game.Player.View;
 using Assets._game.TestingScript;
 using System.Collections;
 using UnityEngine;
@@ -15,20 +16,20 @@ namespace Assets._game.Npc.Controller {
         private WaitingLineService barWaitingLineService;
         private OrderService orderService; //THIS DONT USE FOR NOW
         private IBarService barService;
-        IPlayerInteractionService playerInteractionService;
+        PlayerInteractionView playerInteractionView;
 
         [Inject]
         void Construct( ISeatService seatService,
             [Inject(Id = "ComeIn")] WaitingLineService comeInWaitingLineService,
             [Inject(Id = "Bar")] WaitingLineService barWait,
             OrderService orderService,
-            IPlayerInteractionService playerInteractionService,
+            PlayerInteractionView playerInteractionService,
             IBarService barService ) {
             this.seatService = seatService;
             this.comeInWaitingLineService = comeInWaitingLineService;
             this.barWaitingLineService = barWait;
             this.orderService = orderService;
-            this.playerInteractionService = playerInteractionService;
+            this.playerInteractionView = playerInteractionService;
             this.barService = barService;
         }
 
@@ -70,7 +71,7 @@ namespace Assets._game.Npc.Controller {
             var script = npc.GetComponent<NPCInteractionScript>();
             script.ModifyCanInteract();
 
-            playerInteractionService.EndInteraction();
+            playerInteractionView.ForcedInteractionRelease();
         }
 
 

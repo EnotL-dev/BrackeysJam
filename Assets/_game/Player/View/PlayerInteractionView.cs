@@ -53,9 +53,13 @@ namespace Assets._game.Player.View {
             IInteractable interactable = CheckObject();
 
             bool hasTarget = interactable != null;
-            bool canInteract = hasTarget && interactable.CanInteractThisFrame;
+            bool canInteract = hasTarget && interactable.CanInteractThisFrame();
 
-            if ( canInteract ) UpdateInteractionUI(interactable);
+
+            if ( canInteract ) {
+                //Debug.Log($"canInteract {canInteract} this frame");
+                UpdateInteractionUI(interactable);
+            }
             else uiInteractionView.HideTip();
 
             if ( canInteract ) CheckInteraction(interactable);
@@ -65,9 +69,11 @@ namespace Assets._game.Player.View {
 
         private void UpdateInteractionUI( IInteractable interactable ) {
             if ( interactable != null && lastInteractable == null ) {
+                Debug.Log("showing Tip right now");
                 uiInteractionView.ShowTip(interactable.GetTip());
             }
             else {
+                Debug.Log("motherfucker");
                 uiInteractionView.HideTip();
             }
         }
