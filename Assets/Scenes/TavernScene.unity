@@ -462,7 +462,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b94e9aac88c24fb4cab00cf55907838a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Assets._game.Npc.NPCFactory
-  prefab: {fileID: 4050741749394943751, guid: 2beed3893ec80a94faf09b258e3fc6fa, type: 3}
+  _visitorBrain: {fileID: 4050741749394943751, guid: 16dbddd3f78b2174eb66be35c5044e2d, type: 3}
+  _npcGenerator: {fileID: 1538706086}
   spawnParent: {fileID: 988172731}
 --- !u!4 &39051094
 Transform:
@@ -3582,6 +3583,63 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 51d5e61812a8dc64f8ec4485d178e279, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Assets._game.Store.View.FurnitureGhostPlace
+--- !u!1001 &437430247
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 5228411549700049114, guid: f089966625a805442857e61d5095b083, type: 3}
+      propertyPath: m_Name
+      value: NpcGeneratorView
+      objectReference: {fileID: 0}
+    - target: {fileID: 6457177941035816588, guid: f089966625a805442857e61d5095b083, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6457177941035816588, guid: f089966625a805442857e61d5095b083, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6457177941035816588, guid: f089966625a805442857e61d5095b083, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6457177941035816588, guid: f089966625a805442857e61d5095b083, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6457177941035816588, guid: f089966625a805442857e61d5095b083, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6457177941035816588, guid: f089966625a805442857e61d5095b083, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6457177941035816588, guid: f089966625a805442857e61d5095b083, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6457177941035816588, guid: f089966625a805442857e61d5095b083, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6457177941035816588, guid: f089966625a805442857e61d5095b083, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6457177941035816588, guid: f089966625a805442857e61d5095b083, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: f089966625a805442857e61d5095b083, type: 3}
 --- !u!43 &466140944
 Mesh:
   m_ObjectHideFlags: 0
@@ -24538,6 +24596,17 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1535760442}
   m_CullTransparentMesh: 1
+--- !u!114 &1538706086 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 195527903967085059, guid: f089966625a805442857e61d5095b083, type: 3}
+  m_PrefabInstance: {fileID: 437430247}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7ad8fec574894c947868600b4e9a018f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Assets._game.NpcGenerator.View.NpcGeneratorView
 --- !u!1001 &1545353879
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -31408,6 +31477,7 @@ SceneRoots:
   - {fileID: 1298343590}
   - {fileID: 2033137762}
   - {fileID: 39051094}
+  - {fileID: 437430247}
   - {fileID: 983027836}
   - {fileID: 988172731}
   - {fileID: 807606036}

@@ -11,16 +11,17 @@ namespace Assets._game.NpcGenerator.View
         [SerializeField] private GameObject[] _mustaches;
         [SerializeField] private GameObject[] _beards;
         [SerializeField] private GameObject[] _hairs;
+        [SerializeField] private GameObject[] _ears;
+        [SerializeField] private GameObject[] _horns;
 
 
-        private void Start()
-        {
-            for (var i = 0; i < 20; i++)
-            {
-                GenerateCharacter(new Vector3(0, 0, i * .75f));
-            }
-        }
-
+        // private void Start()
+        // {
+        //     for (var i = 0; i < 20; i++)
+        //     {
+        //         GenerateCharacter(new Vector3(0, 0, i * .75f));
+        //     }
+        // }
 
         public NpcGeneratedCharacterView GenerateCharacter(Vector3 pos)
         {
@@ -33,11 +34,21 @@ namespace Assets._game.NpcGenerator.View
                 : _beards[Random.Range(0, _beards.Length)];
             var hairModel = Random.Range(0, 5) == 0 ? null
             : _hairs[Random.Range(0, _hairs.Length)];
+            var earsModel = _ears[Random.Range(0, _ears.Length)];
+            var hornsModel = _horns[Random.Range(0, _horns.Length)];
+
 
             var character = Instantiate(characterPrefab);
             character.name = $"Character {_counter++}";
             character.transform.position = pos;
-            character.AddAceesories(hat: hatModel, beard: beardModel, mustache: mustacheModel, hair: hairModel);
+            character.AddAceesories(
+                hat: hatModel,
+                beard: beardModel,
+                mustache: mustacheModel,
+                hair: hairModel,
+                ears: earsModel,
+                horns: hornsModel
+            );
             return character;
         }
     }

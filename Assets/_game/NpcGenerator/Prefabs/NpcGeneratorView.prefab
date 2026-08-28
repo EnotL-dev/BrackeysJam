@@ -49,7 +49,7 @@ MonoBehaviour:
   - {fileID: 5261732046600882667, guid: 758c0b8333eb8e64c84f5edb4617e197, type: 3}
   - {fileID: 5261732046600882667, guid: a162b1dac147c3148819a397d6c374d6, type: 3}
   _hats:
-  - {fileID: 919132149155446097, guid: f69d02df4797b1b438e4a62976d423b6, type: 3}
+  - {fileID: 919132149155446097, guid: 62da0dc7806ee614c971084d8770a5f6, type: 3}
   - {fileID: 919132149155446097, guid: 1347cf1a178844946bfcce299776a55c, type: 3}
   - {fileID: 919132149155446097, guid: 9efd3f83591a3e14eaebfa16ec9f9df5, type: 3}
   _mustaches:
