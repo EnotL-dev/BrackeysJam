@@ -39,6 +39,9 @@ namespace Assets._game.Npc.View {
         ISeatService seatService;
         OrderFactory orderFactory;
         ISFXService sFXService;
+        WorldSettingScript worldSettingScript;
+
+
         public AlcoholCatalog alcoholCatalog { get; private set; }
         public NavMeshAgent agent { get; private set; }
         public Animator animator { get; private set; }
@@ -51,13 +54,15 @@ namespace Assets._game.Npc.View {
             OrderFactory orderFactory,
             AlcoholCatalog alcoholCatalog,
             ISFXService sFXService,
-            SignalBus signalBus ) {
+            SignalBus signalBus,
+            WorldSettingScript worldSettingScript ) {
             this.barService = barService;
             this.seatService = seatService;
             this.orderFactory = orderFactory;
             this.alcoholCatalog = alcoholCatalog;
             this.sFXService = sFXService;
             this.signalBus = signalBus;
+            this.worldSettingScript = worldSettingScript;
         }
 
         void Awake() {
@@ -244,7 +249,7 @@ namespace Assets._game.Npc.View {
                 barService.ReduceChaos(0.1f);
             }
 
-            Vector3 destination = new Vector3(50, -0.5f, 55); // Ref a real postion and handle destory
+            Vector3 destination = worldSettingScript.GetLeavePoint(); // Ref a real postion and handle destory
 
 
             MoveToDest(destination);
