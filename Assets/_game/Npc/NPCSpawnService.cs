@@ -1,4 +1,5 @@
-﻿using Assets._game.Npc.Controller;
+﻿using Assets._game.Core.StateMachine;
+using Assets._game.Npc.Controller;
 using Assets._game.Npc.View;
 using Assets._game.TestingScript;
 using System.Collections;
@@ -11,6 +12,7 @@ namespace Assets._game.Npc {
         WaitingLineService waitingLineService;
         [SerializeField] NPCFactory NPCFactory;
         NPCInfoGenerator npcInfoGenerator;
+        SignalBus signalBus;
 
         [SerializeField] private float minSpawnInterval = 1f;
         [SerializeField] private float maxSpawnInterval = 3f;
@@ -20,9 +22,10 @@ namespace Assets._game.Npc {
 
         [Inject]
         void Construct( [Inject(Id = "ComeIn")] WaitingLineService waitingLineService,
-            NPCInfoGenerator npcInfoGenerator ) {
+            NPCInfoGenerator npcInfoGenerator, SignalBus signalBus) {
             this.waitingLineService = waitingLineService;
             this.npcInfoGenerator = npcInfoGenerator;
+            this.signalBus = signalBus;
         }
 
 
@@ -36,6 +39,11 @@ namespace Assets._game.Npc {
                 minSpawnInterval,
                 maxSpawnInterval
             );
+
+                while(!IsNight)
+                {
+                    yield return new WaitForSeconds(1);
+                }
 
                 yield return new WaitForSeconds(delay);
 
@@ -71,10 +79,29 @@ namespace Assets._game.Npc {
             // waitingLine.AddNPC(npc);
         }
 
+        private void OnEnable()
+        {
+            signalBus.Subscribe<StateChangedSignal>(StateChanged);
+        }
 
+        private void OnDisable()
+        {
+            signalBus.Unsubscribe<StateChangedSignal>(StateChanged);
+        }
 
-
-
-
+        bool IsNight = false;
+        public void StateChanged(StateChangedSignal stateChangedSignal)
+        {
+            if (stateChangedSignal.gameState is DayShiftState)
+            {
+                IsNight = false;
+                Debug.Log("<color=magenta>Day shift</color>");
+            }
+            else if (stateChangedSignal.gameState is NightShiftState)
+            {
+                IsNight = true;
+                Debug.Log("<color=magenta>Night shift</color>");
+            }
+        }
     }
 }

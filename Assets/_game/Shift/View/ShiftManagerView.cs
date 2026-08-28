@@ -61,43 +61,64 @@ namespace Assets._game.Shift.View
         private Tween lightIntensityTween;
 
 
-        public void ChangeSkyBoxAndLighting( float from, float to, float fromIntensity, float toIntensity, float fromRotation, float toRotation, float fromLightIntensity, float toLightIntensity, float duration = 5f, System.Action onComplete = null ) {
+        public void ChangeSkyBoxAndLighting(
+            float from, float to,
+            float fromIntensity, float toIntensity,
+            float fromRotation, float toRotation,
+            float fromLightIntensity, float toLightIntensity,
+            float duration = 5f,
+            System.Action onComplete = null)
+        {
             transitionTween?.Kill();
             intensityTween?.Kill();
             rotationTween?.Kill();
             lightIntensityTween?.Kill();
 
             RenderSettings.skybox.SetFloat("_CubemapTransition", from);
-            transitionTween = DOTween.To(() => RenderSettings.skybox.GetFloat("_CubemapTransition"),
+            transitionTween = DOTween.To(
+                () => RenderSettings.skybox.GetFloat("_CubemapTransition"),
                 x => RenderSettings.skybox.SetFloat("_CubemapTransition", x),
-                to, duration).SetEase(Ease.InOutCubic);
+                to, duration
+            ).SetEase(Ease.InOutCubic);
 
             RenderSettings.reflectionIntensity = fromIntensity;
-            intensityTween = DOTween.To(() => RenderSettings.reflectionIntensity,
+            intensityTween = DOTween.To(
+                () => RenderSettings.reflectionIntensity,
                 x => RenderSettings.reflectionIntensity = x,
-                toIntensity, duration).SetEase(Ease.InOutCubic);
+                toIntensity, duration
+            ).SetEase(Ease.InOutCubic);
 
             Light sun = RenderSettings.sun;
-            if ( sun != null ) {
-                Vector3 startRot = sun.transform.eulerAngles;
-                startRot.x = fromRotation;
-                sun.transform.eulerAngles = startRot;
-                rotationTween = DOTween.To(() => sun.transform.eulerAngles.x,
-                    x => {
-                        Vector3 rot = sun.transform.eulerAngles;
-                        rot.x = x;
-                        sun.transform.eulerAngles = rot;
-                    },
-                    toRotation, duration).SetEase(Ease.InOutCubic);
+            if (sun != null)
+            {
+                Vector3 currentEuler = sun.transform.eulerAngles;
+                float fixedY = currentEuler.y;
+                float fixedZ = currentEuler.z;
+
+                Quaternion startRot = Quaternion.Euler(fromRotation, fixedY, fixedZ);
+                Quaternion endRot = Quaternion.Euler(toRotation, fixedY, fixedZ);
+                rotationTween = DOTween.To(
+                    () => 0f,
+                    progress => sun.transform.rotation = Quaternion.Slerp(startRot, endRot, progress),
+                    1f, duration
+                ).SetEase(Ease.InOutCubic);
 
                 sun.intensity = fromLightIntensity;
-                lightIntensityTween = DOTween.To(() => sun.intensity,
+                lightIntensityTween = DOTween.To(
+                    () => sun.intensity,
                     x => sun.intensity = x,
-                    toLightIntensity, duration).SetEase(Ease.InOutCubic);
+                    toLightIntensity, duration
+                ).SetEase(Ease.InOutCubic);
             }
 
-            if ( onComplete != null ) {
-                transitionTween.OnComplete(() => onComplete?.Invoke());
+            if (onComplete != null)
+            {
+                Sequence seq = DOTween.Sequence();
+                seq.Join(transitionTween);
+                seq.Join(intensityTween);
+                if (rotationTween != null) seq.Join(rotationTween);
+                if (lightIntensityTween != null) seq.Join(lightIntensityTween);
+                seq.OnComplete(() => onComplete?.Invoke());
             }
         }
 

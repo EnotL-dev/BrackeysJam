@@ -1,6 +1,7 @@
 ﻿using Assets._game.Bar.Controller;
 using Assets._game.Bar.Model;
 using Assets._game.Bar.Model.SOScript.DrinkSO.Alcohol;
+using Assets._game.Core.StateMachine;
 using Assets._game.Npc.Animation;
 using Assets._game.Npc.ConcreateClass;
 using Assets._game.Npc.Enum;
@@ -40,17 +41,21 @@ namespace Assets._game.Npc.View {
         public AlcoholCatalog alcoholCatalog { get; private set; }
         public NavMeshAgent agent { get; private set; }
 
+        SignalBus signalBus;
+
         [Inject]
         void Construct( BarService barService,
             SeatService seatService,
             OrderFactory orderFactory,
             AlcoholCatalog alcoholCatalog,
-            ISFXService sFXService ) {
+            ISFXService sFXService,
+            SignalBus signalBus ) {
             this.barService = barService;
             this.seatService = seatService;
             this.orderFactory = orderFactory;
             this.alcoholCatalog = alcoholCatalog;
             this.sFXService = sFXService;
+            this.signalBus = signalBus;
         }
 
         void Awake() {
@@ -68,6 +73,24 @@ namespace Assets._game.Npc.View {
 
             machineState.Initialize(moveScript);
 
+        }
+
+        private void OnEnable()
+        {
+            signalBus.Subscribe<StateChangedSignal>(StateChanged);
+        }
+
+        private void OnDisable()
+        {
+            signalBus.Unsubscribe<StateChangedSignal>(StateChanged);
+        }
+
+        public void StateChanged(StateChangedSignal stateChangedSignal)
+        {
+            if (stateChangedSignal.gameState is DayShiftState)
+            {
+                Leave();
+            }
         }
 
         public void Initialize( NPCInfo info ) {

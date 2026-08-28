@@ -13,9 +13,6 @@ namespace Assets._game.Interaction.View {
         IShiftService shiftService;
         IMusicService musicService;
 
-
-
-
         [SerializeField] private Transform signObject;
 
         [Inject]
@@ -42,8 +39,6 @@ namespace Assets._game.Interaction.View {
         public bool OnceActivation() => true;
 
         bool canSwitch = true;
-
-
 
         public void OnInteract() {
             if ( !canSwitch ) return;
