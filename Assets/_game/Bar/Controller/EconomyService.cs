@@ -4,6 +4,7 @@ using Assets._game.Bar.Model.SOScript.DrinkSO.Alcohol;
 using Assets._game.Bar.View;
 using Assets._game.Player.View;
 using Assets._game.Sound.EnumInterface;
+using Assets._game.Store.Model;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -91,7 +92,7 @@ namespace Assets._game.Bar.Controller {
             Debug.Log(quotaCurrentValue);
         }
 
-        public void BuyFurniture( int cost ) {
+        public void BuyFurniture(int cost ) {
             playerInterfaceManagerView.ReduceMoney(_money, _money - cost);
 
             _money -= cost;

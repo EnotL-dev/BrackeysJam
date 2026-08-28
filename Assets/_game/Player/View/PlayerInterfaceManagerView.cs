@@ -45,8 +45,7 @@ namespace Assets._game.Player.View
         {
             if (testInput.action.WasPressedThisFrame())
             {
-                AddQuotaMoney(1000, 2333, 3000);
-                AddMoney(1000, 3333);
+                
             }
         }
 
@@ -74,18 +73,36 @@ namespace Assets._game.Player.View
             textMoney.AnimateDecrease(startCount, endCount, 0.5f, reduceColor, normalColor);
         }
 
-        public void SetNewCurrentSeats(int count)
+        public void AddCurrentSeats(int count) // If visitor accepted in bar
         {
             DOTween.Kill(textSeats.gameObject);
-            currentSeats = count;
+            currentSeats += count;
             textSeats.text = $"{currentSeats} / {maxSeats}";
             textSeats.transform.DOScale(1.3f, 0.2f).SetEase(Ease.OutBack).OnComplete(() => textSeats.transform.DOScale(1f, 0.3f).SetEase(Ease.InBack));
         }
 
-        public void SetNewMaxSeats(int count)
+        public void AddMaxSeats(int count) // If player buy and setup new seat
         {
             DOTween.Kill(textSeats.gameObject);
-            maxSeats = count;
+            maxSeats += count;
+            textSeats.text = $"{currentSeats} / {maxSeats}";
+            textSeats.transform.DOScale(1.3f, 0.2f).SetEase(Ease.OutBack).OnComplete(() => textSeats.transform.DOScale(1f, 0.3f).SetEase(Ease.InBack));
+        }
+
+        public void ReduceCurrentSeats(int count) // If someone leave it
+        {
+            DOTween.Kill(textSeats.gameObject);
+            if(currentSeats > 1)
+                currentSeats -= count;
+            textSeats.text = $"{currentSeats} / {maxSeats}";
+            textSeats.transform.DOScale(1.3f, 0.2f).SetEase(Ease.OutBack).OnComplete(() => textSeats.transform.DOScale(1f, 0.3f).SetEase(Ease.InBack));
+        }
+
+        public void ReduceMaxSeats(int count) // If someone broke it
+        {
+            DOTween.Kill(textSeats.gameObject);
+            if (maxSeats > 1)
+                maxSeats -= count;
             textSeats.text = $"{currentSeats} / {maxSeats}";
             textSeats.transform.DOScale(1.3f, 0.2f).SetEase(Ease.OutBack).OnComplete(() => textSeats.transform.DOScale(1f, 0.3f).SetEase(Ease.InBack));
         }
