@@ -14,8 +14,21 @@ namespace Assets._game.Sound.Controller {
         }
 
         public void Play( SFXType type ) {
-            EventReference reference = type switch
-        {
+            EventReference reference = GetEventReference(type);
+            if ( !reference.IsNull ) {
+                RuntimeManager.PlayOneShot(reference);
+            }
+        }
+
+        // Overload for 3D positional audio
+        public void PlayInSpace( SFXType type, Vector3 position ) {
+            EventReference reference = GetEventReference(type);
+            if ( !reference.IsNull ) {
+                RuntimeManager.PlayOneShot(reference, position);
+            }
+        }
+
+        private EventReference GetEventReference( SFXType type ) => type switch {
             SFXType.NPCDrink => config.npcDrink,
             SFXType.BartenderPourBeer => config.bartenderPourBeer,
             SFXType.CashIn => config.cashIn,
@@ -23,7 +36,7 @@ namespace Assets._game.Sound.Controller {
             _ => default
         };
 
-            RuntimeManager.PlayOneShot(reference);
-        }
+
     }
+
 }

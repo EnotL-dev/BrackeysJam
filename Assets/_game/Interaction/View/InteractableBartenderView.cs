@@ -17,6 +17,8 @@ namespace Assets._game.Interaction.View
 
         public bool IsDraggableObject() => false;
 
+        public bool ShowCursor() => true;
+
         public void OnContinuousInteraction()
         {
             //nothing

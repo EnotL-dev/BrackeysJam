@@ -1,6 +1,7 @@
 ﻿using Assets._game.Interaction.View;
 using Assets._game.Player.Controller;
 using Assets._game.Store.Model;
+using Assets._game.UI.View;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -13,24 +14,39 @@ namespace Assets._game.Player.View {
 
         [SerializeField] private InputActionReference interactClose;
         [SerializeField] private InputActionReference interactAction;
+
         [Space(5)]
         [SerializeField] private PlayerController playerController;
         [SerializeField] private DragManagerView dragManagerView;
+
         [Space(5)]
         [SerializeField] private UIInteractionView uiInteractionView;
+        [SerializeField] private SettingPanel settingPanel;
+
+        [Space(5)]
         [SerializeField] private Camera cam;
         [SerializeField] private float distanceToInteract = 3f;
         [SerializeField] private LayerMask interactLayer;
 
         private bool holdStart = false;
+        IInteractable lastInteractable = null;
+        IPlayerUI currentUI;
 
         private void Start() {
             interactionService.Init(playerController, dragManagerView);
             interactAction.action.Enable();
+            interactClose.action.Enable();
+
+            interactClose.action.performed += OnEscape;
         }
 
         private void OnDisable() {
+            interactClose.action.performed -= OnEscape;
+
             interactAction.action.Disable();
+            interactClose.action.Enable();
+
+
         }
 
         private void Update() {
@@ -48,7 +64,7 @@ namespace Assets._game.Player.View {
         }
 
         private void UpdateInteractionUI( IInteractable interactable ) {
-            if ( interactable != null && lastInteractable == null) {
+            if ( interactable != null && lastInteractable == null ) {
                 uiInteractionView.ShowTip(interactable.GetTip());
             }
             else {
@@ -56,13 +72,13 @@ namespace Assets._game.Player.View {
             }
         }
 
-        IInteractable lastInteractable = null;
+
         private void CheckInteraction( IInteractable interactable ) {
             if ( interactable == null ) return;
 
             if ( interactAction.action.WasPressedThisFrame() ) {
                 IFurniture furniture = interactable as IFurniture;
-                if ( interactionService.IsBusy() || (furniture != null && !furniture.CanBuy()))
+                if ( interactionService.IsBusy() || (furniture != null && !furniture.CanBuy()) )
                     return;
 
                 holdStart = true;
@@ -73,8 +89,7 @@ namespace Assets._game.Player.View {
                 lastInteractable = interactable;
             }
             else if ( interactAction.action.IsPressed() ) {
-                if (interactable.IsDraggableObject())
-                {
+                if ( interactable.IsDraggableObject() ) {
                     interactionService.ContinuousInteraction();
                 }
             }
@@ -116,6 +131,45 @@ namespace Assets._game.Player.View {
             }
 
             return null;
+        }
+
+        private void OnEscape( InputAction.CallbackContext context ) {
+            // If currently interacting with an object,
+            // stop that interaction first.
+            if ( interactionService.IsBusy() ) {
+                ForcedInteractionRelease();
+                return;
+            }
+
+            if ( interactionService.HasOpenUI() ) {
+                interactionService.CloseCurrentUI();
+                return;
+            }
+
+            // If settings is already open, close it.
+            if ( settingPanel != null && settingPanel.IsOpen ) {
+                settingPanel.Close();
+
+                playerController.SetInputEnabled(true);
+                playerController.SetMouseFocus(true);
+
+                return;
+            }
+
+            // Otherwise open settings.
+            OpenSettings();
+        }
+
+        private void OpenSettings() {
+            if ( settingPanel == null )
+                return;
+
+            uiInteractionView.HideTip();
+
+            settingPanel.Open();
+
+            playerController.SetInputEnabled(false);
+            playerController.SetMouseFocus(false);
         }
     }
 }

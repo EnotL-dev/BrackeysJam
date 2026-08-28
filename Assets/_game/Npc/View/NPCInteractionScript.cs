@@ -19,6 +19,7 @@ namespace Assets._game.Npc.View {
         public bool CanInteractThisFrame => canInteracThisFrame;
 
         public bool IsDraggableObject() => isDraggingObject;
+        public bool ShowCursor() => true;
         [Inject]
         void Construct( NPCInfoView NPCInfoView,
             ISFXService sFXService ) {
@@ -61,11 +62,11 @@ namespace Assets._game.Npc.View {
         }
 
         public void OnEndInteraction() {
-            //throw new System.NotImplementedException();
+            NPCInfoView.Hide();
         }
 
         public void OnStartInteraction() {
-            //throw new System.NotImplementedException();
+            
         }
 
         public void ModifyCanInteract() => canInteracThisFrame = false;

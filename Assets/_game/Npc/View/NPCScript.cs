@@ -75,20 +75,16 @@ namespace Assets._game.Npc.View {
 
         }
 
-        private void OnEnable()
-        {
+        private void OnEnable() {
             signalBus.Subscribe<StateChangedSignal>(StateChanged);
         }
 
-        private void OnDisable()
-        {
+        private void OnDisable() {
             signalBus.Unsubscribe<StateChangedSignal>(StateChanged);
         }
 
-        public void StateChanged(StateChangedSignal stateChangedSignal)
-        {
-            if (stateChangedSignal.gameState is DayShiftState)
-            {
+        public void StateChanged( StateChangedSignal stateChangedSignal ) {
+            if ( stateChangedSignal.gameState is DayShiftState ) {
                 Leave();
             }
         }
@@ -216,7 +212,7 @@ namespace Assets._game.Npc.View {
         private IEnumerator WaitForConsumeOrderRoutine(
             float seconds,
             Action onComplete ) {
-            sFXService.Play(SFXType.NPCDrink);
+            sFXService.PlayInSpace(SFXType.NPCDrink, gameObject.transform.position);
 
             yield return new WaitForSeconds(seconds);
 
@@ -229,7 +225,7 @@ namespace Assets._game.Npc.View {
                 barService.ReduceChaos(0.1f);
             }
 
-            Vector3 destination = new Vector3(50, -0.5f, 55); // Ref a real postion and handle destory
+            Vector3 destination = new Vector3(30, -0.5f, 26); // Ref a real postion and handle destory
 
 
             MoveToDest(destination);

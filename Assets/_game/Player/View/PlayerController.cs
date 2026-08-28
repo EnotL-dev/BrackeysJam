@@ -1,3 +1,4 @@
+using Assets._game.UI.View;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -9,6 +10,7 @@ public class PlayerController : MonoBehaviour {
     [SerializeField] private InputActionReference lookAction;
     [SerializeField] private InputActionReference jumpAction;
     [SerializeField] private InputActionReference runAction;
+
 
     [Header("Movement")]
     private bool freezeMovemet = false;
@@ -30,6 +32,9 @@ public class PlayerController : MonoBehaviour {
     [SerializeField] private Transform groundCheck;
     [SerializeField] private float groundDistance = 0.2f;
     [SerializeField] private LayerMask groundMask;
+
+    [Header("Setting Panel")]
+    [SerializeField] private SettingPanel settingPanel;
 
     [SerializeField] private float speedboost = 1.5f;
 
@@ -66,14 +71,14 @@ public class PlayerController : MonoBehaviour {
     }
 
     private void Update() {
+        HandleGravity();
 
         //this should lock the look input too
-        if ( !freezeMovemet ) {
-            HandleRun();
-            HandleMovement();
-            HandleLook();
-        }
-        HandleGravity();
+        if ( freezeMovemet ) return;
+        HandleRun();
+        HandleMovement();
+        HandleLook();
+
     }
 
     void HandleRun() {
@@ -157,13 +162,12 @@ public class PlayerController : MonoBehaviour {
 
     public void SetInputEnabled( bool enable ) {
         freezeMovemet = !enable;
-
-        if ( enable ) SetMouseFocus(true);
-        else SetMouseFocus(false);
     }
 
 
     public void SetMouseFocus( bool focused ) {
+        Debug.Log($"Cursor should be {focused}");
+
         if ( focused ) {
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
@@ -172,12 +176,9 @@ public class PlayerController : MonoBehaviour {
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
         }
+
+        //Debug.Log($"AFTER SET -> lockState: {Cursor.lockState}, visible: {Cursor.visible}");
     }
-
-
-
-
-
 
 }
 
