@@ -2,17 +2,21 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using Unity.Collections.LowLevel.Unsafe;
+using Unity.VisualScripting.Antlr3.Runtime.Misc;
 using UnityEngine;
 
 namespace Assets._game.Bar.Controller {
-    public class SeatService {
+    public class SeatService : ISeatService {
 
         List<Seat> seats = new();
 
+        public event System.Action<int, int> OnSeatCountChanged;
 
-        public void InitializeListSeat( List<Seat> list ) {
-            seats = list;
-        }
+        public int CurrentOccupiedSeats => seats.Count(s => s.IsOccupied && !s.IsBroken);
+        public int MaxSeats => seats.Count(s => !s.IsBroken);
+        public int AvailableSeats => seats.Count(s => !s.IsOccupied && !s.IsBroken);
+
 
         /// <summary>
         /// return a random Seat
@@ -36,6 +40,8 @@ namespace Assets._game.Bar.Controller {
                 Debug.LogWarning("There is no Seat");
                 return null;
             }
+
+            Debug.Log($"there is {seats.Count} seat");
 
             Seat bestSeat = null;
             float bestDistanceSqr = float.MaxValue;
@@ -72,7 +78,42 @@ namespace Assets._game.Bar.Controller {
             return bestSeat;
         }
 
+        public void RegisterSeat( Seat seat ) {
+            if ( seat != null && !seats.Contains(seat) ) {
+                seats.Add(seat);
+                NotifyStateChanged();
+            }
+        }
+
+        public void UnregisterSeat( Seat seat ) {
+            if ( seat != null && seats.Remove(seat) ) {
+                NotifyStateChanged();
+            }
+        }
+
+        public bool TryReserveSeat( out Seat availableSeat ) {
+            availableSeat = seats.FirstOrDefault(s => !s.IsOccupied && !s.IsBroken);
+
+            if ( availableSeat != null && availableSeat.TryReserve() ) {
+                NotifyStateChanged();
+                return true;
+            }
+
+            availableSeat = null;
+            return false;
+        }
+
+        public void ReleaseSeat( Seat seat ) {
+            if ( seat != null ) {
+                NotifyStateChanged();
+            }
+        }
+
+        public void ReportSeatBroken( Seat seat ) => NotifyStateChanged();
 
 
+        public void ReportSeatRepaired( Seat seat ) => NotifyStateChanged();
+
+        private void NotifyStateChanged() => OnSeatCountChanged?.Invoke(CurrentOccupiedSeats, MaxSeats);
     }
 }

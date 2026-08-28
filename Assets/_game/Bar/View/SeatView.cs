@@ -7,18 +7,8 @@ using Zenject;
 
 public class SeatView : MonoBehaviour {
 
-    SeatService seatService;
 
 
-
-    [Inject]
-    void Construct( SeatService seatService ) {
-        this.seatService = seatService;
-    }
-
-    void Start() {
-        seatService.InitializeListSeat(GetChildrenWithTag());
-    }
 
     public List<Seat> GetChildrenWithTag() {
         List<Seat> matchedObjects = new List<Seat>();

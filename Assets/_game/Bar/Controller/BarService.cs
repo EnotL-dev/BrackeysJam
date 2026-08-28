@@ -14,7 +14,7 @@ namespace Assets._game.Bar.Controller {
 
         IEconomyService economyService;
         WaitingLineService waitingLineService;
-        SeatService seatService;
+        ISeatService seatService;
         AlcoholCatalog alcoholCatalogSO;
 
         Dictionary<AlcoholType, int> alcohols = new();
@@ -33,7 +33,7 @@ namespace Assets._game.Bar.Controller {
         [Inject]
         void Construct( IEconomyService economyService,
             [Inject(Id = "Bar")] WaitingLineService waitingLine,
-            SeatService seatService,
+            ISeatService seatService,
             AlcoholCatalog alcoholCatalogSO ) {
             this.economyService = economyService;
             this.waitingLineService = waitingLine;

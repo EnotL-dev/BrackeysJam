@@ -2,6 +2,8 @@ using Assets._game.Bar.Controller;
 using Assets._game.Npc;
 using Assets._game.Npc.Enum;
 using Assets._game.Npc.View;
+using Assets._game.Sound.Controller;
+using Assets._game.Sound.EnumInterface;
 using UnityEngine;
 using Zenject;
 
@@ -10,6 +12,8 @@ public class Seat : MonoBehaviour {
     NPCScript nPCScript;
 
     IBarService barService;
+    ISeatService seatService;
+    ISFXService sfxService;
     [SerializeField] private Transform sitPoint;
 
 
@@ -31,8 +35,12 @@ public class Seat : MonoBehaviour {
 
 
     [Inject]
-    void Construct( IBarService barService ) {
+    void Construct( IBarService barService,
+        ISeatService seatService,
+        ISFXService sFXService) {
         this.barService = barService;
+        this.seatService = seatService;
+        this.sfxService = sFXService;
     }
 
 
@@ -40,6 +48,7 @@ public class Seat : MonoBehaviour {
         seatRenderer = GetComponent<MeshRenderer>();
 
         SetBrokenVisual(false);
+        seatService?.RegisterSeat(this);
 
     }
 
@@ -62,6 +71,8 @@ public class Seat : MonoBehaviour {
         SetBrokenVisual(IsBroken);
 
         Debug.Log($"{name} has broken!");
+        //sfxService.Play(SFXType.)
+        seatService?.ReportSeatBroken(this);
     }
 
 
@@ -73,6 +84,7 @@ public class Seat : MonoBehaviour {
         IsBroken = false;
 
         SetBrokenVisual(false);
+        seatService?.ReportSeatRepaired(this);
 
         Debug.Log($"{name} has been repaired!");
     }
@@ -135,6 +147,7 @@ public class Seat : MonoBehaviour {
 
     public void Release() {
         IsOccupied = false;
+        seatService?.ReleaseSeat(this);
     }
 
     public bool TryReserve() {
@@ -142,5 +155,9 @@ public class Seat : MonoBehaviour {
 
         IsOccupied = true;
         return true;
+    }
+
+    public void OnDestroy() {
+        seatService?.UnregisterSeat(this);
     }
 }

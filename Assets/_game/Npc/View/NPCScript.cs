@@ -36,7 +36,7 @@ namespace Assets._game.Npc.View {
 
 
         BarService barService;
-        SeatService seatService;
+        ISeatService seatService;
         OrderFactory orderFactory;
         ISFXService sFXService;
         public AlcoholCatalog alcoholCatalog { get; private set; }
@@ -47,7 +47,7 @@ namespace Assets._game.Npc.View {
 
         [Inject]
         void Construct( BarService barService,
-            SeatService seatService,
+            ISeatService seatService,
             OrderFactory orderFactory,
             AlcoholCatalog alcoholCatalog,
             ISFXService sFXService,
