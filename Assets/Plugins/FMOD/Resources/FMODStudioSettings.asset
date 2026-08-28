@@ -409,6 +409,7 @@ MonoBehaviour:
   - AmbientMusic
   - Cash
   - Drink
+  - NPCDame
   - PourDrink
   - Speach
   BanksToLoad: []

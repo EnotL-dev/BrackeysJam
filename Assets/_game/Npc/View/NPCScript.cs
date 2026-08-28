@@ -263,7 +263,10 @@ namespace Assets._game.Npc.View {
             //animationController.SetAction(NPCActionState.StandUp);
         }
 
-
+        public void StopAllBehaviour() {
+            moveScript.Stop();
+            machineState.ChangeState(waitScript);
+        }
 
 
     }

@@ -7,6 +7,9 @@ namespace Assets._game.Sound.EnumInterface {
         NPCDrink,
         BartenderPourBeer,
         CashIn,
-        NPCSpeech
+        NPCSpeech,
+
+        Hit,
+        KnockOut,
     }
 }

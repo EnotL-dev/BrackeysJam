@@ -40,3 +40,17 @@ MonoBehaviour:
       Data3: 796536476
       Data4: 572188404
     Path: event:/Speech
+  hit:
+    Guid:
+      Data1: 1654908823
+      Data2: 1216818935
+      Data3: -885444454
+      Data4: 1352770903
+    Path: event:/Hit
+  knockOut:
+    Guid:
+      Data1: -539369824
+      Data2: 1260474383
+      Data3: -1455670650
+      Data4: -658153424
+    Path: event:/KnockOut

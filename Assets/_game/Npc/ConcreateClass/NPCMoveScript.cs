@@ -84,5 +84,25 @@ namespace Assets._game.Npc.ConcreateClass {
             }
         }
 
+        public void Stop() {
+            if ( agent != null && agent.isOnNavMesh ) {
+                // 1. Clears the active path and sets remaining distance to 0
+                agent.ResetPath();
+
+                // 2. Kills any residual velocity immediately
+                agent.velocity = Vector3.zero;
+
+                // 3. (Optional) Halts agent processing without clearing path
+                agent.isStopped = true;
+
+                agent.updateRotation = false;
+                agent.enabled = false;
+            }
+
+            // Clear the completion callback so it doesn't trigger unexpectedly
+            onComplete = null;
+        }
+
+
     }
 }

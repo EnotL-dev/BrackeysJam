@@ -6594,10 +6594,10 @@ MonoBehaviour:
   m_FillRect: {fileID: 2125625093}
   m_HandleRect: {fileID: 0}
   m_Direction: 0
-  m_MinValue: 0
-  m_MaxValue: 1
+  m_MinValue: 0.05
+  m_MaxValue: 0.5
   m_WholeNumbers: 0
-  m_Value: 1
+  m_Value: 0.5
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -10041,7 +10041,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 0}
   m_Direction: 0
   m_MinValue: 0
-  m_MaxValue: 1
+  m_MaxValue: 100
   m_WholeNumbers: 0
   m_Value: 1
   m_OnValueChanged:
@@ -36733,7 +36733,7 @@ Camera:
     height: 1
   near clip plane: 0.3
   far clip plane: 1000
-  field of view: 60
+  field of view: 41
   orthographic: 0
   orthographic size: 5
   m_Depth: -1
@@ -39153,7 +39153,7 @@ MonoBehaviour:
   rotationSpeed: 15
   gravity: -20
   jumpHeight: 1.5
-  cameraTransform: {fileID: 8367348289785214855}
+  camera: {fileID: 2857705773127603391}
   lookSensitivity: 0.1
   minPitch: -80
   maxPitch: 80
@@ -39162,7 +39162,6 @@ MonoBehaviour:
   groundMask:
     serializedVersion: 2
     m_Bits: 2048
-  settingPanel: {fileID: 2095002455}
   speedboost: 1.5
 --- !u!4 &8367348289785214855
 Transform:
@@ -39233,6 +39232,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ee1d107968ca05941a1ae9bb5567881c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Assets._game.Player.View.PlayerInteractionView
+  attackAction: {fileID: 1120369429361536294, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   interactClose: {fileID: -6359574638208159183, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   interactAction: {fileID: 1781555164194001046, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   playerController: {fileID: 8018771265426338485}
