@@ -54,7 +54,7 @@ namespace Assets._game.Bar.Controller {
             playerInterfaceManagerView.ReduceQuotaMoney(quotaCurrentValue, 0, quotaMaxValue);
         }
 
-        private int _money = 10000;
+        private int _money = 200;
         public int Money { get => _money; }
 
         public void BuyAlchohol( AlcoholType alcoholType, int count ) {

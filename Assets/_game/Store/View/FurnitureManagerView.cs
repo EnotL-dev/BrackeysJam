@@ -1,4 +1,6 @@
-﻿using Assets._game.Player.View;
+﻿using Assets._game.Bar.Controller;
+using Assets._game.Bar.View;
+using Assets._game.Player.View;
 using Assets._game.Store.Model;
 using System.Collections;
 using System.Collections.Generic;
@@ -11,6 +13,7 @@ namespace Assets._game.Store.View
 {
     public class FurnitureManagerView : MonoBehaviour
     {
+        [Inject] IBarService barService;
         [Inject] PlayerInterfaceManagerView playerInterfaceManager;
         [SerializeField] private List<FurniturePlaces> furniturePlaces;
         [Inject] PlayerInteractionView playerInteractionView;
@@ -66,6 +69,11 @@ namespace Assets._game.Store.View
                 {
                     playerInterfaceManager.AddMaxSeats(1);
                     Debug.Log("<color=yellow>New SEAT added</color>");
+                }
+                if (furniture.GetFurnitureType() == FurnitureType.plant)
+                {
+                    barService.AddVibe(furniture.IncreaseValue());
+                    Debug.Log("<color=yellow>New plant added</color>");
                 }
             }
 
