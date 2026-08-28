@@ -5,6 +5,7 @@ using Assets._game.Core.StateMachine;
 using Assets._game.Npc.Animation;
 using Assets._game.Npc.ConcreateClass;
 using Assets._game.Npc.Enum;
+using Assets._game.NpcGenerator.View;
 using Assets._game.Sound.Controller;
 using Assets._game.Sound.EnumInterface;
 using System;
@@ -35,17 +36,18 @@ namespace Assets._game.Npc.View {
 
 
         BarService barService;
-        SeatService seatService;
+        ISeatService seatService;
         OrderFactory orderFactory;
         ISFXService sFXService;
         public AlcoholCatalog alcoholCatalog { get; private set; }
         public NavMeshAgent agent { get; private set; }
+        public Animator animator { get; private set; }
 
         SignalBus signalBus;
 
         [Inject]
         void Construct( BarService barService,
-            SeatService seatService,
+            ISeatService seatService,
             OrderFactory orderFactory,
             AlcoholCatalog alcoholCatalog,
             ISFXService sFXService,
@@ -59,7 +61,7 @@ namespace Assets._game.Npc.View {
         }
 
         void Awake() {
-            Animator animator = GetComponent<Animator>();
+
             agent = GetComponent<NavMeshAgent>();
 
             moveScript = new NPCMoveScript(this);
@@ -70,9 +72,7 @@ namespace Assets._game.Npc.View {
         }
 
         public void Start() {
-
             machineState.Initialize(moveScript);
-
         }
 
         private void OnEnable() {
@@ -91,6 +91,14 @@ namespace Assets._game.Npc.View {
 
         public void Initialize( NPCInfo info ) {
             npcInfo = info;
+        }
+
+        public void SetCharacterModel( NpcGeneratedCharacterView characterView ) {
+            animator = characterView.GetComponentInChildren<Animator>(true);
+
+            if ( animator == null ) {
+                Debug.LogError("No Animator found on generated character prefab!", characterView);
+            }
         }
 
         public void ChangeState( NPCState state ) {
@@ -118,6 +126,7 @@ namespace Assets._game.Npc.View {
 
         public void Update() {
             machineState.UpdateState();
+            animationController.UpdateAnimation();
         }
 
 
@@ -134,20 +143,26 @@ namespace Assets._game.Npc.View {
         //    machineState.ChangeState(moveScript);
         //}
 
-        public void MoveToBar( Vector3 pos1, Vector3 pos2 ) {
+        public void MoveToBar( Vector3 pos1, Seat seat ) {
             moveScript.SetDestination(pos1);
             machineState.ChangeState(moveScript, () => {
                 Debug.Log("Moving to bar Done");
 
                 if ( waitForDrinkCoroutine != null ) StopCoroutine(waitForDrinkCoroutine);
 
-                waitForDrinkCoroutine = StartCoroutine(WaitForAvailableDrinkRoutine(pos2));
+                waitForDrinkCoroutine = StartCoroutine(WaitForAvailableDrinkRoutine(seat));
             });
-
-
         }
 
-        private IEnumerator WaitForAvailableDrinkRoutine( Vector3 seatPos ) {
+        public void MoveToSeat( Vector3 pos, Quaternion rotation, Action onComplete ) {
+            moveScript.SetDestination(pos);
+            machineState.ChangeState(moveScript, () => {
+                transform.rotation = rotation;
+                onComplete?.Invoke();
+            });
+        }
+
+        private IEnumerator WaitForAvailableDrinkRoutine( Seat seat ) {
             float elapsed = 0f;
 
             // Optional: Switch to an idle/waiting animation state while waiting at the counter
@@ -158,7 +173,7 @@ namespace Assets._game.Npc.View {
                 if ( order != null ) {
                     Debug.Log("Drink restocked, placing order.");
                     waitForDrinkCoroutine = null;
-                    PlaceOrder(seatPos, order);
+                    PlaceOrder(seat, order);
                     yield break;
                 }
 
@@ -178,23 +193,24 @@ namespace Assets._game.Npc.View {
         }
 
 
-        public void PlaceOrder( Vector3 pos, Order order = null ) {
+        public void PlaceOrder( Seat seat, Order order = null ) {
             //machineState.ChangeState(waitScript);
 
             Debug.Log("Calling for order");
 
             StartCoroutine(barService.RequestDrink((AlcoholOrder)order, () => {
-                MoveToDest(pos);
-                machineState.ChangeState(moveScript, () => {
+
+                MoveToSeat(seat.SitPosition, seat.SitRotation, () => {
+
+                    animationController.SetAction(NPCActionState.Sit);
 
                     consumeOrder.ChangeAlcoholSO(order);
+
                     machineState.ChangeState(consumeOrder, () => {
                         Leave();
                     });
                 });
-
             }));
-
 
         }
 
@@ -205,6 +221,9 @@ namespace Assets._game.Npc.View {
         }
 
         public void WaitForConsumeOrder( float seconds, Action onComplete ) {
+            sFXService.PlayInSpace(SFXType.NPCDrink, gameObject.transform.position);
+            animationController.SetAction(NPCActionState.ConsumeOrder);
+
             StartCoroutine(WaitForConsumeOrderRoutine(seconds, onComplete));
 
         }
@@ -225,7 +244,7 @@ namespace Assets._game.Npc.View {
                 barService.ReduceChaos(0.1f);
             }
 
-            Vector3 destination = new Vector3(30, -0.5f, 26); // Ref a real postion and handle destory
+            Vector3 destination = new Vector3(50, -0.5f, 55); // Ref a real postion and handle destory
 
 
             MoveToDest(destination);
@@ -235,7 +254,7 @@ namespace Assets._game.Npc.View {
             //animationController.SetAction(NPCActionState.Sit);
         }
 
-        public void StandUP() {
+        public void StandUp() {
             //animationController.SetAction(NPCActionState.StandUp);
         }
 

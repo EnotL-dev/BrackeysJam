@@ -10,7 +10,7 @@ using Zenject;
 namespace Assets._game.Npc.Controller {
     public class NPCService {
 
-        private SeatService seatService;
+        private ISeatService seatService;
         private WaitingLineService comeInWaitingLineService; //THIS DONT USE FOR NOW
         private WaitingLineService barWaitingLineService;
         private OrderService orderService; //THIS DONT USE FOR NOW
@@ -18,7 +18,7 @@ namespace Assets._game.Npc.Controller {
         IPlayerInteractionService playerInteractionService;
 
         [Inject]
-        void Construct( SeatService seatService,
+        void Construct( ISeatService seatService,
             [Inject(Id = "ComeIn")] WaitingLineService comeInWaitingLineService,
             [Inject(Id = "Bar")] WaitingLineService barWait,
             OrderService orderService,
@@ -43,7 +43,7 @@ namespace Assets._game.Npc.Controller {
             }
 
             if ( barWaitingLineService.TryReserve(out Vector3 targetPos) ) {
-                npc.MoveToBar(targetPos, seat.gameObject.transform.position);
+                npc.MoveToBar(targetPos, seat);
             }
             else {
                 Debug.Log("Bar waiting line is full or unavailable.");

@@ -1,5 +1,6 @@
-﻿using System.Collections;
+﻿using Assets._game.Npc.View;
 using Assets._game.NpcGenerator.View;
+using System.Collections;
 using UnityEngine;
 using Zenject;
 
@@ -19,8 +20,13 @@ namespace Assets._game.Npc
         {
             var visitor = container.InstantiatePrefab(_visitorBrain, this.gameObject.transform.position, Quaternion.identity, spawnParent);
             var character = _npcGenerator.GenerateCharacter(Vector3.zero);
+
             character.transform.SetParent(visitor.transform);
             character.transform.localPosition = Vector3.zero;
+
+            var npc = visitor.GetComponent<NPCScript>();
+            npc.SetCharacterModel(character);
+
             return visitor;
         }
 
