@@ -101,9 +101,12 @@ namespace Assets._game.Npc.View {
             machineState.ChangeState(moveScript);
         }
 
-        public void MoveToSeat( Vector3 pos, Action onComplete ) {
+        public void MoveToSeat( Vector3 pos, Quaternion rotation, Action onComplete ) {
             moveScript.SetDestination(pos);
-            machineState.ChangeState(moveScript, () => { onComplete?.Invoke(); });
+            machineState.ChangeState(moveScript, () => {
+                transform.rotation = rotation;
+                onComplete?.Invoke();
+            });
         }
 
 
@@ -114,7 +117,7 @@ namespace Assets._game.Npc.View {
         //    machineState.ChangeState(moveScript);
         //}
 
-        public void MoveToBar( Vector3 pos1, Vector3 pos2 ) {
+        public void MoveToBar( Vector3 pos1, Seat seat ) {
             moveScript.SetDestination(pos1);
             machineState.ChangeState(moveScript, () => {
                 Debug.Log("Moving to bar Done");
@@ -125,32 +128,31 @@ namespace Assets._game.Npc.View {
                     return;
                 }
 
-                PlaceOrder(pos2, order);
+                PlaceOrder(seat, order);
             });
 
 
         }
 
 
-        public void PlaceOrder( Vector3 pos, Order order = null ) {
+        public void PlaceOrder( Seat seat, Order order = null ) {
             //machineState.ChangeState(waitScript);
 
             Debug.Log("Calling for order");
 
             StartCoroutine(barService.RequestDrink((AlcoholOrder)order, () => {
-                MoveToSeat(pos, () => {
+
+                MoveToSeat(seat.SitPosition, seat.SitRotation, () => {
+
                     animationController.SetAction(NPCActionState.Sit);
+
+                    consumeOrder.ChangeAlcoholSO(order);
+
+                    machineState.ChangeState(consumeOrder, () => {
+                        Leave();
+                    });
                 });
-
-                consumeOrder.ChangeAlcoholSO(order);
-
-                machineState.ChangeState(consumeOrder, () => {
-                    Leave();
-                });
-            })
-
-        );
-
+            }));
 
         }
 

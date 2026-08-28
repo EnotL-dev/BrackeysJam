@@ -56,7 +56,7 @@ namespace Assets._game.Npc.Controller {
             }
 
 
-            npc.MoveToBar(pos, seat.gameObject.transform.position);
+            npc.MoveToBar(pos, seat);
 
             EndInteraction(npc);
         }

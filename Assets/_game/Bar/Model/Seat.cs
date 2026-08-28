@@ -11,13 +11,18 @@ public class Seat : MonoBehaviour {
 
     IBarService barService;
 
-    private Renderer seatRenderer;
+    [SerializeField] private Transform sitPoint;
 
     [SerializeField]
     private Material normalMaterial;
 
     [SerializeField]
     private Material brokenMaterial;
+
+    private Renderer seatRenderer;
+
+    public Vector3 SitPosition => sitPoint.position;
+    public Quaternion SitRotation => sitPoint.rotation;
 
     public bool IsOccupied { get; private set; } = false;
     public bool IsBroken { get; private set; } = false;
