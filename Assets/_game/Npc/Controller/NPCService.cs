@@ -43,7 +43,7 @@ namespace Assets._game.Npc.Controller {
             }
 
             if ( barWaitingLineService.TryReserve(out Vector3 targetPos) ) {
-                npc.MoveToBar(targetPos, seat.gameObject.transform.position);
+                npc.MoveToBar(targetPos, seat);
             }
             else {
                 Debug.Log("Bar waiting line is full or unavailable.");

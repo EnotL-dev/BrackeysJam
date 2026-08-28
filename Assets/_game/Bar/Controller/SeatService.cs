@@ -46,11 +46,11 @@ namespace Assets._game.Bar.Controller {
                     continue;
                 }
 
-                Debug.Log(
-                    $"Seat: {seat.name} | " +
-                    $"Occupied: {seat.IsOccupied} | " +
-                    $"Broken: {seat.IsBroken}"
-                );
+                //Debug.Log(
+                //    $"Seat: {seat.name} | " +
+                //    $"Occupied: {seat.IsOccupied} | " +
+                //    $"Broken: {seat.IsBroken}"
+                //);
 
                 if ( seat.IsOccupied || seat.IsBroken ) continue;
 

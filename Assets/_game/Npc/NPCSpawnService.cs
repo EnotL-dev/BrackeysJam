@@ -68,6 +68,8 @@ namespace Assets._game.Npc {
                 return;
             }
 
+
+
             var gameObject = NPCFactory.SpawnNpc();
             var npc = gameObject.GetComponent<NPCScript>();
 

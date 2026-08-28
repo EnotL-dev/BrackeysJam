@@ -7,9 +7,12 @@ using Zenject;
 
 public class Seat : MonoBehaviour {
 
-    NPCInfo npcInfo;
+    NPCScript nPCScript;
 
     IBarService barService;
+    [SerializeField] private Transform sitPoint;
+
+
 
     private Renderer seatRenderer;
 
@@ -18,6 +21,10 @@ public class Seat : MonoBehaviour {
 
     [SerializeField]
     private Material brokenMaterial;
+
+    public Vector3 SitPosition => sitPoint != null ? sitPoint.position : transform.position;
+    public Quaternion SitRotation => sitPoint != null ? sitPoint.rotation : transform.rotation;
+
 
     public bool IsOccupied { get; private set; } = false;
     public bool IsBroken { get; private set; } = false;
@@ -33,6 +40,7 @@ public class Seat : MonoBehaviour {
         seatRenderer = GetComponent<MeshRenderer>();
 
         SetBrokenVisual(false);
+
     }
 
     //public bool TryReserve() {
@@ -89,9 +97,7 @@ public class Seat : MonoBehaviour {
         //make sit down animation in here
         if ( other.CompareTag("NPC") ) {
 
-            var script = other.GetComponent<NPCScript>();
-
-            npcInfo = script.npcInfo;
+            nPCScript = other.GetComponent<NPCScript>();
 
             //read ncp preference (skip for now)
 
@@ -100,7 +106,7 @@ public class Seat : MonoBehaviour {
 
             //script.PlaceOrder(order);
 
-            script.SitDown();
+            nPCScript.SitDown();
 
 
 
@@ -112,13 +118,16 @@ public class Seat : MonoBehaviour {
         if ( other.CompareTag("NPC") ) {
             Release();
 
-            if ( npcInfo.npcProperties == NPCProperty.Drunkard ) {
+            if ( nPCScript.npcInfo.npcProperties == NPCProperty.Drunkard ) {
 
                 float chaosScale = barService.GetChaosStatus().chaosScale;
                 float chance = 0.1f * (1 + chaosScale);
 
                 Debug.Log($"Try break chair {chance}, and chaos scale {chaosScale}");
                 TryBreak(chance);
+
+                nPCScript.StandUp();
+
             }
 
         }
