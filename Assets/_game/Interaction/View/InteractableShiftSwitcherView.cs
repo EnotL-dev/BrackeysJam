@@ -52,7 +52,7 @@ namespace Assets._game.Interaction.View {
 
         private void FlipSign() {
             DOTween.Kill(signObject);
-            signObject.DORotate(new Vector3(0, 180, 0), 0.5f, RotateMode.LocalAxisAdd)
+            signObject.DORotate(new Vector3(0, 180, 0), 0.5f, RotateMode.WorldAxisAdd)
                 .SetEase(Ease.OutBounce);
         }
 
