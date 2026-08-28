@@ -10,9 +10,10 @@ namespace Assets._game.Npc {
     public class NPCSpawnService : MonoBehaviour {
 
         WaitingLineService waitingLineService;
+        SignalBus signalBus;
+
         [SerializeField] NPCFactory NPCFactory;
         NPCInfoGenerator npcInfoGenerator;
-        SignalBus signalBus;
 
         [SerializeField] private float minSpawnInterval = 1f;
         [SerializeField] private float maxSpawnInterval = 3f;
@@ -22,7 +23,8 @@ namespace Assets._game.Npc {
 
         [Inject]
         void Construct( [Inject(Id = "ComeIn")] WaitingLineService waitingLineService,
-            NPCInfoGenerator npcInfoGenerator, SignalBus signalBus) {
+            NPCInfoGenerator npcInfoGenerator,
+            SignalBus signalBus ) {
             this.waitingLineService = waitingLineService;
             this.npcInfoGenerator = npcInfoGenerator;
             this.signalBus = signalBus;
@@ -40,8 +42,7 @@ namespace Assets._game.Npc {
                 maxSpawnInterval
             );
 
-                while(!IsNight)
-                {
+                while ( !IsNight ) {
                     yield return new WaitForSeconds(1);
                 }
 
@@ -81,25 +82,20 @@ namespace Assets._game.Npc {
             // waitingLine.AddNPC(npc);
         }
 
-        private void OnEnable()
-        {
+        private void OnEnable() {
             signalBus.Subscribe<StateChangedSignal>(StateChanged);
         }
 
-        private void OnDisable()
-        {
+        private void OnDisable() {
             signalBus.Unsubscribe<StateChangedSignal>(StateChanged);
         }
 
         bool IsNight = false;
-        public void StateChanged(StateChangedSignal stateChangedSignal)
-        {
-            if (stateChangedSignal.gameState is DayShiftState)
-            {
+        public void StateChanged( StateChangedSignal stateChangedSignal ) {
+            if ( stateChangedSignal.gameState is DayShiftState ) {
                 IsNight = false;
             }
-            else if (stateChangedSignal.gameState is NightShiftState)
-            {
+            else if ( stateChangedSignal.gameState is NightShiftState ) {
                 IsNight = true;
             }
         }
