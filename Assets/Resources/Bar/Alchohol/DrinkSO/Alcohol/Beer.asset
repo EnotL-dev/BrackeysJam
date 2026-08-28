@@ -12,11 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 862821d1464ac29478d6e2ea1f010f0a, type: 3}
   m_Name: Beer
   m_EditorClassIdentifier: Assembly-CSharp::Assets._game.Bar.Model.AlcoholSO
-  _icon: {fileID: 0}
-  _name: 
-  _prepareTime: 0
-  buyCost: 0
-  soldCost: 0
+  _icon: {fileID: 21300000, guid: 2636cd2e3b7fe634c926a395e269d783, type: 3}
+  _name: Beer
+  _prepareTime: 3
+  consumeTime: 10
+  buyCost: 2
+  soldCost: 5
   drinkType: 0
-  type: 0
+  type: 1
   effect: nothing

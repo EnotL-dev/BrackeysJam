@@ -15,15 +15,15 @@ namespace Assets._game.Npc.ConcreateClass {
         }
 
         public void EnterState( Action _ ) {
-            throw new System.NotImplementedException();
+            //throw new System.NotImplementedException();
         }
 
         public void ExitState() {
-            throw new System.NotImplementedException();
+            //throw new System.NotImplementedException();
         }
 
         public void UpdateState() {
-            throw new System.NotImplementedException();
+            //throw new System.NotImplementedException();
         }
     }
 }

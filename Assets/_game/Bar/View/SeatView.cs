@@ -1,6 +1,7 @@
 using Assets._game.Bar.Controller;
 using System.Collections.Generic;
 using System.Security.Cryptography;
+using Unity.VisualScripting;
 using UnityEngine;
 using Zenject;
 
@@ -8,7 +9,7 @@ public class SeatView : MonoBehaviour {
 
     SeatService seatService;
 
-    
+
 
     [Inject]
     void Construct( SeatService seatService ) {
@@ -21,7 +22,7 @@ public class SeatView : MonoBehaviour {
 
     public List<Seat> GetChildrenWithTag() {
         List<Seat> matchedObjects = new List<Seat>();
-        Transform[] allChildren = this.gameObject.GetComponentsInChildren<Transform>(includeInactive: true);
+        Transform[] allChildren = this.gameObject.GetComponentsInChildren<Transform>(true);
 
         for ( int i = 0; i < allChildren.Length; i++ ) {
             if ( allChildren[i].CompareTag("Seat") ) {
@@ -33,12 +34,6 @@ public class SeatView : MonoBehaviour {
 
         return matchedObjects;
     }
-
-
-    public Seat FindBestSeat() {
-        return seatService.FindBestSeat();
-    }
-
 
 
 }

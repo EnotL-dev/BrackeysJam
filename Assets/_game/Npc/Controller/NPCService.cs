@@ -1,4 +1,6 @@
 ﻿using Assets._game.Bar.Controller;
+using Assets._game.Npc.Enum;
+using Assets._game.Npc.View;
 using Assets._game.Player.Controller;
 using Assets._game.TestingScript;
 using System.Collections;
@@ -9,9 +11,10 @@ namespace Assets._game.Npc.Controller {
     public class NPCService {
 
         private SeatService seatService;
-        private WaitingLineService comeInWaitingLineService;
+        private WaitingLineService comeInWaitingLineService; //THIS DONT USE FOR NOW
         private WaitingLineService barWaitingLineService;
-        private OrderService orderService;
+        private OrderService orderService; //THIS DONT USE FOR NOW
+        private IBarService barService;
         IPlayerInteractionService playerInteractionService;
 
         [Inject]
@@ -19,47 +22,54 @@ namespace Assets._game.Npc.Controller {
             [Inject(Id = "ComeIn")] WaitingLineService comeInWaitingLineService,
             [Inject(Id = "Bar")] WaitingLineService barWait,
             OrderService orderService,
-            IPlayerInteractionService playerInteractionService ) {
+            IPlayerInteractionService playerInteractionService,
+            IBarService barService ) {
             this.seatService = seatService;
             this.comeInWaitingLineService = comeInWaitingLineService;
             this.barWaitingLineService = barWait;
             this.orderService = orderService;
             this.playerInteractionService = playerInteractionService;
+            this.barService = barService;
         }
 
 
         public void AcceptNpc( NPCScript npc ) {
-
-
-            Seat seat = seatService.FindBestSeat();
-
-            Debug.Log("done find best seat");
+            Seat seat = seatService.FindBestSeat(npc.transform.position);
 
             if ( seat == null ) {
-
                 Debug.Log("there is no seat");
                 RejectNpc(npc);
                 return;
             }
 
+            if ( barWaitingLineService.TryReserve(out Vector3 targetPos) ) {
+                npc.MoveToBar(targetPos, seat.gameObject.transform.position);
+            }
+            else {
+                Debug.Log("Bar waiting line is full or unavailable.");
+                RejectNpc(npc);
+            }
 
-            comeInWaitingLineService.Exit(npc);
+            var info = npc.npcInfo;
+            if ( info.npcProperties == NPCProperty.HotTemper ) {
+                barService.AddChaos(0.1f);
+            }
 
-            var pos = barWaitingLineService.GetNextAvailablePosition();
-            npc.MoveToBar(pos);
-
-            Debug.Log("npc moving now");
-
-            EndInteraction();
+            EndInteraction(npc);
         }
 
         public void RejectNpc( NPCScript npc ) {
 
-            //npc.Leave();
-            EndInteraction();
+            npc.Leave();
+
+            EndInteraction(npc);
         }
 
-        public void EndInteraction() {
+        public void EndInteraction( NPCScript npc ) {
+
+            var script = npc.GetComponent<NPCInteractionScript>();
+            script.ModifyCanInteract();
+
             playerInteractionService.EndInteraction();
         }
 

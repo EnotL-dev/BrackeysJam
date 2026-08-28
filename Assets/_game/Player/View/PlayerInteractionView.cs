@@ -1,81 +1,70 @@
 ﻿using Assets._game.Interaction.View;
 using Assets._game.Player.Controller;
+using Assets._game.Store.Model;
+using Assets._game.UI.View;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Rendering;
 using Zenject;
 
 namespace Assets._game.Player.View {
     public class PlayerInteractionView : MonoBehaviour {
         [Inject] IPlayerInteractionService interactionService;
 
+        [SerializeField] private InputActionReference interactClose;
         [SerializeField] private InputActionReference interactAction;
+
         [Space(5)]
         [SerializeField] private PlayerController playerController;
         [SerializeField] private DragManagerView dragManagerView;
+
         [Space(5)]
         [SerializeField] private UIInteractionView uiInteractionView;
+        [SerializeField] private SettingPanel settingPanel;
+
+        [Space(5)]
         [SerializeField] private Camera cam;
         [SerializeField] private float distanceToInteract = 3f;
         [SerializeField] private LayerMask interactLayer;
 
         private bool holdStart = false;
+        IInteractable lastInteractable = null;
+        IPlayerUI currentUI;
 
         private void Start() {
             interactionService.Init(playerController, dragManagerView);
             interactAction.action.Enable();
+            interactClose.action.Enable();
+
+            interactClose.action.performed += OnEscape;
         }
 
         private void OnDisable() {
+            interactClose.action.performed -= OnEscape;
+
             interactAction.action.Disable();
+            interactClose.action.Enable();
+
+
         }
 
         private void Update() {
-            //CheckInteraction();
-
-            //if(holdStart && interactAction.action.WasReleasedThisFrame())
-            //{
-            //    holdStart = false;
-
-            //    interactionService.EndInteraction();
-            //}
-
             IInteractable interactable = CheckObject();
 
-            UpdateInteractionUI(interactable);
-            CheckInteraction(interactable);
+            bool hasTarget = interactable != null;
+            bool canInteract = hasTarget && interactable.CanInteractThisFrame;
+
+            if ( canInteract ) UpdateInteractionUI(interactable);
+            else uiInteractionView.HideTip();
+
+            if ( canInteract ) CheckInteraction(interactable);
+
             CheckInteractionRelease();
-
-        }
-
-        //TODO: seperate code for ui and checking
-        private void CheckInteraction() {
-            if ( CheckObject() is IInteractable interactableObject ) {
-                if ( interactAction.action.WasPressedThisFrame() ) // one click
-                {
-                    if ( interactionService.IsBusy() ) return;
-
-                    holdStart = true;
-
-                    interactionService.StartInteraction(interactableObject);
-                    uiInteractionView.HideTip();
-                }
-                else if ( interactAction.action.IsPressed() ) // pressed
-                {
-                    interactionService.ContinuousInteraction();
-                }
-                else {
-                    uiInteractionView.ShowTip(interactableObject.GetTip());
-                }
-            }
-            else // cross
-            {
-                uiInteractionView.HideTip();
-            }
         }
 
         private void UpdateInteractionUI( IInteractable interactable ) {
-            if ( interactable != null ) {
+            if ( interactable != null && lastInteractable == null ) {
                 uiInteractionView.ShowTip(interactable.GetTip());
             }
             else {
@@ -83,29 +72,51 @@ namespace Assets._game.Player.View {
             }
         }
 
+
         private void CheckInteraction( IInteractable interactable ) {
             if ( interactable == null ) return;
 
             if ( interactAction.action.WasPressedThisFrame() ) {
-                if ( interactionService.IsBusy() ) return;
+                IFurniture furniture = interactable as IFurniture;
+                if ( interactionService.IsBusy() || (furniture != null && !furniture.CanBuy()) )
+                    return;
 
                 holdStart = true;
 
                 interactionService.StartInteraction(interactable);
                 uiInteractionView.HideTip();
-            }
 
-            //might not use
+                lastInteractable = interactable;
+            }
             else if ( interactAction.action.IsPressed() ) {
-                interactionService.ContinuousInteraction();
+                if ( interactable.IsDraggableObject() ) {
+                    interactionService.ContinuousInteraction();
+                }
             }
         }
 
         private void CheckInteractionRelease() {
-            if ( holdStart && interactAction.action.WasReleasedThisFrame() ) {
-                holdStart = false;
-                interactionService?.EndInteraction();
+            if ( !holdStart || lastInteractable == null ) return;
+
+            if ( interactClose.action.WasReleasedThisFrame() && !lastInteractable.IsDraggableObject() ) {
+                EndInteraction();
             }
+            else if ( interactAction.action.WasReleasedThisFrame() && (lastInteractable.OnceActivation() || lastInteractable.IsDraggableObject()) ) {
+                EndInteraction();
+            }
+        }
+
+        private void EndInteraction() {
+            holdStart = false;
+            interactionService?.EndInteraction();
+            lastInteractable = null;
+        }
+
+        public void ForcedInteractionRelease() // May use from any space if use container
+        {
+            holdStart = false;
+            interactionService?.EndInteraction();
+            lastInteractable = null;
         }
 
         private IInteractable CheckObject() {
@@ -120,6 +131,45 @@ namespace Assets._game.Player.View {
             }
 
             return null;
+        }
+
+        private void OnEscape( InputAction.CallbackContext context ) {
+            // If currently interacting with an object,
+            // stop that interaction first.
+            if ( interactionService.IsBusy() ) {
+                ForcedInteractionRelease();
+                return;
+            }
+
+            if ( interactionService.HasOpenUI() ) {
+                interactionService.CloseCurrentUI();
+                return;
+            }
+
+            // If settings is already open, close it.
+            if ( settingPanel != null && settingPanel.IsOpen ) {
+                settingPanel.Close();
+
+                playerController.SetInputEnabled(true);
+                playerController.SetMouseFocus(true);
+
+                return;
+            }
+
+            // Otherwise open settings.
+            OpenSettings();
+        }
+
+        private void OpenSettings() {
+            if ( settingPanel == null )
+                return;
+
+            uiInteractionView.HideTip();
+
+            settingPanel.Open();
+
+            playerController.SetInputEnabled(false);
+            playerController.SetMouseFocus(false);
         }
     }
 }

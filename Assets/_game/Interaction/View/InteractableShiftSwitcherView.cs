@@ -1,72 +1,83 @@
 ﻿using Assets._game.Core.StateMachine;
+using Assets._game.Player.View;
+using Assets._game.Shift.Controller;
+using Assets._game.Sound.EnumInterface;
 using DG.Tweening;
 using System.Collections;
 using UnityEngine;
 using Zenject;
 
-namespace Assets._game.Interaction.View
-{
-    public class InteractableShiftSwitcherView : MonoBehaviour, IInteractable
-    {
-        [Inject] private SignalBus signalBus;
-        [Inject] private IGameStateMachine gameStateMachine;
+namespace Assets._game.Interaction.View {
+    public class InteractableShiftSwitcherView : MonoBehaviour, IInteractable {
+        SignalBus signalBus;
+        IShiftService shiftService;
+        IMusicService musicService;
 
         [SerializeField] private Transform signObject;
 
+        [Inject]
+        public void Construct( SignalBus signalBus,
+            IShiftService shiftService,
+            IMusicService musicService ) {
+            this.signalBus = signalBus;
+            this.shiftService = shiftService;
+            this.musicService = musicService;
+        }
+
+        public string GetTip() => canSwitch ? "[E] - change the shift to night" : "It's already the night shift";
         public bool FreezePlayer() => false;
-        public bool IsDragingObject() => false;
+        public bool IsDraggableObject() => false;
 
-        public void OnContinuousInteraction()
-        {
+        public void OnContinuousInteraction() {
             //nothing
         }
 
-        public void OnEndInteraction()
-        {
+        public void OnEndInteraction() {
             //nothing
         }
 
-        public void OnInteract()
-        {
-            if(lastState is DayShiftState)
-                gameStateMachine.Enter<NightShiftState>();
-            else
-                gameStateMachine.Enter<DayShiftState>();
+        public bool OnceActivation() => true;
 
-            FlipSign();
+        bool canSwitch = true;
+
+        public void OnInteract() {
+            if ( !canSwitch ) return;
+            shiftService.StartNightShift();
+
         }
 
-        public void OnStartInteraction()
-        {
+        public void OnStartInteraction() {
             //nothing
         }
 
-        private void FlipSign()
-        {
+        private void FlipSign() {
             DOTween.Kill(signObject);
             signObject.DORotate(new Vector3(0, 180, 0), 0.5f, RotateMode.LocalAxisAdd)
                 .SetEase(Ease.OutBounce);
         }
 
-        private void OnEnable()
-        {
+        private void OnEnable() {
             signalBus.Subscribe<StateChangedSignal>(StateChanged);
         }
 
-        private void OnDisable()
-        {
+        private void OnDisable() {
             signalBus.Unsubscribe<StateChangedSignal>(StateChanged);
         }
 
-        IGameState lastState; // FOR DEBUG
-        public void StateChanged(StateChangedSignal stateChangedSignal)
-        {
-            if (stateChangedSignal.gameState is DayShiftState)
-                print("day");
-            else if (stateChangedSignal.gameState is NightShiftState)
-                print("night");
+        public void StateChanged( StateChangedSignal stateChangedSignal ) {
+            if ( stateChangedSignal.gameState is DayShiftState ) {
+                canSwitch = true;
+                FlipSign();
+                musicService.Play(MusicType.Day);
 
-            lastState = stateChangedSignal.gameState;
+                Debug.Log("<color=magenta>Day shift</color>");
+            }
+            else if ( stateChangedSignal.gameState is NightShiftState ) {
+                canSwitch = false;
+                FlipSign();
+                musicService.Play(MusicType.Night);
+                Debug.Log("<color=magenta>Night shift</color>");
+            }
         }
     }
 }
