@@ -771,6 +771,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Assets._game.Core.Installers.PlayerInstaller
   playerInterfaceManagerView: {fileID: 3507562112858951549}
   playerInteractionView: {fileID: 0}
+  armsAnimatorView: {fileID: 0}
 --- !u!1 &2653937683497260613
 GameObject:
   m_ObjectHideFlags: 0
@@ -898,6 +899,7 @@ MonoBehaviour:
   textShiftTimer: {fileID: 6619183902988507556}
   prentHintPanel: {fileID: 3826207459287392460}
   prefabHintPanel: {fileID: -174307781356561706, guid: f157f6fcb4bc9194bbdb71594d66b864, type: 3}
+  prefabAddMoney: {fileID: 188555393628213212, guid: a47f46e2f5f68a648853be5a46c51161, type: 3}
 --- !u!1 &3172936511608091567
 GameObject:
   m_ObjectHideFlags: 0

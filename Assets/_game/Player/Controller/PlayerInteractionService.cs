@@ -27,8 +27,6 @@ namespace Assets._game.Player.Controller {
         public void StartInteraction( IInteractable interactableObject ) {
             Busy = true;
 
-            Debug.Log("interact");
-
             lastInteractableObject = interactableObject;
             interactableObject?.OnInteract();
 

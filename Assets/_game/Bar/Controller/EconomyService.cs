@@ -5,6 +5,7 @@ using Assets._game.Bar.View;
 using Assets._game.Player.View;
 using Assets._game.Sound.EnumInterface;
 using Assets._game.Store.Model;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -34,7 +35,7 @@ namespace Assets._game.Bar.Controller {
         // QUOTA
         int quotaCurrentValue = 0;
         public int QuotaCurrentValue() => quotaCurrentValue;
-        int quotaMaxValue = 15;
+        int quotaMaxValue = 30;
         public int QuotaMaxValue() => quotaMaxValue;
         // QUOTA
 
@@ -48,7 +49,7 @@ namespace Assets._game.Bar.Controller {
 
         public void IncreaseQuota()
         {
-            quotaMaxValue = (int)(quotaMaxValue * (1f + Random.Range(0.1f, 0.2f)));
+            quotaMaxValue = (int)(quotaMaxValue * (1f + UnityEngine.Random.Range(0.1f, 0.2f)));
 
             deskManagerView.UpdateQuotaText(0, quotaMaxValue);
             playerInterfaceManagerView.ReduceQuotaMoney(quotaCurrentValue, 0, quotaMaxValue);
@@ -61,7 +62,7 @@ namespace Assets._game.Bar.Controller {
             if ( alcoholDictionary == null ) alcoholDictionary = barService.GetAlcoholDictionary();
             int cost = alcoholCatalogSO.Get(alcoholType).BuyCost * count;
 
-            if ( count < 1 && cost > _money ) {
+            if ( count < 1 || cost > _money ) {
                 Debug.Log($"<color=red>Cant buy {alcoholType} in count {count}</color>");
                 return;
             }
@@ -72,16 +73,16 @@ namespace Assets._game.Bar.Controller {
 
             barService.AddAlcohol(alcoholType, count);
             _money -= cost;
-
-            Debug.Log($"<color=blue>Bought {alcoholType} in count {count}</color>");
         }
+
+        public Action<int> NotifySell { get; set; }
 
         public void SellAlchohol( AlcoholType alcoholType, int count ) {
             if ( alcoholDictionary == null ) alcoholDictionary = barService.GetAlcoholDictionary();
             int cost = alcoholCatalogSO.Get(alcoholType).SoldCost * count;
 
 
-            if ( count < 1 && alcoholDictionary[alcoholType] < count ) return;
+            if ( count < 1 || alcoholDictionary[alcoholType] < count ) return;
 
             deskManagerView.UpdateQuotaText(quotaCurrentValue + cost, quotaMaxValue);
             playerInterfaceManagerView.AddQuotaMoney(quotaCurrentValue, quotaCurrentValue + cost, quotaMaxValue);
@@ -89,7 +90,7 @@ namespace Assets._game.Bar.Controller {
             barService.ReduceAlchohol(alcoholType, count);
             quotaCurrentValue += cost;
 
-            Debug.Log(quotaCurrentValue);
+            NotifySell?.Invoke(cost);
         }
 
         public void BuyFurniture(int cost ) {

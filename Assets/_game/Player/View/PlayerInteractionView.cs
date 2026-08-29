@@ -97,8 +97,11 @@ namespace Assets._game.Player.View {
 
             if ( interactAction.action.WasPressedThisFrame() ) {
                 IFurniture furniture = interactable as IFurniture;
-                if ( interactionService.IsBusy() || (furniture != null && !furniture.CanBuy()) )
+                if (interactionService.IsBusy())
                     return;
+                if (furniture != null)
+                    if (!furniture.CanBuy() && furniture.WasRemoved == false)
+                        return;
 
                 holdStart = true;
 
@@ -106,11 +109,13 @@ namespace Assets._game.Player.View {
                 uiInteractionView.HideTip();
 
                 lastInteractable = interactable;
+
+                if(interactable.IsDraggableObject())
+                    armsAnimatorView.ChangeAnimation("Hold", true);
             }
             else if ( interactAction.action.IsPressed() ) {
                 if ( interactable.IsDraggableObject() ) {
                     interactionService.ContinuousInteraction();
-                    armsAnimatorView.ChangeAnimation("Hold", true);
                 }
             }
         }

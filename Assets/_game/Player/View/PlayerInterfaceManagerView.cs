@@ -27,6 +27,8 @@ namespace Assets._game.Player.View
         [Space(5)]
         [SerializeField] private VerticalLayoutGroup prentHintPanel;
         [SerializeField] private HintPanel prefabHintPanel;
+        [Space(5)]
+        [SerializeField] private RectTransform prefabAddMoney;
 
         public void Start()
         {
@@ -56,12 +58,34 @@ namespace Assets._game.Player.View
         {
             DOTween.Kill(textMoney.gameObject);
             textMoney.AnimateIncrease(startCount, endCount, 1f);
+
+            RectTransform instance = Instantiate(prefabAddMoney, textMoney.transform);
+            instance.localPosition = Vector3.zero;
+
+            TextMeshProUGUI tmp = instance.GetComponent<TextMeshProUGUI>();
+            tmp.text = $"{endCount-startCount} $";
+            tmp.color = normalColor;
+
+            tmp.DOFade(1, 0.3f).SetEase(Ease.OutQuad);
+            instance.DOLocalMoveY(60, 0.2f).SetEase(Ease.OutQuad);    
+            tmp.DOFade(0, 0.3f).SetDelay(1.2f).OnComplete(() => Destroy(instance.gameObject));
         }
 
         public void ReduceMoney(int startCount, int endCount)
         {
             DOTween.Kill(textMoney.gameObject);
             textMoney.AnimateDecrease(startCount, endCount, 0.5f, reduceColor, normalColor);
+
+            RectTransform instance = Instantiate(prefabAddMoney, textMoney.transform);
+            instance.localPosition = Vector3.zero;
+
+            TextMeshProUGUI tmp = instance.GetComponent<TextMeshProUGUI>();
+            tmp.text = $"{endCount - startCount} $";
+            tmp.color = reduceColor;
+
+            tmp.DOFade(1, 0.3f).SetEase(Ease.OutQuad);
+            instance.DOLocalMoveY(60, 0.2f).SetEase(Ease.OutQuad);
+            tmp.DOFade(0, 0.3f).SetDelay(1.2f).OnComplete(() => Destroy(instance.gameObject));
         }
 
         /*

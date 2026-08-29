@@ -35,7 +35,7 @@ namespace Assets._game.Store.View
 
         private void SpawnNewObjects()
         {
-            for(int i = 0; i< spawnProreties.Count; i++)
+            for(int i = 0; i < spawnProreties.Count; i++)
             {
                 if (spawnedFurniture[i] == null)
                 {
@@ -49,8 +49,16 @@ namespace Assets._game.Store.View
 
         public void BuyFurnitureFromStore(GameObject furnitureItem)
         {
-            int index = spawnedFurniture.ToList().FindIndex(obj => 
-                obj.transform.GetComponentInChildren<InteractableItemView>().gameObject == furnitureItem);
+            int index = 0;
+            foreach (GameObject furniture in spawnedFurniture)
+            {
+                if (furniture != null)
+                {
+                    if (furniture.transform.GetComponentInChildren<InteractableItemView>().gameObject == furnitureItem)
+                        break;
+                }
+                index++;
+            }
 
             spawnedFurniture[index] = null;
 
