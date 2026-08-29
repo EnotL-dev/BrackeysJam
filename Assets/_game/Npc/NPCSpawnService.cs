@@ -57,7 +57,12 @@ namespace Assets._game.Npc {
         //to the npc script
         private void SpawnNPC() {
 
+            var gameObject = NPCFactory.SpawnNpc();
+            var npc = gameObject.GetComponent<NPCScript>();
+
+
             if ( !waitingLineService.TryReserve(out Vector3 targetPos) ) {
+                Destroy(gameObject);
                 return;
             }
 
@@ -71,8 +76,7 @@ namespace Assets._game.Npc {
 
 
 
-            var gameObject = NPCFactory.SpawnNpc();
-            var npc = gameObject.GetComponent<NPCScript>();
+
 
             npc.Initialize(info);
             npc.MoveToDest(targetPos);

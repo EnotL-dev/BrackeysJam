@@ -1,5 +1,6 @@
 ﻿using Assets._game.Sound.EnumInterface;
 using Assets._game.Sound.SO;
+using FMOD.Studio;
 using FMODUnity;
 using System.Collections;
 using UnityEngine;
@@ -28,6 +29,30 @@ namespace Assets._game.Sound.Controller {
             }
         }
 
+        public EventInstance StartLoop( SFXType type, GameObject gameObject ) {
+            EventReference reference = GetEventReference(type);
+
+            if ( reference.IsNull ) return default;
+
+            EventInstance instance = RuntimeManager.CreateInstance(reference);
+
+            if ( gameObject != null ) {
+                RuntimeManager.AttachInstanceToGameObject(instance, gameObject);
+            }
+
+            instance.start();
+            return instance;
+        }
+
+
+        public void StopLoop( EventInstance instance ) {
+            if ( !instance.isValid() ) return;
+
+            instance.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
+            instance.release();
+        }
+
+
         private EventReference GetEventReference( SFXType type ) => type switch {
             SFXType.NPCDrink => config.npcDrink,
             SFXType.BartenderPourBeer => config.bartenderPourBeer,
@@ -37,7 +62,6 @@ namespace Assets._game.Sound.Controller {
             SFXType.KnockOut => config.knockOut,
             _ => default
         };
-
 
     }
 

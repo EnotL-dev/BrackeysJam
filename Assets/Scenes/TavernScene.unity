@@ -494,7 +494,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Assets._game.Npc.NPCFactory
   _visitorBrain: {fileID: 4050741749394943751, guid: 16dbddd3f78b2174eb66be35c5044e2d, type: 3}
   _npcGenerator: {fileID: 1538706086}
-  spawnParent: {fileID: 988172731}
+  spawnParent: {fileID: 0}
 --- !u!4 &39051094
 Transform:
   m_ObjectHideFlags: 0
@@ -15249,11 +15249,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 379969593858167819, guid: f169e5f586555424b95a6c25305f0f48, type: 3}
       propertyPath: m_LocalScale.z
-      value: 0.62601304
+      value: 0.7209928
       objectReference: {fileID: 0}
     - target: {fileID: 379969593858167819, guid: f169e5f586555424b95a6c25305f0f48, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 34.15
+      value: 35.279
       objectReference: {fileID: 0}
     - target: {fileID: 379969593858167819, guid: f169e5f586555424b95a6c25305f0f48, type: 3}
       propertyPath: m_LocalPosition.y
@@ -15293,11 +15293,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 950765766566477680, guid: f169e5f586555424b95a6c25305f0f48, type: 3}
       propertyPath: spacing
-      value: 1
+      value: 1.5
       objectReference: {fileID: 0}
     - target: {fileID: 950765766566477680, guid: f169e5f586555424b95a6c25305f0f48, type: 3}
       propertyPath: queueDirection.z
       value: -1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1344272921944427586, guid: f169e5f586555424b95a6c25305f0f48, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1344272921944427586, guid: f169e5f586555424b95a6c25305f0f48, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 4.26
       objectReference: {fileID: 0}
     - target: {fileID: 6487438871918097919, guid: f169e5f586555424b95a6c25305f0f48, type: 3}
       propertyPath: m_Name
@@ -15305,10 +15313,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects:
-    - targetCorrespondingSourceObject: {fileID: 379969593858167819, guid: f169e5f586555424b95a6c25305f0f48, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 2021613699}
+    m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f169e5f586555424b95a6c25305f0f48, type: 3}
 --- !u!114 &1298343591 stripped
@@ -26579,27 +26584,27 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 379969593858167819, guid: f169e5f586555424b95a6c25305f0f48, type: 3}
       propertyPath: m_LocalScale.x
-      value: 1
+      value: 0.28790006
       objectReference: {fileID: 0}
     - target: {fileID: 379969593858167819, guid: f169e5f586555424b95a6c25305f0f48, type: 3}
       propertyPath: m_LocalScale.z
-      value: 1.1907456
+      value: 0.78284264
       objectReference: {fileID: 0}
     - target: {fileID: 379969593858167819, guid: f169e5f586555424b95a6c25305f0f48, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -31.642933
+      value: 24.241392
       objectReference: {fileID: 0}
     - target: {fileID: 379969593858167819, guid: f169e5f586555424b95a6c25305f0f48, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 0.63
       objectReference: {fileID: 0}
     - target: {fileID: 379969593858167819, guid: f169e5f586555424b95a6c25305f0f48, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -16.788795
+      value: 42.75
       objectReference: {fileID: 0}
     - target: {fileID: 379969593858167819, guid: f169e5f586555424b95a6c25305f0f48, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 1
+      value: 0.7071068
       objectReference: {fileID: 0}
     - target: {fileID: 379969593858167819, guid: f169e5f586555424b95a6c25305f0f48, type: 3}
       propertyPath: m_LocalRotation.x
@@ -26607,7 +26612,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 379969593858167819, guid: f169e5f586555424b95a6c25305f0f48, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0
+      value: 0.7071068
       objectReference: {fileID: 0}
     - target: {fileID: 379969593858167819, guid: f169e5f586555424b95a6c25305f0f48, type: 3}
       propertyPath: m_LocalRotation.z
@@ -28805,6 +28810,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 383201834f0d69f4bae912376732f7ad, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1545353881}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 383201834f0d69f4bae912376732f7ad, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1545353883}
   m_SourcePrefab: {fileID: 100100000, guid: 383201834f0d69f4bae912376732f7ad, type: 3}
 --- !u!1 &1545353880 stripped
 GameObject:
@@ -28838,6 +28846,18 @@ Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 383201834f0d69f4bae912376732f7ad, type: 3}
   m_PrefabInstance: {fileID: 1545353879}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1545353883
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1545353880}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7abf4a56ac9226c4fbcca71928583e67, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Assets._game.Bar.View.BartenderScript
 --- !u!114 &1554006202 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 8043464257314805802, guid: 46b1d466d8e40814082833107cad5126, type: 3}
@@ -35336,11 +35356,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b5ae5562885ff0c41ab3f8470a63380b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Assets._game.TestingScript.WaitingLineScript
---- !u!4 &2021613699 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 379969593858167819, guid: f169e5f586555424b95a6c25305f0f48, type: 3}
-  m_PrefabInstance: {fileID: 1329273594}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &2026665863
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -39708,12 +39723,13 @@ SceneRoots:
   - {fileID: 248621046}
   - {fileID: 2106037821}
   - {fileID: 1298343590}
+  - {fileID: 1329273594}
   - {fileID: 2033137762}
   - {fileID: 39051094}
   - {fileID: 437430247}
-  - {fileID: 983027836}
-  - {fileID: 988172731}
   - {fileID: 807606036}
   - {fileID: 630426470}
   - {fileID: 863711711}
   - {fileID: 201270748}
+  - {fileID: 983027836}
+  - {fileID: 988172731}

@@ -12,7 +12,7 @@ namespace Assets._game.Npc.Controller {
     public class NPCService {
 
         private ISeatService seatService;
-        private WaitingLineService comeInWaitingLineService; //THIS DONT USE FOR NOW
+        private WaitingLineService comeInWaitingLineService;
         private WaitingLineService barWaitingLineService;
         private OrderService orderService; //THIS DONT USE FOR NOW
         private IBarService barService;
@@ -43,7 +43,7 @@ namespace Assets._game.Npc.Controller {
                 return;
             }
 
-            if ( barWaitingLineService.TryReserve(out Vector3 targetPos) ) {
+            if ( barWaitingLineService.TryReserve( out Vector3 targetPos) ) {
                 npc.MoveToBar(targetPos, seat);
             }
             else {

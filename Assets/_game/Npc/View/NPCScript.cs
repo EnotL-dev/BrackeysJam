@@ -177,16 +177,18 @@ namespace Assets._game.Npc.View {
 
             while ( elapsed < maxWaitServeDrinkTimeout ) {
                 var order = orderFactory.GetRandomOrder();
-                if ( order != null ) {
-                    Debug.Log("Drink restocked, placing order.");
-                    waitForDrinkCoroutine = null;
-                    PlaceOrder(seat, order);
-                    yield break;
+                if ( order == null ) {
+                    Debug.Log($"Waiting for drinks to be stocked... ({elapsed:F1}s/{maxWaitServeDrinkTimeout}s)");
+                    yield return new WaitForSeconds(checkDrinkInterval);
+                    elapsed += checkDrinkInterval;
                 }
 
-                Debug.Log($"Waiting for drinks to be stocked... ({elapsed:F1}s/{maxWaitServeDrinkTimeout}s)");
-                yield return new WaitForSeconds(checkDrinkInterval);
-                elapsed += checkDrinkInterval;
+                Debug.Log("Drink restocked, placing order.");
+                waitForDrinkCoroutine = null;
+
+                PlaceOrder(seat, order);
+
+                yield break;
             }
 
             // Patience ran out because the player never restocked
@@ -212,7 +214,8 @@ namespace Assets._game.Npc.View {
                 _ => 1
             };
 
-            StartCoroutine(barService.RequestDrink((AlcoholOrder)order, () => {
+
+            barService.RequestDrink((AlcoholOrder)order, () => {
 
                 //move to seat
                 MoveToSeat(seat.SitPosition(), seat.SitRotation(), () => {
@@ -227,7 +230,7 @@ namespace Assets._game.Npc.View {
                         Leave();
                     });
                 });
-            }));
+            });
 
         }
 
@@ -285,7 +288,20 @@ namespace Assets._game.Npc.View {
             Leave();
         }
 
+        private void OnDrawGizmos() {
+            if ( agent == null || agent.path == null || agent.path.corners.Length < 2 )
+                return;
 
+            Gizmos.color = Color.red;
+            Vector3[] corners = agent.path.corners;
+
+            for ( int i = 0; i < corners.Length - 1; i++ ) {
+                // Draw lines between each waypoint corner
+                Gizmos.DrawLine(corners[i], corners[i + 1]);
+                // Draw a small sphere at each corner/turn point
+                Gizmos.DrawSphere(corners[i + 1], 0.15f);
+            }
+        }
 
     }
 }

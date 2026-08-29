@@ -28,6 +28,10 @@ namespace Assets._game.Bar.Controller {
 
         Dictionary<AlcoholType, int> alcohols = new();
 
+
+        public event Action<float, Action> OnNpcRequestBar;
+
+
         Vibe vibe = new();
         ChaosStatus chaosStatus = new();
         public Vibe GetVibe() => vibe;
@@ -68,6 +72,7 @@ namespace Assets._game.Bar.Controller {
 
         public void Initialize() {
             InitAlchoholData();
+
         }
 
         private void InitAlchoholData() {
@@ -99,16 +104,19 @@ namespace Assets._game.Bar.Controller {
             Debug.Log($"<color=yellow>Reduce {alcoholType} -{count}</color>");
         }
 
-        public IEnumerator RequestDrink( AlcoholOrder alcoholOrder, Action onOrderReady ) {
+        public void RequestDrink( AlcoholOrder alcoholOrder, Action onOrderReady ) {
             var so = alcoholCatalogSO.Get(alcoholOrder.alcoholType);
 
             Debug.Log($"Order {alcoholOrder.alcoholType}");
-            yield return new WaitForSeconds(so.PrepareTime);
 
-            sfxService.Play(SFXType.CashIn);
 
-            economyService.SellAlchohol(alcoholOrder.alcoholType);
-            onOrderReady?.Invoke();
+            OnNpcRequestBar?.Invoke(so.PrepareTime, () => {
+                onOrderReady?.Invoke();
+                sfxService.Play(SFXType.CashIn);
+                economyService.SellAlchohol(alcoholOrder.alcoholType);
+            });
+
+
         }
 
 
@@ -158,4 +166,6 @@ namespace Assets._game.Bar.Controller {
         //}
 
     }
+
+
 }
