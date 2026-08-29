@@ -9,6 +9,7 @@ using Zenject;
 
 namespace Assets._game.Player.View {
     public class PlayerInteractionView : MonoBehaviour {
+        [Inject] ArmsAnimatorView armsAnimatorView;
         [Inject] IPlayerInteractionService interactionService;
 
         [SerializeField] private InputActionReference attackAction;
@@ -75,6 +76,11 @@ namespace Assets._game.Player.View {
             CheckInteractionRelease();
         }
 
+        private void LateUpdate()
+        {
+            armsAnimatorView.ChangeAnimation("Punch", false);
+        }
+
         private void UpdateInteractionUI( IInteractable interactable ) {
             if ( interactable != null && lastInteractable == null ) {
                 uiInteractionView.ShowTip(interactable.GetTip());
@@ -103,6 +109,7 @@ namespace Assets._game.Player.View {
             else if ( interactAction.action.IsPressed() ) {
                 if ( interactable.IsDraggableObject() ) {
                     interactionService.ContinuousInteraction();
+                    armsAnimatorView.ChangeAnimation("Hold", true);
                 }
             }
         }
@@ -122,6 +129,8 @@ namespace Assets._game.Player.View {
             holdStart = false;
             interactionService?.EndInteraction();
             lastInteractable = null;
+
+            armsAnimatorView.ChangeAnimation("Hold", false);
         }
 
         public void ForcedInteractionRelease() // May use from any space if use container
@@ -129,6 +138,8 @@ namespace Assets._game.Player.View {
             holdStart = false;
             interactionService?.EndInteraction();
             lastInteractable = null;
+
+            armsAnimatorView.ChangeAnimation("Hold", false);
         }
 
         private IInteractable CheckObject() {
@@ -190,6 +201,8 @@ namespace Assets._game.Player.View {
             if ( interactable == null ) return;
             if ( interactable.IsDameableObject() ) {
                 interactable.TryAttack();
+
+                armsAnimatorView.ChangeAnimation("Punch", true);
             }
         }
     }

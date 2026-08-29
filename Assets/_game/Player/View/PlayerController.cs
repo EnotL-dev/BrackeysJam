@@ -1,3 +1,4 @@
+using Assets._game.Player.View;
 using Assets._game.UI;
 using Assets._game.UI.View;
 using UnityEngine;
@@ -7,6 +8,8 @@ using Zenject;
 
 [RequireComponent(typeof(CharacterController))]
 public class PlayerController : MonoBehaviour {
+    [Inject] ArmsAnimatorView armsAnimatorView;
+
     [Header("Input")]
     [SerializeField] private InputActionReference moveAction;
     [SerializeField] private InputActionReference lookAction;
@@ -128,6 +131,10 @@ public class PlayerController : MonoBehaviour {
 
     private void HandleMovement() {
         Vector2 input = moveAction.action.ReadValue<Vector2>();
+        if (input != Vector2.zero)
+            armsAnimatorView.ChangeAnimation("Walk", true);
+        else
+            armsAnimatorView.ChangeAnimation("Walk", false);
 
         // Movement relative to player/camera's horizontal orientation
         Vector3 forward = cameraTransform.forward;

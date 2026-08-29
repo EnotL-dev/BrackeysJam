@@ -11,6 +11,7 @@ namespace Assets._game.Core.Installers
     {
         [SerializeField] private PlayerInterfaceManagerView playerInterfaceManagerView;
         [SerializeField] private PlayerInteractionView playerInteractionView;
+        [SerializeField] private ArmsAnimatorView armsAnimatorView;
 
         public override void InstallBindings()
         {
@@ -22,6 +23,10 @@ namespace Assets._game.Core.Installers
 
         private void BindInteraction()
         {
+            Container.Bind<ArmsAnimatorView>()
+                 .FromComponentOn(armsAnimatorView.gameObject)
+                 .AsSingle();
+
             Container.Bind<IPlayerInteractionService>()
                      .To<PlayerInteractionService>()
                      .AsSingle();

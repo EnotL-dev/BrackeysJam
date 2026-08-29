@@ -1,6 +1,7 @@
 using Assets._game.Interaction.View;
 using Assets._game.Player.View;
 using UnityEngine;
+using Zenject;
 using Zenject.SpaceFighter;
 
 namespace Assets._game.Player.Controller {
