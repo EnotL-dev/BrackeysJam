@@ -266,8 +266,7 @@ namespace Assets._game.Npc.View {
 
             Vector3 destination = worldSettingScript.GetLeavePoint(); // Ref a real postion and handle destory
 
-
-            MoveToDest(destination);
+            machineState.ChangeState(moveScript, () => { Destroy(gameObject); });
         }
 
         public void SitDown() {
