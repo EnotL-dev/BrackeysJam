@@ -1,4 +1,5 @@
-﻿using Assets._game.Store.Model;
+﻿using Assets._game.Player.View;
+using Assets._game.Store.Model;
 using Assets._game.Store.View;
 using DG.Tweening;
 using System.Collections;
@@ -9,6 +10,7 @@ namespace Assets._game.Interaction.View
 {
     public class InteractableCannonView : MonoBehaviour, IInteractable
     {
+        [Inject] CameraShakingView cameraShakingView;
         [SerializeField] private Transform cannonObject;
         [SerializeField] private CanonLoader canonLoader;
         [SerializeField] private Transform spawnShootPoint;
@@ -74,6 +76,7 @@ namespace Assets._game.Interaction.View
 
             sequence.Play();
 
+
             Transform tempVisitorObject = visitorObject;
             tempVisitorObject.transform.position = spawnShootPoint.position;
             tempVisitorObject.transform.rotation = spawnShootPoint.rotation;
@@ -84,6 +87,7 @@ namespace Assets._game.Interaction.View
             particleSmoke.Stop();
             particleSmoke.Play();
 
+            cameraShakingView.ShakeCanon();
             visitorObject = null;
         }
 

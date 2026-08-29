@@ -33,6 +33,10 @@ namespace Assets._game.Core.Installers
         }
         private void BindPlayerInterface()
         {
+            Container.Bind<CameraShakingView>()
+                 .FromComponentOn(playerInteractionView.gameObject)
+                 .AsSingle();
+
             Container.Bind<PlayerInterfaceManagerView>()
                  .FromComponentOn(playerInterfaceManagerView.gameObject)
                  .AsSingle();

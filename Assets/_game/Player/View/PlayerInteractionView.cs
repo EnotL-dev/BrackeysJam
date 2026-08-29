@@ -9,6 +9,7 @@ using Zenject;
 
 namespace Assets._game.Player.View {
     public class PlayerInteractionView : MonoBehaviour {
+        [Inject] CameraShakingView cameraShakingView;
         [Inject] ArmsAnimatorView armsAnimatorView;
         [Inject] IPlayerInteractionService interactionService;
 
@@ -202,6 +203,7 @@ namespace Assets._game.Player.View {
             if ( interactable.IsDameableObject() ) {
                 interactable.TryAttack();
 
+                cameraShakingView.ShakePunch();
                 armsAnimatorView.ChangeAnimation("Punch", true);
             }
         }

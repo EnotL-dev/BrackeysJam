@@ -14,6 +14,7 @@ namespace Assets._game.Interaction.View {
         IMusicService musicService;
 
         [SerializeField] private Transform signObject;
+        [SerializeField] private GameObject arrowObject;
 
         [Inject]
         public void Construct( SignalBus signalBus,
@@ -43,7 +44,6 @@ namespace Assets._game.Interaction.View {
         public void OnInteract() {
             if ( !canSwitch ) return;
             shiftService.StartNightShift();
-
         }
 
         public void OnStartInteraction() {
@@ -57,6 +57,7 @@ namespace Assets._game.Interaction.View {
         }
 
         private void OnEnable() {
+            arrowObject.SetActive(true);
             signalBus.Subscribe<StateChangedSignal>(StateChanged);
         }
 
@@ -70,12 +71,15 @@ namespace Assets._game.Interaction.View {
                 FlipSign();
                 musicService.Play(MusicType.Day);
 
+                arrowObject.SetActive(true);
                 Debug.Log("<color=magenta>Day shift</color>");
             }
             else if ( stateChangedSignal.gameState is NightShiftState ) {
                 canSwitch = false;
                 FlipSign();
                 musicService.Play(MusicType.Night);
+
+                arrowObject.SetActive(false);
                 Debug.Log("<color=magenta>Night shift</color>");
             }
         }

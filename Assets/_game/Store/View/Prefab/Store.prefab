@@ -1973,11 +1973,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5012298425108901370, guid: c6ca302ef4bae4d4980bbe45c40200b0, type: 3}
       propertyPath: m_Range
-      value: 30
+      value: 40
       objectReference: {fileID: 0}
     - target: {fileID: 5012298425108901370, guid: c6ca302ef4bae4d4980bbe45c40200b0, type: 3}
       propertyPath: m_Intensity
-      value: 1.5
+      value: 1.7
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

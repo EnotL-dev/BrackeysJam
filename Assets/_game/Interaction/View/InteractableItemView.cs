@@ -18,7 +18,7 @@ namespace Assets._game.Interaction.View
         public FurnitureSO ThisFurnitureSO() => furnitureSO;
         public string GetTip()
         {
-            return !wasRemoved ? $"E - buy {furnitureSO.Cost()} $" : $"E - {furnitureSO.Name()}";
+            return !wasRemoved ? $"[E] - buy {furnitureSO.Cost()} $" : $"[E] - {furnitureSO.Name()}";
         }
         public bool FreezePlayer() => false;
         public bool IsDraggableObject() => true;

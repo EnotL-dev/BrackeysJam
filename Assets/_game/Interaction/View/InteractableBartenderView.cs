@@ -13,6 +13,8 @@ namespace Assets._game.Interaction.View
 
         [SerializeField] private BartenderPanelView bartenderPanelView;
 
+        public string GetTip() => "[E] - Buy Drinks";
+
         public bool FreezePlayer() => true;
 
         public bool IsDraggableObject() => false;
