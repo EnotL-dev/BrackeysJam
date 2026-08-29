@@ -12,13 +12,20 @@ namespace Assets._game.Interaction.View
 
         [SerializeField] private InteractableCannonView interactableCannonView;
         [SerializeField] private LayerMask layerMaskVisitor;
+        [Space(5)]
+        [SerializeField] private ParticleSystem particleFire;
+        [SerializeField] private ParticleSystem particleFuse;
 
         private bool IsBusy = false;
         public void UnLoadCanon()
         {
-            IsBusy = false;
             playerInteractionView.ForcedInteractionRelease();
             interactableCannonView.gameObject.SetActive(false);
+
+            particleFire.Stop();
+            particleFuse.Stop();
+
+            IsBusy = false;
         }
 
         private void OnTriggerEnter(Collider other)
@@ -28,6 +35,9 @@ namespace Assets._game.Interaction.View
                 playerInteractionView.ForcedInteractionRelease();
                 interactableCannonView.gameObject.SetActive(true);
                 interactableCannonView.LoadVisitor(other.transform);
+
+                particleFire.Play();
+                particleFuse.Play();
 
                 IsBusy = true;
             }

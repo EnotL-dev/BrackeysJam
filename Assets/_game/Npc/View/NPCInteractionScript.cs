@@ -121,6 +121,8 @@ namespace Assets._game.Npc.View {
 
 
                 rd.isKinematic = false;
+                rd.useGravity = false;
+
                 collider.isTrigger = true;
 
                 sFXService.Play(SFXType.KnockOut);
@@ -132,6 +134,7 @@ namespace Assets._game.Npc.View {
                 StartCoroutine(RecoverFromKnockOut(() => {
                     isKnockOut = false;
                     rd.isKinematic = true;
+                    rd.useGravity = true;
                     collider.isTrigger = false;
                     animator.enabled = true;
                 }));

@@ -546,17 +546,6 @@
                     "action": "Esc",
                     "isComposite": false,
                     "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "292b5f84-131d-4ed4-8901-fccbb28b4b93",
-                    "path": "<Keyboard>/space",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Esc",
-                    "isComposite": false,
-                    "isPartOfComposite": false
                 }
             ]
         },

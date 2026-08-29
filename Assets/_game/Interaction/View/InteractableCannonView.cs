@@ -12,6 +12,9 @@ namespace Assets._game.Interaction.View
         [SerializeField] private Transform cannonObject;
         [SerializeField] private CanonLoader canonLoader;
         [SerializeField] private Transform spawnShootPoint;
+        [Space(5)]
+        [SerializeField] private ParticleSystem particleSmoke;
+
         private float initialScaleX;
 
         private Transform visitorObject = null;
@@ -77,6 +80,9 @@ namespace Assets._game.Interaction.View
             tempVisitorObject.gameObject.SetActive(true);
             tempVisitorObject.GetComponent<Rigidbody>().AddForce(tempVisitorObject.up * 30f, ForceMode.Impulse);
             tempVisitorObject.DOScaleY(1.3f, 3f).SetEase(Ease.InBack).OnComplete(() => Destroy(tempVisitorObject.gameObject));
+
+            particleSmoke.Stop();
+            particleSmoke.Play();
 
             visitorObject = null;
         }
