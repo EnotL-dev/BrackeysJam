@@ -5,7 +5,7 @@ namespace Assets._game.Bar.Model.BarStatus
 {
     public class Vibe
     {
-        public int vibe = 50;
+        public int vibe = 0;
 
         public void AddVibe(int count)
         {

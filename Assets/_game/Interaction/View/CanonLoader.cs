@@ -13,17 +13,23 @@ namespace Assets._game.Interaction.View
         [SerializeField] private InteractableCannonView interactableCannonView;
         [SerializeField] private LayerMask layerMaskVisitor;
 
+        private bool IsBusy = false;
+        public void UnLoadCanon()
+        {
+            IsBusy = false;
+            playerInteractionView.ForcedInteractionRelease();
+            interactableCannonView.gameObject.SetActive(false);
+        }
+
         private void OnTriggerEnter(Collider other)
         {
-            if(other.gameObject.layer == layerMaskVisitor && other.gameObject.tag == "NPC")
+            if(((1 << other.gameObject.layer) & layerMaskVisitor) != 0 && other.CompareTag("NPC") && !IsBusy)
             {
-                Debug.Log("Shooted");
-                /*
                 playerInteractionView.ForcedInteractionRelease();
                 interactableCannonView.gameObject.SetActive(true);
-                interactableCannonView.CanShoot = true;
-                other.gameObject.SetActive(false);
-                */
+                interactableCannonView.LoadVisitor(other.transform);
+
+                IsBusy = true;
             }
         }
     }

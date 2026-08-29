@@ -3,12 +3,8 @@ using Assets._game.Player.Controller;
 using Assets._game.Store.Model;
 using Assets._game.UI.View;
 using System.Collections;
-using Unity.VisualScripting.FullSerializer;
-using UnityEditor;
-using UnityEditor.Timeline.Actions;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.Rendering;
 using Zenject;
 
 namespace Assets._game.Player.View {
