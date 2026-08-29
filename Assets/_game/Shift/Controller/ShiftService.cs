@@ -2,6 +2,8 @@
 using Assets._game.Bar.Model.SOScript.DrinkSO.Alcohol;
 using Assets._game.Bar.View;
 using Assets._game.Core.StateMachine;
+using Assets._game.Hint.Controller;
+using Assets._game.Hint.Model;
 using Assets._game.Player.View;
 using Assets._game.Shift.View;
 using Assets._game.Sound.Controller;
@@ -19,6 +21,7 @@ namespace Assets._game.Shift.Controller
         DeskManagerView deskManagerView;
         [Inject] IGameStateMachine gameStateMachine;
         [Inject] ShiftManagerView shiftManagerView;
+        [Inject] IHintService hintService;
 
         [Inject]
         void Construct(IEconomyService economyService, DeskManagerView deskManagerView)
@@ -30,7 +33,6 @@ namespace Assets._game.Shift.Controller
         int currentShift = 0;
         public int CurrentShift() => currentShift;
 
-        bool firstStart = true;
         public void StartDayShift()
         {
             gameStateMachine.Enter<DayShiftState>();
@@ -38,11 +40,9 @@ namespace Assets._game.Shift.Controller
             //musicService.Play(MusicType.Day);
 
             CheckLose();
+            economyService.AcceptMaintainingMoney();
 
-            if (firstStart)
-                economyService.AcceptMaintainingMoney();
-            else
-                firstStart = false;
+            hintService.RemoveHint(HintType.CompleteFirstQouta);
         }
 
         public void StartNightShift() {

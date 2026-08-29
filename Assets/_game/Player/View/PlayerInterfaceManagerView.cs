@@ -1,10 +1,14 @@
 ﻿using Assets._game.Bar.Controller;
+using Assets._game.Hint.Model;
 using Assets._game.UI.Controller;
+using Assets._game.UI.View;
 using DG.Tweening;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using UnityEngine;
-using UnityEngine.InputSystem;
+using UnityEngine.UI;
 using Zenject;
 
 namespace Assets._game.Player.View
@@ -14,21 +18,19 @@ namespace Assets._game.Player.View
         [Inject] ISeatService seatService;
 
         [SerializeField] private TextMeshProUGUI textSeats;
-        //int currentSeats = 0;
-        //int maxSeats = 5;
-
         [Space(5)]
         [SerializeField] private Color normalColor;
         [SerializeField] private Color reduceColor;
         [SerializeField] private TextMeshProUGUI textMoney;
         [SerializeField] private TextMeshProUGUI textQuotaMoney;
         [SerializeField] private TextMeshProUGUI textShiftTimer;
-
-        [SerializeField] private InputActionReference testInput;
+        [Space(5)]
+        [SerializeField] private VerticalLayoutGroup prentHintPanel;
+        [SerializeField] private HintPanel prefabHintPanel;
 
         public void Start()
         {
-            textMoney.text = "10,000 $";
+            textMoney.text = "200 $";
             textQuotaMoney.text = "0$ / 0$";
 
             textSeats.text = $"0 / 5";
@@ -36,24 +38,6 @@ namespace Assets._game.Player.View
             textShiftTimer.text = "--:--";
 
             seatService.OnSeatCountChanged += UpdateSeatsText;
-        }
-
-        private void OnEnable()
-        {
-            testInput.action.Enable();
-        }
-
-        private void OnDisable()
-        {
-            testInput.action.Disable();
-        }
-
-        private void Update()
-        {
-            if (testInput.action.WasPressedThisFrame())
-            {
-                
-            }
         }
 
         public void AddQuotaMoney(int startCount, int endCount, int quotaMax)
@@ -137,6 +121,36 @@ namespace Assets._game.Player.View
         public void StopTimer()
         {
             textShiftTimer.text = "--:--";
+        }
+
+        List<HintPanel> spawnedHints = new List<HintPanel>();
+        public void AddHint(HintSO hintSO)
+        {
+            HintPanel newHintPanel = Instantiate(prefabHintPanel);
+            newHintPanel.transform.SetParent(prentHintPanel.transform);
+            LayoutRebuilder.ForceRebuildLayoutImmediate(prentHintPanel.GetComponent<RectTransform>());
+
+            RectTransform panelRect = newHintPanel.GetComponent<RectTransform>();
+            panelRect.DOAnchorPosY(panelRect.anchoredPosition.y, 0.5f).From(new Vector2(panelRect.anchoredPosition.x, panelRect.anchoredPosition.y - 50f)).SetEase(Ease.OutBack);
+            foreach (var img in newHintPanel.GetComponentsInChildren<Image>()) img.DOFade(1f, 0.5f).From(0f);
+
+            newHintPanel.Initialize(hintSO.Title(), hintSO.HintType);
+            spawnedHints.Add(newHintPanel);
+        }
+
+        public void RemoveHint(HintType hintType)
+        {
+            foreach(HintPanel hintPanel in spawnedHints)
+            {
+                if(hintPanel.hintType == hintType)
+                {
+                    DOTween.Kill(hintPanel);
+                    Destroy(hintPanel.gameObject);
+
+                    spawnedHints.Remove(hintPanel);
+                    break;
+                }
+            }
         }
     }
 }

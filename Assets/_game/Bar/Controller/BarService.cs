@@ -3,6 +3,8 @@ using Assets._game.Bar.Model.Alcohol;
 using Assets._game.Bar.Model.BarStatus;
 using Assets._game.Bar.Model.SOScript.DrinkSO.Alcohol;
 using Assets._game.Bar.View;
+using Assets._game.Hint.Controller;
+using Assets._game.Shift.Controller;
 using Assets._game.TestingScript;
 using System;
 using System.Collections;
@@ -12,6 +14,8 @@ using Zenject;
 
 namespace Assets._game.Bar.Controller {
     public class BarService : IBarService, IInitializable {
+
+        [Inject] IHintService hintService;
 
         DeskManagerView deskManagerView;
         IEconomyService economyService;
@@ -73,11 +77,6 @@ namespace Assets._game.Bar.Controller {
             foreach ( AlcoholSO alcohol in newAlcohols ) {
                 alcohols.Add(alcohol.AlcoholType, 0);
             }
-
-            //FOR TEST
-            AlcoholType alcAdd = AlcoholType.Beer;
-            AddAlcohol(alcAdd, 10);
-            //FOR TEST
         }
 
         public Dictionary<AlcoholType, int> GetAlcoholDictionary() => alcohols;
@@ -86,11 +85,15 @@ namespace Assets._game.Bar.Controller {
 
             alcohols[alcoholType] += count;
 
+            hintService.RemoveHint(Hint.Model.HintType.NoAlcohol);
             Debug.Log($"<color=yellow>Added {alcoholType} +{count}</color>");
         }
 
         public void ReduceAlchohol( AlcoholType alcoholType, int count ) {
             alcohols[alcoholType] -= count;
+
+            if(alcohols.Count < 1)
+                hintService.AddHint(Hint.Model.HintType.NoAlcohol);
 
             Debug.Log($"<color=yellow>Reduce {alcoholType} -{count}</color>");
         }
