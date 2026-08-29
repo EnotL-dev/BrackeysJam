@@ -84,7 +84,7 @@ namespace Assets._game.Npc.ConcreateClass {
             }
         }
 
-        public void Stop() {
+        public void SetAgentEnabled( bool enable ) {
             if ( agent != null && agent.isOnNavMesh ) {
                 // 1. Clears the active path and sets remaining distance to 0
                 agent.ResetPath();
@@ -93,10 +93,10 @@ namespace Assets._game.Npc.ConcreateClass {
                 agent.velocity = Vector3.zero;
 
                 // 3. (Optional) Halts agent processing without clearing path
-                agent.isStopped = true;
+                agent.isStopped = !enable;
 
-                agent.updateRotation = false;
-                agent.enabled = false;
+                agent.updateRotation = enable;
+                agent.enabled = enable;
             }
 
             // Clear the completion callback so it doesn't trigger unexpectedly

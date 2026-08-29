@@ -26,8 +26,14 @@ public class Seat : MonoBehaviour {
     [SerializeField]
     private Material brokenMaterial;
 
-    public Vector3 SitPosition => sitPoint != null ? sitPoint.position : transform.position;
-    public Quaternion SitRotation => sitPoint != null ? sitPoint.rotation : transform.rotation;
+    public Vector3 SitPosition() => sitPoint != null ? sitPoint.position : transform.position;
+    public Quaternion SitRotation() {
+        var rotation = sitPoint != null ?
+                    sitPoint.rotation :
+                    transform.rotation;
+
+        return rotation * Quaternion.Euler(0, 180, 0);
+    }
 
 
     public bool IsOccupied { get; private set; } = false;
@@ -37,7 +43,7 @@ public class Seat : MonoBehaviour {
     [Inject]
     void Construct( IBarService barService,
         ISeatService seatService,
-        ISFXService sFXService) {
+        ISFXService sFXService ) {
         this.barService = barService;
         this.seatService = seatService;
         this.sfxService = sFXService;
@@ -117,10 +123,6 @@ public class Seat : MonoBehaviour {
             //var order = orderFactory.CreateRandomOrder();
 
             //script.PlaceOrder(order);
-
-            nPCScript.SitDown();
-
-
 
             //}
         }

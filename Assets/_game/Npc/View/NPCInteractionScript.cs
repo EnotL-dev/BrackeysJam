@@ -1,7 +1,10 @@
 ﻿using Assets._game.Interaction.View;
 using Assets._game.Sound.EnumInterface;
 using DG.Tweening;
+using System;
+using System.Collections;
 using System.Diagnostics.Metrics;
+using System.Threading.Tasks;
 using UnityEngine;
 using Zenject;
 
@@ -12,11 +15,18 @@ namespace Assets._game.Npc.View {
 
         NPCScript npcScript;
         NPCInfoView NPCInfoView;
-
         ISFXService sFXService;
+
+        SkinnedMeshRenderer[] renderers;
+        Animator animator;
+
 
         int countBeforeKnockOut = 5;
         int currentCount = 0;
+
+
+        static readonly int EmissionColor = Shader.PropertyToID("_EmissionColor");
+
 
         bool canInteractThisFrame = true;
         private bool isDraggingObject = false;
@@ -38,6 +48,7 @@ namespace Assets._game.Npc.View {
 
         public void Start() {
             npcScript = GetComponent<NPCScript>();
+            renderers = gameObject.GetComponentsInChildren<SkinnedMeshRenderer>();
 
             if ( npcScript == null ) Debug.Log("NPCScipt inNPCInteractionScript is null ");
         }
@@ -94,6 +105,7 @@ namespace Assets._game.Npc.View {
             if ( !canInteractThisFrame ) return;
 
             if ( isDameableObject ) {
+                PlayHurtEffect();
                 isAttacked = true;
                 currentCount++;
                 sFXService.Play(SFXType.Hit);
@@ -105,19 +117,83 @@ namespace Assets._game.Npc.View {
                 rd.isKinematic = false;
 
                 sFXService.Play(SFXType.KnockOut);
-                npcScript.StopAllBehaviour();
+
                 isKnockOut = true;
+                npcScript.StopAllBehaviour();
                 LeanBack();
+
+                StartCoroutine(RecoverFromKnockOut(() => {
+                    isKnockOut = false;
+                    rd.isKinematic = true;
+                    animator.enabled = true;
+                }));
             }
         }
 
         public void LeanBack() {
             // Tweens local rotation on the X axis to -90 degrees
-            npcScript.animator.enabled = false;
+            animator ??= npcScript.animator;
+            animator.enabled = false;
 
             isDraggingObject = true;
 
             transform.DOLocalRotate(new Vector3(-90f, 0f, 0f), 0.5f).SetEase(Ease.OutQuad);
+        }
+
+        public void PlayHurtEffect() {
+            Color red = Color.red;
+            Sequence sequence = DOTween.Sequence();
+            Vector3 originalScale = transform.localScale;
+
+            var tcs = new TaskCompletionSource<bool>();
+
+            foreach ( Renderer renderer in renderers ) {
+                Material mat = renderer.material;
+                mat.SetColor(EmissionColor, Color.black);
+
+                sequence.Join(
+                    mat.DOColor(red * 3f, EmissionColor, 0.15f)
+                );
+            }
+
+            // Stay glowing.
+            sequence.AppendInterval(0.1f);
+
+            // Scale up.
+            sequence.Append(
+                transform.DOScale(originalScale * 1.15f, 0.15f).SetEase(Ease.OutBack)
+            );
+
+            // Scale back down.
+            sequence.Append(
+                transform.DOScale(originalScale, 0.15f).SetEase(Ease.InOutSine)
+            );
+
+            // Remove glow from all renderers.
+            foreach ( Renderer renderer in renderers ) {
+                Material mat = renderer.material;
+
+                sequence.Join(
+                    mat.DOColor(Color.black, EmissionColor, 0.3f)
+                );
+            }
+
+            sequence.OnComplete(() => {
+                tcs.SetResult(true);
+            });
+        }
+
+        private IEnumerator RecoverFromKnockOut( Action onComplete ) {
+            // Wait for the knock-out pose to finish.
+            yield return new WaitForSeconds(30f);
+
+            // Rotate NPC back upright.
+            yield return transform
+                .DOLocalRotate(Vector3.zero, 0.5f)
+                .SetEase(Ease.OutQuad)
+                .WaitForCompletion();
+
+            onComplete?.Invoke();
         }
     }
 }

@@ -8,8 +8,10 @@ using Assets._game.Npc.Enum;
 using Assets._game.NpcGenerator.View;
 using Assets._game.Sound.Controller;
 using Assets._game.Sound.EnumInterface;
+using DG.Tweening;
 using System;
 using System.Collections;
+using System.Security.Cryptography;
 using UnityEngine;
 using UnityEngine.AI;
 using Zenject;
@@ -31,7 +33,7 @@ namespace Assets._game.Npc.View {
 
 
         [SerializeField] GameObject LeavePos;
-        [SerializeField] private float maxWaitDrinkTimeout = 60f;
+        [SerializeField] private float maxWaitServeDrinkTimeout = 60f;
         [SerializeField] private float checkDrinkInterval = 0.5f;
 
 
@@ -173,7 +175,7 @@ namespace Assets._game.Npc.View {
             // Optional: Switch to an idle/waiting animation state while waiting at the counter
             // machineState.ChangeState(waitScript);
 
-            while ( elapsed < maxWaitDrinkTimeout ) {
+            while ( elapsed < maxWaitServeDrinkTimeout ) {
                 var order = orderFactory.GetRandomOrder();
                 if ( order != null ) {
                     Debug.Log("Drink restocked, placing order.");
@@ -182,7 +184,7 @@ namespace Assets._game.Npc.View {
                     yield break;
                 }
 
-                Debug.Log($"Waiting for drinks to be stocked... ({elapsed:F1}s/{maxWaitDrinkTimeout}s)");
+                Debug.Log($"Waiting for drinks to be stocked... ({elapsed:F1}s/{maxWaitServeDrinkTimeout}s)");
                 yield return new WaitForSeconds(checkDrinkInterval);
                 elapsed += checkDrinkInterval;
             }
@@ -202,16 +204,18 @@ namespace Assets._game.Npc.View {
             //machineState.ChangeState(waitScript);
 
             Debug.Log("Calling for order");
-
             StartCoroutine(barService.RequestDrink((AlcoholOrder)order, () => {
 
-                MoveToSeat(seat.SitPosition, seat.SitRotation, () => {
-
+                //move to seat
+                MoveToSeat(seat.SitPosition(), seat.SitRotation(), () => {
+                    //on reach seat sit down
                     animationController.SetAction(NPCActionState.Sit);
 
+                    //consume order
                     consumeOrder.ChangeAlcoholSO(order);
-
                     machineState.ChangeState(consumeOrder, () => {
+                        //stand up leave
+                        animationController.SetAction(NPCActionState.StandUp);
                         Leave();
                     });
                 });
@@ -264,9 +268,15 @@ namespace Assets._game.Npc.View {
         }
 
         public void StopAllBehaviour() {
-            moveScript.Stop();
+            moveScript.SetAgentEnabled(false);
             machineState.ChangeState(waitScript);
         }
+
+        public void RecoverFromKnockOut() {
+            moveScript.SetAgentEnabled(true);
+            Leave();
+        }
+
 
 
     }

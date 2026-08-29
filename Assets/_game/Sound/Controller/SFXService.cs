@@ -33,6 +33,8 @@ namespace Assets._game.Sound.Controller {
             SFXType.BartenderPourBeer => config.bartenderPourBeer,
             SFXType.CashIn => config.cashIn,
             SFXType.NPCSpeech => config.npcSpeech,
+            SFXType.Hit => config.hit,
+            SFXType.KnockOut => config.knockOut,
             _ => default
         };
 

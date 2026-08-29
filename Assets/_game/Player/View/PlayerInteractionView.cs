@@ -81,11 +81,9 @@ namespace Assets._game.Player.View {
 
         private void UpdateInteractionUI( IInteractable interactable ) {
             if ( interactable != null && lastInteractable == null ) {
-                Debug.Log("showing Tip right now");
                 uiInteractionView.ShowTip(interactable.GetTip());
             }
             else {
-                Debug.Log("motherfucker");
                 uiInteractionView.HideTip();
             }
         }
