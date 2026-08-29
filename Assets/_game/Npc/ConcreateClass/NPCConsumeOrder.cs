@@ -47,7 +47,7 @@ namespace Assets._game.Npc.ConcreateClass {
             Debug.Log($"Start consume {so.AlcoholType}, start waiting for {so.ConsumeTime}");
 
             NPCScript.WaitForConsumeOrder(so.ConsumeTime, () => {
-                NPCScript.Leave();
+                onComplete?.Invoke();
             });
 
 

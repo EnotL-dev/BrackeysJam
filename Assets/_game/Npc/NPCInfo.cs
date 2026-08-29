@@ -24,7 +24,7 @@ namespace Assets._game.Npc {
             sex = "Male";
             height = 1.8f;
             weight = 75.7f;
-            wealth = NPCWealthType.normal;
+            wealth = NPCWealthType.Normal;
             npcProperties = NPCProperty.Drunkard;
             farDrink = AlcoholType.Beer;
         }

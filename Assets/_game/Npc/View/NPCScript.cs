@@ -204,6 +204,14 @@ namespace Assets._game.Npc.View {
             //machineState.ChangeState(waitScript);
 
             Debug.Log("Calling for order");
+
+            int amount = npcInfo.wealth switch {
+                NPCWealthType.Poor => 1,
+                NPCWealthType.Normal => UnityEngine.Random.Range(2, 4), // 2 or 3
+                NPCWealthType.Rich => UnityEngine.Random.Range(3, 5),   // 3 or 4
+                _ => 1
+            };
+
             StartCoroutine(barService.RequestDrink((AlcoholOrder)order, () => {
 
                 //move to seat
