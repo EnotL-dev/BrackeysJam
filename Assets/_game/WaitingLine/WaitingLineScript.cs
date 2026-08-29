@@ -50,6 +50,8 @@ namespace Assets._game.TestingScript {
         //}
 
         public Vector3 GetPosition( int index ) {
+            if ( index > maxCap ) return Vector3.zero ;
+
             Transform origin = queueStartPoint != null ? queueStartPoint : transform;
 
             // Uses local space so rotation of the queue object works automatically

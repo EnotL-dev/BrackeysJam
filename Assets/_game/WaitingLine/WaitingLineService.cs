@@ -38,8 +38,8 @@ namespace Assets._game.TestingScript {
         void HandleNpcTriggerExit( NPCScript npc ) => Exit(npc);
 
 
-        public bool HasAvailableSlot() => npcs.Count < waitingLine.MaxCap;
         public int TotalClaimedSlots => npcs.Count + reserveCount;
+        public bool HasAvailableSlot() => TotalClaimedSlots < waitingLine.MaxCap;
 
         public Vector3 GetNextAvailablePosition() => waitingLine.GetPosition(TotalClaimedSlots);
 
