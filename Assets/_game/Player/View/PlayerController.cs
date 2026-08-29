@@ -181,7 +181,7 @@ public class PlayerController : MonoBehaviour {
 
 
     public void SetMouseFocus( bool focused ) {
-        Debug.Log($"Cursor should be {focused}");
+        //Debug.Log($"Cursor should be {focused}");
 
         if ( focused ) {
             Cursor.lockState = CursorLockMode.Locked;

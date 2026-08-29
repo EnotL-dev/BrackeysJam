@@ -24,6 +24,9 @@ namespace Assets._game.Npc.View {
         int countBeforeKnockOut = 5;
         int currentCount = 0;
 
+        Rigidbody rd;
+        Collider collider;
+
 
         static readonly int EmissionColor = Shader.PropertyToID("_EmissionColor");
 
@@ -37,7 +40,7 @@ namespace Assets._game.Npc.View {
 
         public bool IsDraggableObject() => isDraggingObject;
         public bool IsDameableObject() => isDameableObject;
-        public bool ShowCursor() => true;
+        public bool ShowCursor() => isKnockOut ? false : true;
         [Inject]
         void Construct( NPCInfoView NPCInfoView,
             ISFXService sFXService ) {
@@ -113,8 +116,12 @@ namespace Assets._game.Npc.View {
 
 
             if ( currentCount > countBeforeKnockOut ) {
-                var rd = this.gameObject.GetComponent<Rigidbody>();
+                rd ??= this.gameObject.GetComponent<Rigidbody>();
+                collider ??= gameObject.GetComponent<Collider>();
+
+
                 rd.isKinematic = false;
+                collider.isTrigger = true;
 
                 sFXService.Play(SFXType.KnockOut);
 
@@ -125,6 +132,7 @@ namespace Assets._game.Npc.View {
                 StartCoroutine(RecoverFromKnockOut(() => {
                     isKnockOut = false;
                     rd.isKinematic = true;
+                    collider.isTrigger = false;
                     animator.enabled = true;
                 }));
             }

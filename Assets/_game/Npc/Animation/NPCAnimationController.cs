@@ -47,6 +47,7 @@ namespace Assets._game.Npc.Animation {
                 animator.SetBool(IsSittingHash, true);
             }
             else if ( state == NPCActionState.StandUp ) {
+                Debug.Log("NPC should be standing up");
                 animator.SetBool(IsSittingHash, false);
             }
             else if ( state == NPCActionState.ConsumeOrder ) {

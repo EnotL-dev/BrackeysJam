@@ -71,9 +71,9 @@ namespace Assets._game.Npc.View {
                 wealthText.text = $"{info.wealth}";
 
                 wealthText.color = info.wealth switch {
-                    NPCWealthType.poor => Color.gray,
-                    NPCWealthType.normal => Color.green,
-                    NPCWealthType.rich => Color.yellow,
+                    NPCWealthType.Poor => Color.gray,
+                    NPCWealthType.Normal => Color.green,
+                    NPCWealthType.Rich => Color.yellow,
                     _ => Color.white
                 };
             }
