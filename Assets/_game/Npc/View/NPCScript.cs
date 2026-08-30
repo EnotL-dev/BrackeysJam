@@ -136,13 +136,39 @@ namespace Assets._game.Npc.View {
             animationController.UpdateAnimation();
         }
 
+        #region Move
 
-        public void MoveToDest( Vector3 pos ) {
-            moveScript.SetDestination(pos);
-            machineState.ChangeState(moveScript);
+        public void MoveToDest( Vector3 pos, NPCMovementOwner owner = NPCMovementOwner.None ) {
+
+            moveScript.TrySetDestination(pos, owner);
+
+            machineState.ChangeState(moveScript, () => {
+            });
         }
 
+        public void ReOrganizeInLine( Vector3 pos ) {
+            if ( moveScript.TrySetDestination(pos, NPCMovementOwner.WaitingLine) ) {
+                machineState.ChangeState(moveScript);
+            }
+        }
 
+        public void MoveToBar( Vector3 pos1, Seat seat ) {
+            moveScript.TrySetDestination(pos1, NPCMovementOwner.Action);
+            machineState.ChangeState(moveScript, () => {
+                Debug.Log("Moving to bar Done");
+                OrderDrink(seat);
+            });
+        }
+
+        public void MoveToSeat( Vector3 pos, Quaternion rotation, Action onComplete ) {
+            moveScript.TrySetDestination(pos, NPCMovementOwner.Action);
+            machineState.ChangeState(moveScript, () => {
+                transform.rotation = rotation;
+                onComplete?.Invoke();
+            });
+        }
+
+        #endregion
 
 
         //public void MoveToWaitingLine( Vector3 pos ) {
@@ -150,23 +176,11 @@ namespace Assets._game.Npc.View {
         //    machineState.ChangeState(moveScript);
         //}
 
-        public void MoveToBar( Vector3 pos1, Seat seat ) {
-            moveScript.SetDestination(pos1);
-            machineState.ChangeState(moveScript, () => {
-                Debug.Log("Moving to bar Done");
 
-                if ( waitForDrinkCoroutine != null ) StopCoroutine(waitForDrinkCoroutine);
 
-                waitForDrinkCoroutine = StartCoroutine(WaitForAvailableDrinkRoutine(seat));
-            });
-        }
-
-        public void MoveToSeat( Vector3 pos, Quaternion rotation, Action onComplete ) {
-            moveScript.SetDestination(pos);
-            machineState.ChangeState(moveScript, () => {
-                transform.rotation = rotation;
-                onComplete?.Invoke();
-            });
+        private void OrderDrink( Seat seat ) {
+            if ( waitForDrinkCoroutine != null ) StopCoroutine(waitForDrinkCoroutine);
+            waitForDrinkCoroutine = StartCoroutine(WaitForAvailableDrinkRoutine(seat));
         }
 
         private IEnumerator WaitForAvailableDrinkRoutine( Seat seat ) {
@@ -265,8 +279,16 @@ namespace Assets._game.Npc.View {
             }
 
             Vector3 destination = worldSettingScript.GetLeavePoint(); // Ref a real postion and handle destory
-
+            moveScript.TrySetDestination(destination, NPCMovementOwner.Action);
             machineState.ChangeState(moveScript, () => { Destroy(gameObject); });
+        }
+
+        public void ForceLeave() {
+            Vector3 destination = worldSettingScript.GetLeavePoint(); // Ref a real postion and handle destory
+            moveScript.TrySetDestination(destination, NPCMovementOwner.Action);
+            machineState.ChangeState(moveScript, () => {
+                Destroy(gameObject);
+            });
         }
 
         public void SitDown() {
@@ -301,6 +323,9 @@ namespace Assets._game.Npc.View {
                 Gizmos.DrawSphere(corners[i + 1], 0.15f);
             }
         }
+
+
+
 
     }
 }

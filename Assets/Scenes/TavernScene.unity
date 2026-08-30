@@ -17636,6 +17636,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: WaitingLine (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 7916226438910283056, guid: f169e5f586555424b95a6c25305f0f48, type: 3}
+      propertyPath: m_Size.y
+      value: 0.5
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -28929,27 +28933,27 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 379969593858167819, guid: f169e5f586555424b95a6c25305f0f48, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.63
+      value: 0.6
       objectReference: {fileID: 0}
     - target: {fileID: 379969593858167819, guid: f169e5f586555424b95a6c25305f0f48, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 42.75
+      value: 37.65
       objectReference: {fileID: 0}
     - target: {fileID: 379969593858167819, guid: f169e5f586555424b95a6c25305f0f48, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.7071068
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 379969593858167819, guid: f169e5f586555424b95a6c25305f0f48, type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 379969593858167819, guid: f169e5f586555424b95a6c25305f0f48, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.7071068
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 379969593858167819, guid: f169e5f586555424b95a6c25305f0f48, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 379969593858167819, guid: f169e5f586555424b95a6c25305f0f48, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -28957,11 +28961,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 379969593858167819, guid: f169e5f586555424b95a6c25305f0f48, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: 90
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 379969593858167819, guid: f169e5f586555424b95a6c25305f0f48, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 950765766566477680, guid: f169e5f586555424b95a6c25305f0f48, type: 3}
+      propertyPath: maxCap
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 950765766566477680, guid: f169e5f586555424b95a6c25305f0f48, type: 3}
       propertyPath: queueDirection.z
@@ -28970,6 +28978,10 @@ PrefabInstance:
     - target: {fileID: 6487438871918097919, guid: f169e5f586555424b95a6c25305f0f48, type: 3}
       propertyPath: m_Name
       value: WaitingLine
+      objectReference: {fileID: 0}
+    - target: {fileID: 7916226438910283056, guid: f169e5f586555424b95a6c25305f0f48, type: 3}
+      propertyPath: m_Size.y
+      value: 0.5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -39643,8 +39655,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Assets._game.Npc.NPCManager
   NPCFactory: {fileID: 39051093}
-  minSpawnInterval: 3
-  maxSpawnInterval: 5
+  minSpawnInterval: 1
+  maxSpawnInterval: 3
 --- !u!4 &2033137762
 Transform:
   m_ObjectHideFlags: 0
@@ -42355,7 +42367,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 541359957681032181, guid: b4f0da0f75e43964c9abbbc11d2e5043, type: 3}
       propertyPath: ShiftCycleTime
-      value: 20
+      value: 40
       objectReference: {fileID: 0}
     - target: {fileID: 722248349439871086, guid: b4f0da0f75e43964c9abbbc11d2e5043, type: 3}
       propertyPath: m_AnchorMax.y
@@ -42513,6 +42525,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: DrinkIcon
       objectReference: {fileID: 0}
+    - target: {fileID: 2047537904336177398, guid: b4f0da0f75e43964c9abbbc11d2e5043, type: 3}
+      propertyPath: script
+      value: 
+      objectReference: {fileID: 201270747}
     - target: {fileID: 2260214039358002481, guid: b4f0da0f75e43964c9abbbc11d2e5043, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0

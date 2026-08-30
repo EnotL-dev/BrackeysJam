@@ -3,6 +3,7 @@ using Assets._game.Npc.Controller;
 using Assets._game.Npc.View;
 using Assets._game.TestingScript;
 using System.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
 using Zenject;
 
@@ -20,6 +21,7 @@ namespace Assets._game.Npc {
 
         private float spawnTimer;
         private float nextSpawnTime;
+        bool IsNight = false;
 
         [Inject]
         void Construct( [Inject(Id = "ComeIn")] WaitingLineService waitingLineService,
@@ -79,7 +81,7 @@ namespace Assets._game.Npc {
 
 
             npc.Initialize(info);
-            npc.MoveToDest(targetPos);
+            npc.MoveToDest(targetPos, Enum.NPCMovementOwner.Action);
 
             // For now, just spawn it.
             // Later:
@@ -94,13 +96,15 @@ namespace Assets._game.Npc {
             signalBus.Unsubscribe<StateChangedSignal>(StateChanged);
         }
 
-        bool IsNight = false;
+
         public void StateChanged( StateChangedSignal stateChangedSignal ) {
             if ( stateChangedSignal.gameState is DayShiftState ) {
                 IsNight = false;
             }
             else if ( stateChangedSignal.gameState is NightShiftState ) {
                 IsNight = true;
+
+                Debug.Log("Update night shift in nps spawn service");
             }
         }
     }
