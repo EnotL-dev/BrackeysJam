@@ -42355,7 +42355,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 541359957681032181, guid: b4f0da0f75e43964c9abbbc11d2e5043, type: 3}
       propertyPath: ShiftCycleTime
-      value: 20
+      value: 200
       objectReference: {fileID: 0}
     - target: {fileID: 722248349439871086, guid: b4f0da0f75e43964c9abbbc11d2e5043, type: 3}
       propertyPath: m_AnchorMax.y
@@ -42513,6 +42513,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: DrinkIcon
       objectReference: {fileID: 0}
+    - target: {fileID: 2047537904336177398, guid: b4f0da0f75e43964c9abbbc11d2e5043, type: 3}
+      propertyPath: script
+      value: 
+      objectReference: {fileID: 201270747}
     - target: {fileID: 2260214039358002481, guid: b4f0da0f75e43964c9abbbc11d2e5043, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0

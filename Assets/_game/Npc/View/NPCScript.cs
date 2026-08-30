@@ -265,8 +265,16 @@ namespace Assets._game.Npc.View {
             }
 
             Vector3 destination = worldSettingScript.GetLeavePoint(); // Ref a real postion and handle destory
-
+            moveScript.SetDestination(destination);
             machineState.ChangeState(moveScript, () => { Destroy(gameObject); });
+        }
+
+        public void ForceLeave() {
+            Vector3 destination = worldSettingScript.GetLeavePoint(); // Ref a real postion and handle destory
+            moveScript.SetDestination(destination);
+            machineState.ChangeState(moveScript, () => {
+                Destroy(gameObject);
+            });
         }
 
         public void SitDown() {
@@ -301,6 +309,9 @@ namespace Assets._game.Npc.View {
                 Gizmos.DrawSphere(corners[i + 1], 0.15f);
             }
         }
+
+
+
 
     }
 }

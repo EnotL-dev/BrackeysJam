@@ -124,6 +124,8 @@ namespace Assets._game.Npc.View {
                 if ( canInteractThisFrame ) ModifyCanInteract(false);
                 PlayHurtEffect();
 
+                npcScript.ForceLeave();
+
                 isAttacked = true;
                 currentCount++;
                 sFXService.Play(SFXType.Hit);
