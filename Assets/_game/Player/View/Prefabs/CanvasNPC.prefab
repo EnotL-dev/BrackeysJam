@@ -172,8 +172,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Reject
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 873d1965643c2d844b361d8481a1098e, type: 2}
+  m_sharedMaterial: {fileID: -8113115396467988998, guid: 873d1965643c2d844b361d8481a1098e, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -309,8 +309,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Accept
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 873d1965643c2d844b361d8481a1098e, type: 2}
+  m_sharedMaterial: {fileID: -8113115396467988998, guid: 873d1965643c2d844b361d8481a1098e, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -550,8 +550,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Race
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: fe86482c94a67c14f9f73ab8bc639959, type: 2}
-  m_sharedMaterial: {fileID: 4898985069127706069, guid: fe86482c94a67c14f9f73ab8bc639959, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 873d1965643c2d844b361d8481a1098e, type: 2}
+  m_sharedMaterial: {fileID: -8113115396467988998, guid: 873d1965643c2d844b361d8481a1098e, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -1405,6 +1405,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9e385c932c433e64b81493809ad471e2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Assets._game.Npc.View.NPCInfoView
+  iconDatabase: {fileID: 0}
   nameText: {fileID: 0}
   ageText: {fileID: 0}
   sexText: {fileID: 0}
@@ -1413,6 +1414,9 @@ MonoBehaviour:
   wealthText: {fileID: 0}
   characteristicText: {fileID: 0}
   favoriteDrinkText: {fileID: 0}
+  wealthIcon: {fileID: 0}
+  characteristicIcon: {fileID: 0}
+  favoriteDrinkIcon: {fileID: 0}
   acceptBtn: {fileID: 8885795558947239845}
   cancelBtn: {fileID: 8072619394888821656}
 --- !u!1 &3402427779393988385
@@ -1482,8 +1486,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Wealth
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: fe86482c94a67c14f9f73ab8bc639959, type: 2}
-  m_sharedMaterial: {fileID: 4898985069127706069, guid: fe86482c94a67c14f9f73ab8bc639959, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 873d1965643c2d844b361d8481a1098e, type: 2}
+  m_sharedMaterial: {fileID: -8113115396467988998, guid: 873d1965643c2d844b361d8481a1098e, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -2035,8 +2039,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Characteristic
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: fe86482c94a67c14f9f73ab8bc639959, type: 2}
-  m_sharedMaterial: {fileID: 4898985069127706069, guid: fe86482c94a67c14f9f73ab8bc639959, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 873d1965643c2d844b361d8481a1098e, type: 2}
+  m_sharedMaterial: {fileID: -8113115396467988998, guid: 873d1965643c2d844b361d8481a1098e, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -2172,8 +2176,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: 'info about status up here '
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: fe86482c94a67c14f9f73ab8bc639959, type: 2}
-  m_sharedMaterial: {fileID: 4898985069127706069, guid: fe86482c94a67c14f9f73ab8bc639959, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 873d1965643c2d844b361d8481a1098e, type: 2}
+  m_sharedMaterial: {fileID: -8113115396467988998, guid: 873d1965643c2d844b361d8481a1098e, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -2309,8 +2313,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Favorite drink
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: fe86482c94a67c14f9f73ab8bc639959, type: 2}
-  m_sharedMaterial: {fileID: 4898985069127706069, guid: fe86482c94a67c14f9f73ab8bc639959, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 873d1965643c2d844b361d8481a1098e, type: 2}
+  m_sharedMaterial: {fileID: -8113115396467988998, guid: 873d1965643c2d844b361d8481a1098e, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -2875,8 +2879,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: 'info about status up here '
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: fe86482c94a67c14f9f73ab8bc639959, type: 2}
-  m_sharedMaterial: {fileID: 4898985069127706069, guid: fe86482c94a67c14f9f73ab8bc639959, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 873d1965643c2d844b361d8481a1098e, type: 2}
+  m_sharedMaterial: {fileID: -8113115396467988998, guid: 873d1965643c2d844b361d8481a1098e, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -3268,8 +3272,8 @@ MonoBehaviour:
 
 '
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: fe86482c94a67c14f9f73ab8bc639959, type: 2}
-  m_sharedMaterial: {fileID: 4898985069127706069, guid: fe86482c94a67c14f9f73ab8bc639959, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 873d1965643c2d844b361d8481a1098e, type: 2}
+  m_sharedMaterial: {fileID: -8113115396467988998, guid: 873d1965643c2d844b361d8481a1098e, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -3405,8 +3409,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: drunkard
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: fe86482c94a67c14f9f73ab8bc639959, type: 2}
-  m_sharedMaterial: {fileID: 4898985069127706069, guid: fe86482c94a67c14f9f73ab8bc639959, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 873d1965643c2d844b361d8481a1098e, type: 2}
+  m_sharedMaterial: {fileID: -8113115396467988998, guid: 873d1965643c2d844b361d8481a1098e, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -3851,8 +3855,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: beer
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: fe86482c94a67c14f9f73ab8bc639959, type: 2}
-  m_sharedMaterial: {fileID: 4898985069127706069, guid: fe86482c94a67c14f9f73ab8bc639959, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 873d1965643c2d844b361d8481a1098e, type: 2}
+  m_sharedMaterial: {fileID: -8113115396467988998, guid: 873d1965643c2d844b361d8481a1098e, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -3988,8 +3992,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: 'info about status up here '
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: fe86482c94a67c14f9f73ab8bc639959, type: 2}
-  m_sharedMaterial: {fileID: 4898985069127706069, guid: fe86482c94a67c14f9f73ab8bc639959, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 873d1965643c2d844b361d8481a1098e, type: 2}
+  m_sharedMaterial: {fileID: -8113115396467988998, guid: 873d1965643c2d844b361d8481a1098e, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
