@@ -61,7 +61,7 @@ namespace Assets._game.Npc {
             var npc = gameObject.GetComponent<NPCScript>();
 
 
-            if ( !waitingLineService.TryReserve(out Vector3 targetPos) ) {
+            if ( !waitingLineService.TryReserve(npc, out Vector3 targetPos) ) {
                 Destroy(gameObject);
                 return;
             }
@@ -70,7 +70,7 @@ namespace Assets._game.Npc {
             if ( info == null ) {
                 Debug.Log("Can't get info");
                 // Revert the reservation if NPC creation fails
-                waitingLineService.CancelReservation();
+                waitingLineService.CancelReservation(npc);
                 return;
             }
 

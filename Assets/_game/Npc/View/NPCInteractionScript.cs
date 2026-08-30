@@ -14,18 +14,14 @@ namespace Assets._game.Npc.View {
         [SerializeField] string dialoge; //TODO use a sperate script for this
         [Space(5)]
         [SerializeField] private Outline outlineObject;
-        public void ShowOutline()
-        {
-            if (outlineObject)
-            {
+        public void ShowOutline() {
+            if ( outlineObject ) {
                 outlineObject.enabled = true;
             }
         }
 
-        public void HideOutline()
-        {
-            if (outlineObject)
-            {
+        public void HideOutline() {
+            if ( outlineObject ) {
                 outlineObject.enabled = false;
             }
         }
@@ -119,13 +115,13 @@ namespace Assets._game.Npc.View {
 
         }
 
-        public void ModifyCanInteract() => canInteractThisFrame = false;
+        public void ModifyCanInteract( bool enable ) => canInteractThisFrame = enable;
 
         public void TryAttack() {
-            if ( !canInteractThisFrame ) return;
-
             if ( isDameableObject ) {
+                if ( canInteractThisFrame ) ModifyCanInteract(false);
                 PlayHurtEffect();
+
                 isAttacked = true;
                 currentCount++;
                 sFXService.Play(SFXType.Hit);
@@ -145,6 +141,7 @@ namespace Assets._game.Npc.View {
                 sFXService.Play(SFXType.KnockOut);
 
                 isKnockOut = true;
+                ModifyCanInteract(true);
                 npcScript.StopAllBehaviour();
                 LeanBack();
 
@@ -154,6 +151,7 @@ namespace Assets._game.Npc.View {
                     rd.useGravity = true;
                     collider.isTrigger = false;
                     animator.enabled = true;
+                    npcScript.RecoverFromKnockOut();
                 }));
             }
         }

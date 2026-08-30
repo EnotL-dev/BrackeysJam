@@ -39643,8 +39643,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Assets._game.Npc.NPCManager
   NPCFactory: {fileID: 39051093}
-  minSpawnInterval: 1
-  maxSpawnInterval: 3
+  minSpawnInterval: 3
+  maxSpawnInterval: 5
 --- !u!4 &2033137762
 Transform:
   m_ObjectHideFlags: 0
