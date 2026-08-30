@@ -1,5 +1,7 @@
 using Assets._game.Interaction.View;
 using Assets._game.Player.View;
+using Assets._game.Sound.Controller;
+using Assets._game.Sound.EnumInterface;
 using UnityEngine;
 using Zenject;
 using Zenject.SpaceFighter;
@@ -11,11 +13,22 @@ namespace Assets._game.Player.Controller {
         private IInteractable lastInteractableObject;
         private IPlayerUI currentUI;
 
+        ISFXService sFXService;
 
         private PlayerController playerController;
         private DragManagerView dragManagerView;
 
+
+        [Inject]
+        void Construct( ISFXService sFXService ) {
+            this.sFXService = sFXService;
+        }
+
         public bool IsBusy() => Busy;
+
+
+
+
 
         public void Init( PlayerController playerController, DragManagerView dragManagerView ) {
             this.playerController = playerController;
@@ -34,8 +47,10 @@ namespace Assets._game.Player.Controller {
                 playerController?.SetInputEnabled(false);
             }
 
-            if ( lastInteractableObject.IsDraggableObject() )
+            if ( lastInteractableObject.IsDraggableObject() ) {
                 dragManagerView.Grab(lastInteractableObject);
+                sFXService.Play(SFXType.GrabObject);
+            }
 
             if ( lastInteractableObject.ShowCursor() )
                 playerController.SetMouseFocus(false);

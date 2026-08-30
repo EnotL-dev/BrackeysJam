@@ -60,6 +60,12 @@ namespace Assets._game.Sound.Controller {
             SFXType.NPCSpeech => config.npcSpeech,
             SFXType.Hit => config.hit,
             SFXType.KnockOut => config.knockOut,
+            SFXType.GrabObject => config.GrabObject,
+            SFXType.PlaceChair => config.PlaceChair,
+            SFXType.PlacePlant => config.PlacePot,
+            SFXType.TurnSign => config.TurnSign,
+            SFXType.CanonShoot => config.CanonShoot,
+            SFXType.FuseFire => config.FuseFire,
             _ => default
         };
 

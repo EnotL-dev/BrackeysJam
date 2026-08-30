@@ -1,4 +1,5 @@
 ﻿using Assets._game.Player.View;
+using Assets._game.Sound.EnumInterface;
 using Assets._game.Store.Model;
 using Assets._game.Store.View;
 using DG.Tweening;
@@ -6,10 +7,8 @@ using System.Collections;
 using UnityEngine;
 using Zenject;
 
-namespace Assets._game.Interaction.View
-{
-    public class InteractableCannonView : MonoBehaviour, IInteractable
-    {
+namespace Assets._game.Interaction.View {
+    public class InteractableCannonView : MonoBehaviour, IInteractable {
         [Inject] CameraShakingView cameraShakingView;
         [SerializeField] private Transform cannonObject;
         [SerializeField] private CanonLoader canonLoader;
@@ -18,18 +17,23 @@ namespace Assets._game.Interaction.View
         [SerializeField] private ParticleSystem particleSmoke;
         [Space(5)]
         [SerializeField] private Outline outlineObject;
-        public void ShowOutline()
-        {
-            if (outlineObject)
-            {
+
+        ISFXService sFXService;
+
+        [Inject]
+        public void Construct( ISFXService sFXService ) {
+            this.sFXService = sFXService;
+        }
+
+
+        public void ShowOutline() {
+            if ( outlineObject ) {
                 outlineObject.enabled = true;
             }
         }
 
-        public void HideOutline()
-        {
-            if (outlineObject)
-            {
+        public void HideOutline() {
+            if ( outlineObject ) {
                 outlineObject.enabled = false;
             }
         }
@@ -37,14 +41,12 @@ namespace Assets._game.Interaction.View
         private float initialScaleX;
 
         private Transform visitorObject = null;
-        public void LoadVisitor(Transform visitorObject)
-        {
+        public void LoadVisitor( Transform visitorObject ) {
             visitorObject.gameObject.SetActive(false);
             this.visitorObject = visitorObject;
         }
 
-        void Start()
-        {
+        void Start() {
             initialScaleX = cannonObject.localScale.x;
         }
 
@@ -53,24 +55,21 @@ namespace Assets._game.Interaction.View
         public bool OnceActivation() => true;
         public bool FreezePlayer() => false;
         public bool IsDraggableObject() => false;
-        public void OnContinuousInteraction()
-        {
+        public void OnContinuousInteraction() {
             //nothing
         }
 
-        public void OnEndInteraction()
-        {
+        public void OnEndInteraction() {
 
         }
 
-        public void OnInteract()
-        {
+        public void OnInteract() {
             Shoot();
+            sFXService.Play(SFXType.CanonShoot);
             canonLoader.UnLoadCanon();
         }
 
-        private void Shoot()
-        {
+        private void Shoot() {
             float targetScaleX = initialScaleX * 0.75f;
             float shrinkDuration = 0.2f;
             float returnDuration = 0.1f;
@@ -105,8 +104,7 @@ namespace Assets._game.Interaction.View
             visitorObject = null;
         }
 
-        public void OnStartInteraction()
-        {
+        public void OnStartInteraction() {
             //nothing
         }
     }

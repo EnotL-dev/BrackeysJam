@@ -12,5 +12,11 @@ namespace Assets._game.Sound.SO {
         public EventReference npcSpeech;
         public EventReference hit;
         public EventReference knockOut;
+        public EventReference GrabObject;
+        public EventReference PlaceChair;
+        public EventReference PlacePot;
+        public EventReference TurnSign;
+        public EventReference CanonShoot;
+        public EventReference FuseFire;
     }
 }

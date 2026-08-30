@@ -1,4 +1,5 @@
 ﻿using Assets._game.Player.View;
+using Assets._game.Sound.EnumInterface;
 using Assets._game.Store.Model;
 using System.Collections;
 using UnityEngine;
@@ -8,7 +9,17 @@ namespace Assets._game.Store.View
 {
     public class FurnitureGhostPlace : MonoBehaviour
     {
-        [Inject] FurnitureManagerView furnitureManagerView;
+        FurnitureManagerView furnitureManagerView;
+        ISFXService sFXService;
+
+        [Inject]
+        void Construct(FurnitureManagerView furnitureManagerView,
+            ISFXService sFXService) {
+            this.furnitureManagerView = furnitureManagerView;
+            this.sFXService = sFXService;
+        }
+
+
 
         private void OnTriggerEnter(Collider col)
         {
@@ -17,7 +28,16 @@ namespace Assets._game.Store.View
                 IFurniture furniture = col.gameObject.GetComponent<IFurniture>();
                 if(furniture != null)
                 {
-                    furnitureManagerView.SetAtPlace(gameObject, furniture.ThisFurnitureSO().GetFurnitureType());
+                    var type  =furniture.ThisFurnitureSO().GetFurnitureType();
+
+                    if(type == FurnitureType.chair ) {
+                        sFXService.Play(SFXType.PlaceChair);
+                    }
+                    else if(type == FurnitureType.plant ) {
+                        sFXService.Play(SFXType.PlacePlant);
+                    }
+
+                    furnitureManagerView.SetAtPlace(gameObject, type);
                     Destroy(col.transform.parent.gameObject);
                 }
             }

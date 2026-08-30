@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b306a95b258d6414a9ea7dec84b92d65, type: 3}
-  m_Name: AudioSO
+  m_Name: SFXSO
   m_EditorClassIdentifier: Assembly-CSharp::Assets._game.Sound.SO.SFXConfigSO
   npcDrink:
     Guid:
@@ -54,3 +54,45 @@ MonoBehaviour:
       Data3: -1455670650
       Data4: -658153424
     Path: event:/KnockOut
+  GrabObject:
+    Guid:
+      Data1: -2104676892
+      Data2: 1316324731
+      Data3: -1995881814
+      Data4: -1636024071
+    Path: event:/GrabObject
+  PlaceChair:
+    Guid:
+      Data1: 1604353781
+      Data2: 1258288990
+      Data3: -277063801
+      Data4: -478512805
+    Path: event:/ChairPlace
+  PlacePot:
+    Guid:
+      Data1: -755218592
+      Data2: 1078086148
+      Data3: 1495327646
+      Data4: 1295753475
+    Path: event:/PlantPlace
+  TurnSign:
+    Guid:
+      Data1: 2117080926
+      Data2: 1259240887
+      Data3: -1292551027
+      Data4: 808423102
+    Path: event:/Turn Sign
+  CanonShoot:
+    Guid:
+      Data1: -892769430
+      Data2: 1176440172
+      Data3: -893789301
+      Data4: 855137462
+    Path: event:/CannonShoot
+  FuseFire:
+    Guid:
+      Data1: 872987682
+      Data2: 1218438699
+      Data3: 2101422475
+      Data4: 1493022759
+    Path: event:/FuseFire

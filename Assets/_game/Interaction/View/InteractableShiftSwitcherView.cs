@@ -1,6 +1,7 @@
 ﻿using Assets._game.Core.StateMachine;
 using Assets._game.Player.View;
 using Assets._game.Shift.Controller;
+using Assets._game.Sound.Controller;
 using Assets._game.Sound.EnumInterface;
 using DG.Tweening;
 using System.Collections;
@@ -12,35 +13,40 @@ namespace Assets._game.Interaction.View {
         SignalBus signalBus;
         IShiftService shiftService;
         IMusicService musicService;
+        ISFXService sFXService;
 
         [SerializeField] private Transform signObject;
         [SerializeField] private GameObject arrowObject;
         [Space(5)]
         [SerializeField] private Outline outlineObject;
-        public void ShowOutline()
-        {
-            if (outlineObject)
-            {
-                outlineObject.enabled = true;
-            }
-        }
 
-        public void HideOutline()
-        {
-            if (outlineObject)
-            {
-                outlineObject.enabled = false;
-            }
-        }
 
         [Inject]
         public void Construct( SignalBus signalBus,
             IShiftService shiftService,
-            IMusicService musicService ) {
+            IMusicService musicService,
+            ISFXService sFXService ) {
             this.signalBus = signalBus;
             this.shiftService = shiftService;
             this.musicService = musicService;
+            this.sFXService = sFXService;
         }
+
+
+
+
+        public void ShowOutline() {
+            if ( outlineObject ) {
+                outlineObject.enabled = true;
+            }
+        }
+
+        public void HideOutline() {
+            if ( outlineObject ) {
+                outlineObject.enabled = false;
+            }
+        }
+
 
         public string GetTip() => canSwitch ? "[E] - change the shift to night" : "It's already the night shift";
         public bool FreezePlayer() => false;
@@ -68,6 +74,7 @@ namespace Assets._game.Interaction.View {
         }
 
         private void FlipSign() {
+            sFXService.Play(SFXType.TurnSign);
             DOTween.Kill(signObject);
             signObject.DORotate(new Vector3(0, 180, 0), 0.5f, RotateMode.WorldAxisAdd)
                 .SetEase(Ease.OutBounce);

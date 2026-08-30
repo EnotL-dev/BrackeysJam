@@ -407,11 +407,15 @@ MonoBehaviour:
   - Master
   Banks:
   - AmbientMusic
+  - Canon
   - Cash
   - Drink
+  - GrabObject
   - NPCDame
+  - PlaceObject
   - PourDrink
   - Speach
+  - TurnSign
   BanksToLoad: []
   LiveUpdatePort: 9264
   EnableMemoryTracking: 0

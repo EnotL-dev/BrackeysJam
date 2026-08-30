@@ -1,14 +1,14 @@
 ﻿using Assets._game.Player.Controller;
 using Assets._game.Player.View;
+using Assets._game.Sound.EnumInterface;
 using System.Collections;
 using UnityEngine;
 using Zenject;
 
-namespace Assets._game.Interaction.View
-{
-    public class CanonLoader : MonoBehaviour
-    {
+namespace Assets._game.Interaction.View {
+    public class CanonLoader : MonoBehaviour {
         [Inject] PlayerInteractionView playerInteractionView;
+        [Inject] ISFXService sFXService;
 
         [SerializeField] private InteractableCannonView interactableCannonView;
         [SerializeField] private LayerMask layerMaskVisitor;
@@ -17,8 +17,7 @@ namespace Assets._game.Interaction.View
         [SerializeField] private ParticleSystem particleFuse;
 
         private bool IsBusy = false;
-        public void UnLoadCanon()
-        {
+        public void UnLoadCanon() {
             playerInteractionView.ForcedInteractionRelease();
             interactableCannonView.gameObject.SetActive(false);
 
@@ -28,10 +27,11 @@ namespace Assets._game.Interaction.View
             IsBusy = false;
         }
 
-        private void OnTriggerEnter(Collider other)
-        {
-            if(((1 << other.gameObject.layer) & layerMaskVisitor) != 0 && other.CompareTag("NPC") && !IsBusy)
-            {
+        private void OnTriggerEnter( Collider other ) {
+            if ( ((1 << other.gameObject.layer) & layerMaskVisitor) != 0 && other.CompareTag("NPC") && !IsBusy ) {
+
+                sFXService.Play(SFXType.FuseFire);
+
                 playerInteractionView.ForcedInteractionRelease();
                 interactableCannonView.gameObject.SetActive(true);
                 interactableCannonView.LoadVisitor(other.transform);

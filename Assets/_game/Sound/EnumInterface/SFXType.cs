@@ -11,5 +11,13 @@ namespace Assets._game.Sound.EnumInterface {
 
         Hit,
         KnockOut,
+
+        GrabObject,
+        PlaceChair,
+        PlacePlant,
+        TurnSign,
+
+        CanonShoot,
+        FuseFire,
     }
 }
