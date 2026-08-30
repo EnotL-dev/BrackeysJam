@@ -1,4 +1,5 @@
-﻿using Assets._game.Npc.View;
+﻿using Assets._game.Npc.Enum;
+using Assets._game.Npc.View;
 using DG.Tweening;
 using System;
 using System.Collections;
@@ -15,11 +16,13 @@ namespace Assets._game.Npc.ConcreateClass {
         NavMeshAgent agent;
 
         private Action onComplete;
-        private float ArrivalThreshold = 0.1f;
+        private float ArrivalThreshold = 0.5f;
 
         float timeMoving = 5;
 
         Vector3 dest;
+
+        public NPCMovementOwner currentOwner { get; private set; } = NPCMovementOwner.None;
 
 
         public NPCMoveScript( NPCScript nPCScript ) {
@@ -36,12 +39,6 @@ namespace Assets._game.Npc.ConcreateClass {
         public void EnterState( Action onComplete ) {
             //Debug.Log($"[{nPCScript.name}] MOVE EnterState");
 
-            //use ai navigation for this
-
-            //For testing
-
-            //Debug.Log($"move this npc to some {dest}");
-
             if ( agent == null ) {
                 agent = nPCScript.agent;
             }
@@ -52,14 +49,10 @@ namespace Assets._game.Npc.ConcreateClass {
         }
 
         public void ExitState() {
-            //throw new System.NotImplementedException();
-
-            //Debug.Log("exit move");
             onComplete = null;
         }
 
         public void UpdateState() {
-            if ( onComplete == null ) return;
 
             if ( agent.pathPending ) {
                 //Debug.Log($"[NavMesh] Path is still pending calculation for '{nPCScript.name}'.");
@@ -79,10 +72,53 @@ namespace Assets._game.Npc.ConcreateClass {
                 if ( agent.velocity.sqrMagnitude <= 0.01f ) {
                     Action callback = onComplete;
                     onComplete = null;
+                    currentOwner = NPCMovementOwner.None;
+
                     callback?.Invoke();
                 }
             }
         }
+
+        public bool TrySetDestination( Vector3 pos, NPCMovementOwner owner, Action onComplete = null ) {
+
+            // Someone else currently owns movement
+            if ( owner == NPCMovementOwner.Action ) {
+                dest = pos;
+                currentOwner = owner;
+                this.onComplete = onComplete;
+                return true;
+            }
+            else if ( owner == NPCMovementOwner.WaitingLine ) {
+                if ( currentOwner == NPCMovementOwner.Action ) return false;
+
+                dest = pos;
+                currentOwner = owner;
+                this.onComplete = onComplete;
+                return true;
+            }
+            else return false;
+        }
+
+
+        public void SetAgentEnabled( bool enable ) {
+            if ( agent != null && agent.isOnNavMesh ) {
+                // 1. Clears the active path and sets remaining distance to 0
+                agent.ResetPath();
+
+                // 2. Kills any residual velocity immediately
+                agent.velocity = Vector3.zero;
+
+                // 3. (Optional) Halts agent processing without clearing path
+                agent.isStopped = !enable;
+
+                agent.updateRotation = enable;
+                agent.enabled = enable;
+            }
+
+            // Clear the completion callback so it doesn't trigger unexpectedly
+            onComplete = null;
+        }
+
 
     }
 }

@@ -101,6 +101,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 37d42bb97392a1f479c14fbeb17c2b8a, type: 3}
       insertIndex: -1
       addedObject: {fileID: 3952363990142423706}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 37d42bb97392a1f479c14fbeb17c2b8a, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 8663293830472784297}
   m_SourcePrefab: {fileID: 100100000, guid: 37d42bb97392a1f479c14fbeb17c2b8a, type: 3}
 --- !u!4 &266749994313673548 stripped
 Transform:
@@ -173,4 +176,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04dda627794a8954fb91fbeb0919370e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Assets._game.Interaction.View.InteractableItemView
+  outlineObject: {fileID: 8663293830472784297}
   furnitureSO: {fileID: 11400000, guid: 1dbb45b14149d7549a38129ef9f631f2, type: 2}
+--- !u!114 &8663293830472784297
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 646406288730173942}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fea29bb7c508c244a1f805a5fd3fc4d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Outline
+  outlineMode: 0
+  outlineColor: {r: 1, g: 0.7070737, b: 0, a: 0.78431374}
+  outlineWidth: 10
+  precomputeOutline: 0
+  bakeKeys: []
+  bakeValues: []

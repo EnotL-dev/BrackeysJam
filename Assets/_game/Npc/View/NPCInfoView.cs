@@ -13,6 +13,11 @@ namespace Assets._game.Npc.View {
 
         [Inject] private NPCService npcService;
 
+        [SerializeField] private NPCIconDatabase iconDatabase;
+
+
+        [Space(5)]
+        [Header("Text Fields")]
         [SerializeField] private TextMeshProUGUI nameText;
         [SerializeField] private TextMeshProUGUI ageText;
         [SerializeField] private TextMeshProUGUI sexText;
@@ -24,6 +29,11 @@ namespace Assets._game.Npc.View {
         [SerializeField] private TextMeshProUGUI favoriteDrinkText;
 
 
+        [Space(5)]
+        [Header("Icon Images")]
+        [SerializeField] private Image wealthIcon;
+        [SerializeField] private Image characteristicIcon;
+        [SerializeField] private Image favoriteDrinkIcon;
 
         [SerializeField] Button acceptBtn;
         [SerializeField] Button cancelBtn;
@@ -61,16 +71,19 @@ namespace Assets._game.Npc.View {
                 wealthText.text = $"{info.wealth}";
 
                 wealthText.color = info.wealth switch {
-                    NPCWealthType.poor => Color.gray,
-                    NPCWealthType.normal => Color.green,
-                    NPCWealthType.rich => Color.yellow,
+                    NPCWealthType.Poor => Color.gray,
+                    NPCWealthType.Normal => Color.green,
+                    NPCWealthType.Rich => Color.yellow,
                     _ => Color.white
                 };
             }
+            SetIcon(wealthIcon, iconDatabase.GetWealthIcon(info.wealth));
+
 
             if ( characteristicText != null ) {
                 characteristicText.text = $"{info.npcProperties}";
             }
+            SetIcon(characteristicIcon, iconDatabase.GetPropertyIcon(info.npcProperties));
 
             if ( favoriteDrinkText != null ) {
                 favoriteDrinkText.text = $"{info.farDrink}";
@@ -81,9 +94,8 @@ namespace Assets._game.Npc.View {
                     AlcoholType.Vodka => Color.red,
                     _ => Color.white
                 };
-
-
             }
+            SetIcon(favoriteDrinkIcon, iconDatabase.GetDrinkIcon(info.farDrink));
         }
 
         public void Hide() {
@@ -115,6 +127,18 @@ namespace Assets._game.Npc.View {
 
         }
 
+
+        private void SetIcon( Image imageSlot, Sprite sprite ) {
+            if ( imageSlot == null ) return;
+
+            if ( sprite != null ) {
+                imageSlot.gameObject.SetActive(true);
+                imageSlot.sprite = sprite;
+            }
+            else {
+                imageSlot.gameObject.SetActive(false);
+            }
+        }
 
     }
 }

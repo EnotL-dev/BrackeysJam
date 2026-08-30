@@ -16,6 +16,8 @@ namespace Assets._game.TestingScript {
 
         [SerializeField] private float spacing = 1.5f;
 
+
+
         public int CurrentOccupiedCount { get; set; }
         public int MaxCap => maxCap;
 
@@ -26,12 +28,9 @@ namespace Assets._game.TestingScript {
 
         public void OnTriggerEnter( Collider other ) {
             if ( other.CompareTag("NPC") ) {
-                //Debug.Log("triggered npc and waiting line");
                 CurrentOccupiedCount++;
                 var script = other.GetComponent<NPCScript>();
                 OnNpcTriggerEnter?.Invoke(script);
-                //EnterLine(script);
-
             }
         }
 
@@ -50,11 +49,18 @@ namespace Assets._game.TestingScript {
         //}
 
         public Vector3 GetPosition( int index ) {
+            if ( index > maxCap ) return Vector3.zero ;
+
             Transform origin = queueStartPoint != null ? queueStartPoint : transform;
 
             // Uses local space so rotation of the queue object works automatically
             Vector3 worldDirection = origin.TransformDirection(queueDirection.normalized);
             return origin.position + (worldDirection * (index * spacing));
+        }
+
+
+        public void UpdateOccupied(int amt) {
+            CurrentOccupiedCount = amt;
         }
 
 

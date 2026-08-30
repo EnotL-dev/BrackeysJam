@@ -1,0 +1,65 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1105 &110500000
+HumanTemplate:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: dwarf
+  m_BoneTemplate:
+    Chest: 
+    Head: head
+    Hips: rootBone
+    Jaw: 
+    Left Index Distal: index3_L
+    Left Index Intermediate: index2_L
+    Left Index Proximal: index1_L
+    Left Little Distal: pinky3_L
+    Left Little Intermediate: pinky2_L
+    Left Little Proximal: pinky1_L
+    Left Middle Distal: middle3_L
+    Left Middle Intermediate: middle2_L
+    Left Middle Proximal: middle1_L
+    Left Ring Distal: ring3_L
+    Left Ring Intermediate: ring2_L
+    Left Ring Proximal: ring1_L
+    Left Thumb Distal: thumb2_L_end
+    Left Thumb Intermediate: thumb2_L
+    Left Thumb Proximal: thumb1_L
+    LeftEye: 
+    LeftFoot: leg2_L_end
+    LeftHand: hand_L
+    LeftLowerArm: arm2_L_end
+    LeftLowerLeg: leg2_L
+    LeftShoulder: clavicle_L
+    LeftToes: 
+    LeftUpperArm: arm1_L
+    LeftUpperLeg: leg1_L
+    Neck: neck
+    Right Index Distal: index3_R
+    Right Index Intermediate: index2_R
+    Right Index Proximal: index1_R
+    Right Little Distal: pinky3_R
+    Right Little Intermediate: pinky2_R
+    Right Little Proximal: pinky1_R
+    Right Middle Distal: middle3_R
+    Right Middle Intermediate: middle2_R
+    Right Middle Proximal: middle1_R
+    Right Ring Distal: ring3_R
+    Right Ring Intermediate: ring2_R
+    Right Ring Proximal: ring1_R
+    Right Thumb Distal: thumb2_R_end
+    Right Thumb Intermediate: thumb2_R
+    Right Thumb Proximal: thumb1_R
+    RightEye: 
+    RightFoot: leg2_R_end
+    RightHand: hand_R
+    RightLowerArm: arm2_R_end
+    RightLowerLeg: leg2_R
+    RightShoulder: clavicle_R
+    RightToes: 
+    RightUpperArm: arm1_R
+    RightUpperLeg: leg1_R
+    Spine: spine
+    UpperChest: 

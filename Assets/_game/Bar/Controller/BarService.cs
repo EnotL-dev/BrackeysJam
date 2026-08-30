@@ -2,6 +2,11 @@
 using Assets._game.Bar.Model.Alcohol;
 using Assets._game.Bar.Model.BarStatus;
 using Assets._game.Bar.Model.SOScript.DrinkSO.Alcohol;
+using Assets._game.Bar.View;
+using Assets._game.Hint.Controller;
+using Assets._game.Shift.Controller;
+using Assets._game.Sound.Controller;
+using Assets._game.Sound.EnumInterface;
 using Assets._game.TestingScript;
 using System;
 using System.Collections;
@@ -12,37 +17,62 @@ using Zenject;
 namespace Assets._game.Bar.Controller {
     public class BarService : IBarService, IInitializable {
 
+        [Inject] IHintService hintService;
+
+        DeskManagerView deskManagerView;
         IEconomyService economyService;
         WaitingLineService waitingLineService;
-        SeatService seatService;
+        ISeatService seatService;
         AlcoholCatalog alcoholCatalogSO;
+        ISFXService sfxService;
 
         Dictionary<AlcoholType, int> alcohols = new();
+
+
+        public event Action<float, Action> OnNpcRequestBar;
+
 
         Vibe vibe = new();
         ChaosStatus chaosStatus = new();
         public Vibe GetVibe() => vibe;
 
-        public void AddVibe( int count ) => vibe.AddVibe(count);
-        public void ReduceVibe( int count ) => vibe.ReduceVibe(count);
+        public void AddVibe( int count ) {
+            vibe.AddVibe(count);
+            deskManagerView.UpdateVibe(GetVibe().vibe);
+        }
+
+        public void ReduceVibe( int count ) {
+            vibe.ReduceVibe(count);
+            deskManagerView.UpdateVibe(GetVibe().vibe);
+        }
         public ChaosStatus GetChaosStatus() => chaosStatus;
-        public void AddChaos( float amt ) => chaosStatus.AddChaos(amt);
-        public void ReduceChaos( float amt ) => chaosStatus.ReduceChaos(amt);
+        public void AddChaos( float amt ) {
+            chaosStatus.AddChaos(amt);
+            deskManagerView.UpdateChaosScale(chaosStatus.chaosScale);
+        }
+        public void ReduceChaos( float amt ) {
+            chaosStatus.ReduceChaos(amt);
+            deskManagerView.UpdateChaosScale(chaosStatus.chaosScale);
+        }
 
 
         [Inject]
-        void Construct( IEconomyService economyService,
+        void Construct( DeskManagerView deskManagerView, IEconomyService economyService,
             [Inject(Id = "Bar")] WaitingLineService waitingLine,
-            SeatService seatService,
-            AlcoholCatalog alcoholCatalogSO ) {
+            ISeatService seatService,
+            AlcoholCatalog alcoholCatalogSO,
+            ISFXService sfxService ) {
+            this.deskManagerView = deskManagerView;
             this.economyService = economyService;
             this.waitingLineService = waitingLine;
             this.seatService = seatService;
             this.alcoholCatalogSO = alcoholCatalogSO;
+            this.sfxService = sfxService;
         }
 
         public void Initialize() {
             InitAlchoholData();
+
         }
 
         private void InitAlchoholData() {
@@ -53,11 +83,6 @@ namespace Assets._game.Bar.Controller {
             foreach ( AlcoholSO alcohol in newAlcohols ) {
                 alcohols.Add(alcohol.AlcoholType, 0);
             }
-
-            //FOR TEST
-            AlcoholType alcAdd = AlcoholType.Beer;
-            AddAlcohol(alcAdd, 10);
-            //FOR TEST
         }
 
         public Dictionary<AlcoholType, int> GetAlcoholDictionary() => alcohols;
@@ -66,23 +91,32 @@ namespace Assets._game.Bar.Controller {
 
             alcohols[alcoholType] += count;
 
+            hintService.RemoveHint(Hint.Model.HintType.NoAlcohol);
             Debug.Log($"<color=yellow>Added {alcoholType} +{count}</color>");
         }
 
         public void ReduceAlchohol( AlcoholType alcoholType, int count ) {
             alcohols[alcoholType] -= count;
 
+            if ( alcohols.Count < 1 )
+                hintService.AddHint(Hint.Model.HintType.NoAlcohol);
+
             Debug.Log($"<color=yellow>Reduce {alcoholType} -{count}</color>");
         }
 
-        public IEnumerator RequestDrink( AlcoholOrder alcoholorder, Action onOrderReady ) {
-            var so = alcoholCatalogSO.Get(alcoholorder.alcoholType);
+        public void RequestDrink( AlcoholOrder alcoholOrder, int amount, Action onOrderReady ) {
+            var so = alcoholCatalogSO.Get(alcoholOrder.alcoholType);
 
-            Debug.Log($"Order {alcoholorder.alcoholType}");
-            yield return new WaitForSeconds(so.PrepareTime);
+            Debug.Log($"Order {alcoholOrder.alcoholType}, amount {amount}");
 
-            economyService.SellAlchohol(alcoholorder.alcoholType);
-            onOrderReady?.Invoke();
+
+            OnNpcRequestBar?.Invoke(so.PrepareTime, () => {
+                onOrderReady?.Invoke();
+                sfxService.Play(SFXType.CashIn);
+                economyService.SellAlchohol(alcoholOrder.alcoholType, amount);
+            });
+
+
         }
 
 
@@ -132,4 +166,6 @@ namespace Assets._game.Bar.Controller {
         //}
 
     }
+
+
 }

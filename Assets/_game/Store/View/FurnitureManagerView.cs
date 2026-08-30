@@ -1,7 +1,10 @@
-﻿using Assets._game.Player.View;
+﻿using Assets._game.Bar.Controller;
+using Assets._game.Bar.View;
+using Assets._game.Player.View;
 using Assets._game.Store.Model;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Rendering;
 using Zenject;
@@ -10,8 +13,18 @@ namespace Assets._game.Store.View
 {
     public class FurnitureManagerView : MonoBehaviour
     {
+        [Inject] IBarService barService;
+        [Inject] PlayerInterfaceManagerView playerInterfaceManager;
         [SerializeField] private List<FurniturePlaces> furniturePlaces;
         [Inject] PlayerInteractionView playerInteractionView;
+
+        List<FurnitureSO> furnitures;
+
+        private void Start()
+        {
+            furnitures = new List<FurnitureSO>();
+            furnitures = Resources.LoadAll<FurnitureSO>("Store/Furniture").ToList();
+        }
 
         public void ShowFreePlaces(FurnitureType furnitureType)
         {
@@ -46,6 +59,21 @@ namespace Assets._game.Store.View
                     place.realObject.SetActive(true);
 
                     break;
+                }
+            }
+
+            FurnitureSO furniture = furnitures.FirstOrDefault(x => x.GetFurnitureType() == furnitureType);
+            if (furniture)
+            {
+                if(furniture.GetFurnitureType() == FurnitureType.chair)
+                {
+                    //playerInterfaceManager.AddMaxSeats(1);
+                    Debug.Log("<color=yellow>New SEAT added</color>");
+                }
+                if (furniture.GetFurnitureType() == FurnitureType.plant)
+                {
+                    barService.AddVibe(furniture.IncreaseValue());
+                    Debug.Log("<color=yellow>New plant added</color>");
                 }
             }
 

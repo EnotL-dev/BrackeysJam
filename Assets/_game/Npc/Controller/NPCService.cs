@@ -2,6 +2,7 @@
 using Assets._game.Npc.Enum;
 using Assets._game.Npc.View;
 using Assets._game.Player.Controller;
+using Assets._game.Player.View;
 using Assets._game.TestingScript;
 using System.Collections;
 using UnityEngine;
@@ -10,25 +11,25 @@ using Zenject;
 namespace Assets._game.Npc.Controller {
     public class NPCService {
 
-        private SeatService seatService;
-        private WaitingLineService comeInWaitingLineService; //THIS DONT USE FOR NOW
+        private ISeatService seatService;
+        private WaitingLineService comeInWaitingLineService;
         private WaitingLineService barWaitingLineService;
         private OrderService orderService; //THIS DONT USE FOR NOW
         private IBarService barService;
-        IPlayerInteractionService playerInteractionService;
+        PlayerInteractionView playerInteractionView;
 
         [Inject]
-        void Construct( SeatService seatService,
+        void Construct( ISeatService seatService,
             [Inject(Id = "ComeIn")] WaitingLineService comeInWaitingLineService,
             [Inject(Id = "Bar")] WaitingLineService barWait,
             OrderService orderService,
-            IPlayerInteractionService playerInteractionService,
+            PlayerInteractionView playerInteractionService,
             IBarService barService ) {
             this.seatService = seatService;
             this.comeInWaitingLineService = comeInWaitingLineService;
             this.barWaitingLineService = barWait;
             this.orderService = orderService;
-            this.playerInteractionService = playerInteractionService;
+            this.playerInteractionView = playerInteractionService;
             this.barService = barService;
         }
 
@@ -42,8 +43,11 @@ namespace Assets._game.Npc.Controller {
                 return;
             }
 
-            if ( barWaitingLineService.TryReserve(out Vector3 targetPos) ) {
-                npc.MoveToBar(targetPos, seat.gameObject.transform.position);
+            if ( barWaitingLineService.TryReserve(npc, out Vector3 targetPos) ) {
+                npc.MoveToBar(targetPos, seat);
+                //comeInWaitingLineService.Reorganize();
+                //comeInWaitingLineService.CancelReservation(npc);
+
             }
             else {
                 Debug.Log("Bar waiting line is full or unavailable.");
@@ -68,9 +72,9 @@ namespace Assets._game.Npc.Controller {
         public void EndInteraction( NPCScript npc ) {
 
             var script = npc.GetComponent<NPCInteractionScript>();
-            script.ModifyCanInteract();
+            script.ModifyCanInteract(false);
 
-            playerInteractionService.EndInteraction();
+            playerInteractionView.ForcedInteractionRelease();
         }
 
 

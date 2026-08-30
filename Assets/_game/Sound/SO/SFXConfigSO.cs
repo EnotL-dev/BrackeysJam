@@ -10,5 +10,15 @@ namespace Assets._game.Sound.SO {
         public EventReference bartenderPourBeer;
         public EventReference cashIn;
         public EventReference npcSpeech;
+        public EventReference hit;
+        public EventReference knockOut;
+        public EventReference GrabObject;
+        public EventReference PlaceChair;
+        public EventReference PlacePot;
+        public EventReference TurnSign;
+        public EventReference CanonShoot;
+        public EventReference FuseFire;
+        public EventReference BreakChair;
+        public EventReference BuyAlcohol;
     }
 }

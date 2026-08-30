@@ -4,6 +4,7 @@ using Assets._game.Bar.Model.SOScript.DrinkSO;
 using Assets._game.Bar.Model.SOScript.FoodSO;
 using System;
 using System.Collections.Generic;
+using System.Threading;
 using Unity.Mathematics;
 using UnityEngine;
 using Zenject;
@@ -36,7 +37,7 @@ namespace Assets._game.Bar.Controller {
         }
 
         public AlcoholOrder CreateAlcoholOrder( AlcoholType type ) {
-            return new AlcoholOrder(type);
+            return new AlcoholOrder(type, 0);
         }
 
 
@@ -48,44 +49,73 @@ namespace Assets._game.Bar.Controller {
 
 
 
-        public Order CreateRandomOrder() {
-            if ( orderTypes == null ) {
-                orderTypes = (OrderType[])System.Enum.GetValues(typeof(OrderType));
+        //public Order CreateRandomOrder() {
+        //    if ( orderTypes == null ) {
+        //        orderTypes = (OrderType[])System.Enum.GetValues(typeof(OrderType));
+        //    }
+        //    int index = UnityEngine.Random.Range(0, orderTypes.Length); // this shuold be 2: 0 for food, 2 for drink
+        //    return index == 0 ?
+        //        CreateRandomFoodOrder() :
+        //        CreateRandomDrinkOrder();
+        //}
+
+        //public DrinkOrder CreateRandomDrinkOrder() {
+        //    if ( drinkTypes == null ) {
+        //        drinkTypes = (DrinkType[])System.Enum.GetValues(typeof(DrinkType));
+        //    }
+
+        //    int index = UnityEngine.Random.Range(0, drinkTypes.Length);
+
+        //    switch ( index ) {
+        //        case 0:
+        //            return CreateRandomAlcoholOrder();
+        //        case 1:
+        //            Debug.Log("I turn off water for now, if see this mean bug");
+        //            return null;
+        //        default:
+        //            Debug.Log("There some thing broken in request order");
+        //            return null;
+        //    }
+
+        //}
+
+        public AlcoholOrder GetOrderFor( AlcoholType type, int amt ) {
+            alcohols ??= barService.GetAlcoholDictionary();
+
+            if ( HasStock(type, out int stock) ) {
+                int count = Math.Min(amt, stock);
+                return new AlcoholOrder(type, count);
             }
-            int index = UnityEngine.Random.Range(0, orderTypes.Length); // this shuold be 2: 0 for food, 2 for drink
-            return index == 0 ?
-                CreateRandomFoodOrder() :
-                CreateRandomDrinkOrder();
+            return null;
         }
 
-        public DrinkOrder CreateRandomDrinkOrder() {
-            if ( drinkTypes == null ) {
-                drinkTypes = (DrinkType[])System.Enum.GetValues(typeof(DrinkType));
+
+        public AlcoholOrder CreateRandomAlcoholOrder( int amount ) {
+            if ( alcohols == null ) alcohols = barService.GetAlcoholDictionary();
+            if ( alcoholTypes == null ) alcoholTypes = (AlcoholType[])System.Enum.GetValues(typeof(AlcoholType));
+
+            List<AlcoholType> availableTypes = new();
+
+            for ( int i = 0; i < alcoholTypes.Length; i++ ) {
+                AlcoholType type = alcoholTypes[i];
+
+
+                if ( HasStock(type, out int _) ) {
+                    availableTypes.Add(type);
+                }
             }
 
-            int index = UnityEngine.Random.Range(0, drinkTypes.Length);
+            if ( availableTypes.Count <= 0 ) return null;
 
-            switch ( index ) {
-                case 0:
-                    return CreateRandomAlcoholOrder();
-                case 1:
-                    Debug.Log("I turn off water for now, if see this mean bug");
-                    return null;
-                default:
-                    Debug.Log("There some thing broken in request order");
-                    return null;
-            }
+            int randomIndex = UnityEngine.Random.Range(0, availableTypes.Count);
+            AlcoholType chosenType = availableTypes[randomIndex];
 
+            int availableStock = alcohols[chosenType];
+            int count = Mathf.Min(amount, availableStock);
+
+            return new AlcoholOrder(availableTypes[randomIndex], count);
         }
 
-        public AlcoholOrder CreateRandomAlcoholOrder() {
-            if ( alcoholTypes == null ) {
-                alcoholTypes = (AlcoholType[])System.Enum.GetValues(typeof(AlcoholType));
-            }
-
-            int index = UnityEngine.Random.Range(0, alcoholTypes.Length);
-            return new AlcoholOrder(alcoholTypes[index]);
-        }
 
         public FoodOrder CreateRandomFoodOrder() {
             if ( foodTypes == null ) {
@@ -102,26 +132,36 @@ namespace Assets._game.Bar.Controller {
 
 
         //TODO:later add favourise drink
-        public Order GetRandomOrder() {
-            if ( alcohols == null ) alcohols = barService.GetAlcoholDictionary();
-            if ( alcoholTypes == null ) alcoholTypes = (AlcoholType[])System.Enum.GetValues(typeof(AlcoholType));
+        //public Order GetRandomOrder( int amount ) {
+        //    if ( alcohols == null ) alcohols = barService.GetAlcoholDictionary();
+        //    if ( alcoholTypes == null ) alcoholTypes = (AlcoholType[])System.Enum.GetValues(typeof(AlcoholType));
 
-            List<AlcoholType> availableTypes = new();
+        //    List<AlcoholType> availableTypes = new();
 
-            for ( int i = 0; i < alcoholTypes.Length; i++ ) {
-                AlcoholType type = alcoholTypes[i];
+        //    for ( int i = 0; i < alcoholTypes.Length; i++ ) {
+        //        AlcoholType type = alcoholTypes[i];
 
-                // If dictionary is Dictionary<AlcoholType, int>:
-                if ( alcohols.TryGetValue(type, out int count) && count > 0 ) {
-                    availableTypes.Add(type);
-                }
-            }
+        //        // If dictionary is Dictionary<AlcoholType, int>:
+        //        if ( alcohols.TryGetValue(type, out int count) && count > 0 ) {
+        //            availableTypes.Add(type);
+        //        }
+        //    }
 
-            if ( availableTypes.Count <= 0 ) return null;
+        //    if ( availableTypes.Count <= 0 ) return null;
 
-            int randomIndex = UnityEngine.Random.Range(0, availableTypes.Count);
-            return new AlcoholOrder(availableTypes[randomIndex]);
+        //    int randomIndex = UnityEngine.Random.Range(0, availableTypes.Count);
+        //    AlcoholType chosenType = availableTypes[randomIndex];
+
+        //    int availableStock = alcohols[chosenType];
+        //    int count = Mathf.Min(amount, availableStock);
+
+        //    return new AlcoholOrder(availableTypes[randomIndex], count);
+        //}
+
+        public bool HasStock( AlcoholType type, out int stock ) {
+            return alcohols.TryGetValue(type, out stock) && stock > 0;
         }
+
 
     }
 }

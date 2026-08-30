@@ -6,6 +6,7 @@ namespace Assets._game.Store.Model
     public enum FurnitureType
     {
         chair,
-        painting
+        painting,
+        plant
     }
 }

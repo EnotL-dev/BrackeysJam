@@ -2,16 +2,19 @@
 using Assets._game.Player.Controller;
 using Assets._game.Store.Model;
 using Assets._game.UI.View;
+using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.Rendering;
 using Zenject;
 
 namespace Assets._game.Player.View {
     public class PlayerInteractionView : MonoBehaviour {
+        [Inject] CameraShakingView cameraShakingView;
+        [Inject] ArmsAnimatorView armsAnimatorView;
         [Inject] IPlayerInteractionService interactionService;
 
+        [SerializeField] private InputActionReference attackAction;
         [SerializeField] private InputActionReference interactClose;
         [SerializeField] private InputActionReference interactAction;
 
@@ -30,19 +33,28 @@ namespace Assets._game.Player.View {
 
         private bool holdStart = false;
         IInteractable lastInteractable = null;
+        IInteractable hoveredInteraction = null;
         IPlayerUI currentUI;
 
         private void Start() {
             interactionService.Init(playerController, dragManagerView);
+            attackAction.action.Enable();
             interactAction.action.Enable();
             interactClose.action.Enable();
 
             interactClose.action.performed += OnEscape;
         }
 
+        private void OnEnable() {
+            attackAction.action.performed += TryAttack;
+        }
+
+
         private void OnDisable() {
             interactClose.action.performed -= OnEscape;
-
+            attackAction.action.performed -= TryAttack
+;
+            attackAction.action.Disable();
             interactAction.action.Disable();
             interactClose.action.Enable();
 
@@ -53,22 +65,44 @@ namespace Assets._game.Player.View {
             IInteractable interactable = CheckObject();
 
             bool hasTarget = interactable != null;
-            bool canInteract = hasTarget && interactable.CanInteractThisFrame;
+            bool canInteract = hasTarget && interactable.CanInteractThisFrame();
 
-            if ( canInteract ) UpdateInteractionUI(interactable);
-            else uiInteractionView.HideTip();
+
+            if (canInteract)
+            {
+                //Debug.Log($"canInteract {canInteract} this frame");
+                UpdateInteractionUI(interactable);
+            }
+            else
+            {
+                uiInteractionView.HideTip();
+                if (hoveredInteraction != null)
+                    hoveredInteraction.HideOutline();
+            }
 
             if ( canInteract ) CheckInteraction(interactable);
 
             CheckInteractionRelease();
         }
 
+        private void LateUpdate()
+        {
+            armsAnimatorView.ChangeAnimation("Punch", false);
+        }
+
         private void UpdateInteractionUI( IInteractable interactable ) {
             if ( interactable != null && lastInteractable == null ) {
                 uiInteractionView.ShowTip(interactable.GetTip());
+                interactable.ShowOutline();
+                hoveredInteraction = interactable;
             }
             else {
                 uiInteractionView.HideTip();
+                if (hoveredInteraction != null)
+                {
+                    hoveredInteraction.HideOutline();
+                    hoveredInteraction = null;
+                }
             }
         }
 
@@ -78,15 +112,23 @@ namespace Assets._game.Player.View {
 
             if ( interactAction.action.WasPressedThisFrame() ) {
                 IFurniture furniture = interactable as IFurniture;
-                if ( interactionService.IsBusy() || (furniture != null && !furniture.CanBuy()) )
+                if (interactionService.IsBusy())
                     return;
+                if (furniture != null)
+                    if (!furniture.CanBuy() && furniture.WasRemoved == false)
+                        return;
 
                 holdStart = true;
 
                 interactionService.StartInteraction(interactable);
                 uiInteractionView.HideTip();
+                if(hoveredInteraction != null)
+                    hoveredInteraction.HideOutline();
 
                 lastInteractable = interactable;
+
+                if(interactable.IsDraggableObject())
+                    armsAnimatorView.ChangeAnimation("Hold", true);
             }
             else if ( interactAction.action.IsPressed() ) {
                 if ( interactable.IsDraggableObject() ) {
@@ -110,6 +152,8 @@ namespace Assets._game.Player.View {
             holdStart = false;
             interactionService?.EndInteraction();
             lastInteractable = null;
+
+            armsAnimatorView.ChangeAnimation("Hold", false);
         }
 
         public void ForcedInteractionRelease() // May use from any space if use container
@@ -117,6 +161,8 @@ namespace Assets._game.Player.View {
             holdStart = false;
             interactionService?.EndInteraction();
             lastInteractable = null;
+
+            armsAnimatorView.ChangeAnimation("Hold", false);
         }
 
         private IInteractable CheckObject() {
@@ -165,11 +211,25 @@ namespace Assets._game.Player.View {
                 return;
 
             uiInteractionView.HideTip();
+            if (hoveredInteraction != null)
+                hoveredInteraction.HideOutline();
 
             settingPanel.Open();
 
             playerController.SetInputEnabled(false);
             playerController.SetMouseFocus(false);
+        }
+
+        private void TryAttack( InputAction.CallbackContext _ ) {
+            IInteractable interactable = CheckObject();
+
+            if ( interactable == null ) return;
+            if ( interactable.IsDameableObject() ) {
+                interactable.TryAttack();
+
+                cameraShakingView.ShakePunch();
+                armsAnimatorView.ChangeAnimation("Punch", true);
+            }
         }
     }
 }

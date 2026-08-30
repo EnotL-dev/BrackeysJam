@@ -16,12 +16,12 @@ namespace Assets._game.Core.Installers {
             BindEconomy();
             BindBar();
             BindDesk();
+            BindSeat();
 
             Debug.Log("<color=green>Bar was initialized</color>");
         }
 
-        private void BindEconomy()
-        {
+        private void BindEconomy() {
             Container.Bind<IEconomyService>()
                  .To<EconomyService>()
                  .AsSingle();
@@ -38,11 +38,16 @@ namespace Assets._game.Core.Installers {
                      .NonLazy();
         }
 
-        private void BindDesk()
-        {
+        private void BindDesk() {
             Container.Bind<DeskManagerView>()
                  .FromComponentOn(deskManagerView.gameObject)
                  .AsSingle();
+        }
+
+        private void BindSeat() {
+            Container.Bind<ISeatService>()
+                .To<SeatService>()
+                .AsSingle();
         }
     }
 }

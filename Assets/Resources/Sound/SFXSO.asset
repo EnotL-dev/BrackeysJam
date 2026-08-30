@@ -1,0 +1,112 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b306a95b258d6414a9ea7dec84b92d65, type: 3}
+  m_Name: SFXSO
+  m_EditorClassIdentifier: Assembly-CSharp::Assets._game.Sound.SO.SFXConfigSO
+  npcDrink:
+    Guid:
+      Data1: -1802856861
+      Data2: 1121608838
+      Data3: -1325220422
+      Data4: 2091564656
+    Path: event:/Drink
+  bartenderPourBeer:
+    Guid:
+      Data1: -425814141
+      Data2: 1133535095
+      Data3: 238381241
+      Data4: 1478659046
+    Path: event:/PourDrink
+  cashIn:
+    Guid:
+      Data1: -1958285636
+      Data2: 1280198872
+      Data3: -303163998
+      Data4: 1836246167
+    Path: event:/Cash
+  npcSpeech:
+    Guid:
+      Data1: 1049213994
+      Data2: 1298899916
+      Data3: 796536476
+      Data4: 572188404
+    Path: event:/Speech
+  hit:
+    Guid:
+      Data1: 1654908823
+      Data2: 1216818935
+      Data3: -885444454
+      Data4: 1352770903
+    Path: event:/Hit
+  knockOut:
+    Guid:
+      Data1: -539369824
+      Data2: 1260474383
+      Data3: -1455670650
+      Data4: -658153424
+    Path: event:/KnockOut
+  GrabObject:
+    Guid:
+      Data1: -2104676892
+      Data2: 1316324731
+      Data3: -1995881814
+      Data4: -1636024071
+    Path: event:/GrabObject
+  PlaceChair:
+    Guid:
+      Data1: 1604353781
+      Data2: 1258288990
+      Data3: -277063801
+      Data4: -478512805
+    Path: event:/ChairPlace
+  PlacePot:
+    Guid:
+      Data1: -755218592
+      Data2: 1078086148
+      Data3: 1495327646
+      Data4: 1295753475
+    Path: event:/PlantPlace
+  TurnSign:
+    Guid:
+      Data1: 2117080926
+      Data2: 1259240887
+      Data3: -1292551027
+      Data4: 808423102
+    Path: event:/Turn Sign
+  CanonShoot:
+    Guid:
+      Data1: -892769430
+      Data2: 1176440172
+      Data3: -893789301
+      Data4: 855137462
+    Path: event:/CannonShoot
+  FuseFire:
+    Guid:
+      Data1: 872987682
+      Data2: 1218438699
+      Data3: 2101422475
+      Data4: 1493022759
+    Path: event:/FuseFire
+  BreakChair:
+    Guid:
+      Data1: 1042786648
+      Data2: 1082294240
+      Data3: -406799959
+      Data4: 311167629
+    Path: event:/BreakChair
+  BuyAlcohol:
+    Guid:
+      Data1: 106726702
+      Data2: 1079745946
+      Data3: -861444434
+      Data4: -455743949
+    Path: event:/BuyAlcohol

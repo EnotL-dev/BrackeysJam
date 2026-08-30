@@ -1,6 +1,8 @@
 ﻿using Assets._game.Npc.View;
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using UnityEngine;
 
@@ -9,9 +11,9 @@ namespace Assets._game.TestingScript {
 
         private readonly WaitingLineScript waitingLine;
 
-        private readonly List<NPCScript> npcs = new();
+        private readonly List<NPCScript> queue = new();
 
-        private int reserveCount = 0;
+        public event Action<int> OnQueueChanged;
 
         public WaitingLineService( WaitingLineScript waitingLine ) {
             this.waitingLine = waitingLine;
@@ -37,52 +39,65 @@ namespace Assets._game.TestingScript {
 
         void HandleNpcTriggerExit( NPCScript npc ) => Exit(npc);
 
-
-        public bool HasAvailableSlot() => npcs.Count < waitingLine.MaxCap;
-        public int TotalClaimedSlots => npcs.Count + reserveCount;
-
-        public Vector3 GetNextAvailablePosition() => waitingLine.GetPosition(TotalClaimedSlots);
-
         public bool Enter( NPCScript npc ) {
             if ( npc == null ) return false;
-            if ( npcs.Contains(npc) ) return false;
 
-            if ( reserveCount > 0 ) {
-                reserveCount--;
-            }
-            else if ( npcs.Count >= waitingLine.MaxCap ) {
-                return false; // Queue full with no reservation
+            int index = queue.IndexOf(npc);
+            if ( index < 0 ) {
+                // NPC entered the collider without a valid reservation
+                return false;
             }
 
-            npcs.Add(npc);
+            Debug.Log($"[{waitingLine.name}] {npc.name} entered trigger at queue index {index}");
+            return true;
+        }
+
+
+        public bool TryReserve( NPCScript npc, out Vector3 targetPosition ) {
+            targetPosition = Vector3.zero;
+
+            if ( npc == null || queue.Contains(npc) || queue.Count >= waitingLine.MaxCap )
+                return false;
+
+            queue.Add(npc);
+            int index = queue.Count - 1;
+            targetPosition = waitingLine.GetPosition(index);
+
+            UpdateOccupied(queue.Count);
             return true;
         }
 
         public void Exit( NPCScript npc ) {
-            if ( !npcs.Remove(npc) ) return;
+            if ( npc == null ) return;
+            int index = queue.IndexOf(npc);
+            if ( index < 0 ) return;
+
+            queue.RemoveAt(index);
             Reorganize();
         }
 
         private void Reorganize() {
-            for ( int i = 0; i < npcs.Count; i++ ) {
-                npcs[i].MoveToDest(waitingLine.GetPosition(i));
+            for ( int i = 0; i < queue.Count; i++ ) {
+                queue[i].ReOrganizeInLine(waitingLine.GetPosition(i));
             }
+            UpdateOccupied(queue.Count);
         }
 
-        public bool TryReserve( out Vector3 targetPosition ) {
-            if ( !HasAvailableSlot() ) {
-                targetPosition = Vector3.zero;
-                return false;
-            }
+        public void CancelReservation( NPCScript npc ) {
+            if ( npc == null ) return;
 
-            targetPosition = waitingLine.GetPosition(TotalClaimedSlots);
-            reserveCount++;
-            return true;
+            int index = queue.IndexOf(npc);
+
+            if ( index < 0 ) return;
+
+            queue.RemoveAt(index);
+
+            Reorganize();
         }
 
-        public void CancelReservation() {
-            if ( reserveCount > 0 )
-                reserveCount--;
+        private void UpdateOccupied( int amt ) {
+            waitingLine.UpdateOccupied(amt);
         }
+
     }
 }

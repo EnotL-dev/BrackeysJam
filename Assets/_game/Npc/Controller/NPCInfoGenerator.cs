@@ -84,12 +84,12 @@ namespace Assets._game.Npc.Controller {
             float roll = UnityEngine.Random.Range(0f, 100f);
 
             if ( roll < badWeight )
-                return NPCWealthType.poor;
+                return NPCWealthType.Poor;
 
             if ( roll < badWeight + normalWeight )
-                return NPCWealthType.normal;
+                return NPCWealthType.Normal;
 
-            return NPCWealthType.rich;
+            return NPCWealthType.Rich;
         }
 
         private NPCProperty GenerateProperty( float vibe ) {

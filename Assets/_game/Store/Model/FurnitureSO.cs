@@ -10,6 +10,8 @@ namespace Assets._game.Store.Model
         public int Cost() => _cost;
         [SerializeField] private string _description = "none";
         public string Description() => _description;
+        [SerializeField] private int _increaseValue = 1;
+        public int IncreaseValue() => _increaseValue;
         [SerializeField] private FurnitureType furnitureType = FurnitureType.chair;
         public FurnitureType GetFurnitureType() => furnitureType;
     }

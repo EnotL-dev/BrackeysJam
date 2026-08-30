@@ -17,7 +17,7 @@ namespace Assets._game.Core.Bootstrap
         {
             Debug.Log("<color=green>GameBootstrap initialized</color>");
 
-            Application.targetFrameRate = 60;
+            Application.targetFrameRate = 90;
             _stateMachine.Enter<BootstrapState>();
         }
     }

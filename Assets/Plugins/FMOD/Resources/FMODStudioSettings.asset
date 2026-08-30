@@ -99,8 +99,8 @@ MonoBehaviour:
       Value: 1
       HasValue: 1
     OverlayPosition:
-      Value: 3
-      HasValue: 1
+      Value: 0
+      HasValue: 0
     OverlayFontSize:
       Value: 0
       HasValue: 0
@@ -407,10 +407,16 @@ MonoBehaviour:
   - Master
   Banks:
   - AmbientMusic
+  - BreakChair
+  - Canon
   - Cash
   - Drink
+  - GrabObject
+  - NPCDame
+  - PlaceObject
   - PourDrink
   - Speach
+  - TurnSign
   BanksToLoad: []
   LiveUpdatePort: 9264
   EnableMemoryTracking: 0
@@ -845,8 +851,8 @@ MonoBehaviour:
       Value: 
       HasValue: 0
     SpeakerMode:
-      Value: 3
-      HasValue: 1
+      Value: 0
+      HasValue: 0
     VirtualChannelCount:
       Value: 0
       HasValue: 0

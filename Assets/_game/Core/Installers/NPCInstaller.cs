@@ -23,7 +23,6 @@ namespace Assets._game.Core.Installers {
         }
 
         private void BindView() {
-            Container.Bind<SeatService>().AsSingle();
             //Container.Bind<BarService>().AsSingle();
             Container.Bind<NPCService>().AsSingle();
             Container.Bind<OrderService>().AsSingle();

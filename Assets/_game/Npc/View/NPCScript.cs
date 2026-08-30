@@ -1,14 +1,18 @@
 ﻿using Assets._game.Bar.Controller;
 using Assets._game.Bar.Model;
+using Assets._game.Bar.Model.Alcohol;
 using Assets._game.Bar.Model.SOScript.DrinkSO.Alcohol;
 using Assets._game.Core.StateMachine;
 using Assets._game.Npc.Animation;
 using Assets._game.Npc.ConcreateClass;
 using Assets._game.Npc.Enum;
+using Assets._game.NpcGenerator.View;
 using Assets._game.Sound.Controller;
 using Assets._game.Sound.EnumInterface;
+using DG.Tweening;
 using System;
 using System.Collections;
+using System.Security.Cryptography;
 using UnityEngine;
 using UnityEngine.AI;
 using Zenject;
@@ -30,36 +34,42 @@ namespace Assets._game.Npc.View {
 
 
         [SerializeField] GameObject LeavePos;
-        [SerializeField] private float maxWaitDrinkTimeout = 60f;
+        [SerializeField] private float maxWaitServeDrinkTimeout = 60f;
         [SerializeField] private float checkDrinkInterval = 0.5f;
 
 
         BarService barService;
-        SeatService seatService;
+        ISeatService seatService;
         OrderFactory orderFactory;
         ISFXService sFXService;
+        WorldSettingScript worldSettingScript;
+
+
         public AlcoholCatalog alcoholCatalog { get; private set; }
         public NavMeshAgent agent { get; private set; }
+        public Animator animator { get; private set; }
 
         SignalBus signalBus;
 
         [Inject]
         void Construct( BarService barService,
-            SeatService seatService,
+            ISeatService seatService,
             OrderFactory orderFactory,
             AlcoholCatalog alcoholCatalog,
             ISFXService sFXService,
-            SignalBus signalBus ) {
+            SignalBus signalBus,
+            WorldSettingScript worldSettingScript ) {
             this.barService = barService;
             this.seatService = seatService;
             this.orderFactory = orderFactory;
             this.alcoholCatalog = alcoholCatalog;
             this.sFXService = sFXService;
             this.signalBus = signalBus;
+            this.worldSettingScript = worldSettingScript;
         }
 
         void Awake() {
-            Animator animator = GetComponent<Animator>();
+
             agent = GetComponent<NavMeshAgent>();
 
             moveScript = new NPCMoveScript(this);
@@ -70,9 +80,7 @@ namespace Assets._game.Npc.View {
         }
 
         public void Start() {
-
             machineState.Initialize(moveScript);
-
         }
 
         private void OnEnable() {
@@ -91,6 +99,14 @@ namespace Assets._game.Npc.View {
 
         public void Initialize( NPCInfo info ) {
             npcInfo = info;
+        }
+
+        public void SetCharacterModel( NpcGeneratedCharacterView characterView ) {
+            animator = characterView.GetComponentInChildren<Animator>(true);
+
+            if ( animator == null ) {
+                Debug.LogError("No Animator found on generated character prefab!", characterView);
+            }
         }
 
         public void ChangeState( NPCState state ) {
@@ -118,15 +134,42 @@ namespace Assets._game.Npc.View {
 
         public void Update() {
             machineState.UpdateState();
+            animationController.UpdateAnimation();
         }
 
+        #region Move
 
-        public void MoveToDest( Vector3 pos ) {
-            moveScript.SetDestination(pos);
-            machineState.ChangeState(moveScript);
+        public void MoveToDest( Vector3 pos, NPCMovementOwner owner = NPCMovementOwner.None ) {
+
+            moveScript.TrySetDestination(pos, owner);
+
+            machineState.ChangeState(moveScript, () => {
+            });
         }
 
+        public void ReOrganizeInLine( Vector3 pos ) {
+            if ( moveScript.TrySetDestination(pos, NPCMovementOwner.WaitingLine) ) {
+                machineState.ChangeState(moveScript);
+            }
+        }
 
+        public void MoveToBar( Vector3 pos1, Seat seat ) {
+            moveScript.TrySetDestination(pos1, NPCMovementOwner.Action);
+            machineState.ChangeState(moveScript, () => {
+                Debug.Log("Moving to bar Done");
+                OrderDrink(seat);
+            });
+        }
+
+        public void MoveToSeat( Vector3 pos, Quaternion rotation, Action onComplete ) {
+            moveScript.TrySetDestination(pos, NPCMovementOwner.Action);
+            machineState.ChangeState(moveScript, () => {
+                transform.rotation = rotation;
+                onComplete?.Invoke();
+            });
+        }
+
+        #endregion
 
 
         //public void MoveToWaitingLine( Vector3 pos ) {
@@ -134,35 +177,39 @@ namespace Assets._game.Npc.View {
         //    machineState.ChangeState(moveScript);
         //}
 
-        public void MoveToBar( Vector3 pos1, Vector3 pos2 ) {
-            moveScript.SetDestination(pos1);
-            machineState.ChangeState(moveScript, () => {
-                Debug.Log("Moving to bar Done");
-
-                if ( waitForDrinkCoroutine != null ) StopCoroutine(waitForDrinkCoroutine);
-
-                waitForDrinkCoroutine = StartCoroutine(WaitForAvailableDrinkRoutine(pos2));
-            });
 
 
+        private void OrderDrink( Seat seat ) {
+            if ( waitForDrinkCoroutine != null ) StopCoroutine(waitForDrinkCoroutine);
+            waitForDrinkCoroutine = StartCoroutine(WaitForAvailableDrinkRoutine(seat));
         }
 
-        private IEnumerator WaitForAvailableDrinkRoutine( Vector3 seatPos ) {
+        private IEnumerator WaitForAvailableDrinkRoutine( Seat seat ) {
             float elapsed = 0f;
+
+            int amount = npcInfo.wealth switch {
+                NPCWealthType.Poor => 1,
+                NPCWealthType.Normal => UnityEngine.Random.Range(2, 4), // 2 or 3
+                NPCWealthType.Rich => UnityEngine.Random.Range(3, 5),   // 3 or 4
+                _ => 1
+            };
+
+            AlcoholType type = npcInfo.farDrink;
 
             // Optional: Switch to an idle/waiting animation state while waiting at the counter
             // machineState.ChangeState(waitScript);
 
-            while ( elapsed < maxWaitDrinkTimeout ) {
-                var order = orderFactory.GetRandomOrder();
+            while ( elapsed < maxWaitServeDrinkTimeout ) {
+                AlcoholOrder order = orderFactory.GetOrderFor(type, amount) ?? orderFactory.CreateRandomAlcoholOrder(amount);
                 if ( order != null ) {
-                    Debug.Log("Drink restocked, placing order.");
+                    Debug.Log($"Drink available, placing order for {order.alcoholType} (Amount: {order.amount}).");
                     waitForDrinkCoroutine = null;
-                    PlaceOrder(seatPos, order);
+
+                    PlaceOrder(seat, order);
                     yield break;
                 }
 
-                Debug.Log($"Waiting for drinks to be stocked... ({elapsed:F1}s/{maxWaitDrinkTimeout}s)");
+                Debug.Log($"Waiting for drinks to be stocked... ({elapsed:F1}s/{maxWaitServeDrinkTimeout}s)");
                 yield return new WaitForSeconds(checkDrinkInterval);
                 elapsed += checkDrinkInterval;
             }
@@ -178,23 +225,29 @@ namespace Assets._game.Npc.View {
         }
 
 
-        public void PlaceOrder( Vector3 pos, Order order = null ) {
+        public void PlaceOrder( Seat seat, AlcoholOrder order = null ) {
             //machineState.ChangeState(waitScript);
 
             Debug.Log("Calling for order");
 
-            StartCoroutine(barService.RequestDrink((AlcoholOrder)order, () => {
-                MoveToDest(pos);
-                machineState.ChangeState(moveScript, () => {
+            var favDrink =  npcInfo.farDrink;
 
+            barService.RequestDrink(order, order.amount, () => {
+
+                //move to seat
+                MoveToSeat(seat.SitPosition(), seat.SitRotation(), () => {
+                    //on reach seat sit down
+                    animationController.SetAction(NPCActionState.Sit);
+
+                    //consume order
                     consumeOrder.ChangeAlcoholSO(order);
                     machineState.ChangeState(consumeOrder, () => {
+                        //stand up leave
+                        animationController.SetAction(NPCActionState.StandUp);
                         Leave();
                     });
                 });
-
-            }));
-
+            });
 
         }
 
@@ -205,6 +258,9 @@ namespace Assets._game.Npc.View {
         }
 
         public void WaitForConsumeOrder( float seconds, Action onComplete ) {
+            sFXService.PlayInSpace(SFXType.NPCDrink, gameObject.transform.position);
+            animationController.SetAction(NPCActionState.ConsumeOrder);
+
             StartCoroutine(WaitForConsumeOrderRoutine(seconds, onComplete));
 
         }
@@ -225,18 +281,50 @@ namespace Assets._game.Npc.View {
                 barService.ReduceChaos(0.1f);
             }
 
-            Vector3 destination = new Vector3(30, -0.5f, 26); // Ref a real postion and handle destory
+            Vector3 destination = worldSettingScript.GetLeavePoint(); // Ref a real postion and handle destory
+            moveScript.TrySetDestination(destination, NPCMovementOwner.Action);
+            machineState.ChangeState(moveScript, () => { Destroy(gameObject); });
+        }
 
-
-            MoveToDest(destination);
+        public void ForceLeave() {
+            Vector3 destination = worldSettingScript.GetLeavePoint(); // Ref a real postion and handle destory
+            moveScript.TrySetDestination(destination, NPCMovementOwner.Action);
+            machineState.ChangeState(moveScript, () => {
+                Destroy(gameObject);
+            });
         }
 
         public void SitDown() {
             //animationController.SetAction(NPCActionState.Sit);
         }
 
-        public void StandUP() {
+        public void StandUp() {
             //animationController.SetAction(NPCActionState.StandUp);
+        }
+
+        public void StopAllBehaviour() {
+            moveScript.SetAgentEnabled(false);
+            machineState.ChangeState(waitScript);
+        }
+
+        public void RecoverFromKnockOut() {
+            moveScript.SetAgentEnabled(true);
+            Leave();
+        }
+
+        private void OnDrawGizmos() {
+            if ( agent == null || agent.path == null || agent.path.corners.Length < 2 )
+                return;
+
+            Gizmos.color = Color.red;
+            Vector3[] corners = agent.path.corners;
+
+            for ( int i = 0; i < corners.Length - 1; i++ ) {
+                // Draw lines between each waypoint corner
+                Gizmos.DrawLine(corners[i], corners[i + 1]);
+                // Draw a small sphere at each corner/turn point
+                Gizmos.DrawSphere(corners[i + 1], 0.15f);
+            }
         }
 
 
