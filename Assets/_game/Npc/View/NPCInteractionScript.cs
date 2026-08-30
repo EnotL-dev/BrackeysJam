@@ -38,7 +38,9 @@ namespace Assets._game.Npc.View {
         int currentCount = 0;
 
         Rigidbody rd;
-        Collider collider;
+        BoxCollider collider;
+
+        private Vector3 originalColliderSize;
 
 
         static readonly int EmissionColor = Shader.PropertyToID("_EmissionColor");
@@ -130,13 +132,18 @@ namespace Assets._game.Npc.View {
 
             if ( currentCount > countBeforeKnockOut ) {
                 rd ??= this.gameObject.GetComponent<Rigidbody>();
-                collider ??= gameObject.GetComponent<Collider>();
+                if ( collider == null ) {
+                    collider = gameObject.GetComponent<BoxCollider>();
+                    originalColliderSize = collider.size;
+                }
 
 
                 rd.isKinematic = false;
-                rd.useGravity = false;
+                rd.useGravity = true;
 
-                collider.isTrigger = true;
+                //collider.isTrigger = true;
+                SetColliderSmall();
+
 
                 sFXService.Play(SFXType.KnockOut);
 
@@ -149,8 +156,9 @@ namespace Assets._game.Npc.View {
                     isKnockOut = false;
                     rd.isKinematic = true;
                     rd.useGravity = true;
-                    collider.isTrigger = false;
+                    //collider.isTrigger = false;
                     animator.enabled = true;
+                    RestoreCollider();
                     npcScript.RecoverFromKnockOut();
                 }));
             }
@@ -220,6 +228,16 @@ namespace Assets._game.Npc.View {
                 .WaitForCompletion();
 
             onComplete?.Invoke();
+        }
+
+        private void SetColliderSmall() {
+            BoxCollider box = (BoxCollider)collider;
+            box.size = Vector3.one * 0.3f;
+        }
+
+        private void RestoreCollider() {
+            BoxCollider box = (BoxCollider)collider;
+            box.size = originalColliderSize;
         }
     }
 }
