@@ -32,7 +32,7 @@ namespace Assets._game.Player.View
 
         public void Start()
         {
-            textMoney.text = "200 $";
+            textMoney.text = "20 $";
             textQuotaMoney.text = "0$ / 0$";
 
             textSeats.text = $"0 / 5";
