@@ -19,5 +19,6 @@ namespace Assets._game.Sound.SO {
         public EventReference CanonShoot;
         public EventReference FuseFire;
         public EventReference BreakChair;
+        public EventReference BuyAlcohol;
     }
 }

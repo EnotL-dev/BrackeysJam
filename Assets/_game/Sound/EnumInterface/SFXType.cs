@@ -20,5 +20,7 @@ namespace Assets._game.Sound.EnumInterface {
         CanonShoot,
         FuseFire,
         BreakChair,
+
+        BuyAlcohol,
     }
 }

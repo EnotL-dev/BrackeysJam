@@ -67,6 +67,7 @@ namespace Assets._game.Sound.Controller {
             SFXType.CanonShoot => config.CanonShoot,
             SFXType.FuseFire => config.FuseFire,
             SFXType.BreakChair => config.BreakChair,
+            SFXType.BuyAlcohol => config.BuyAlcohol,
             _ => default
         };
 

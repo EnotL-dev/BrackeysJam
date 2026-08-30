@@ -69,7 +69,7 @@ namespace Assets._game.Bar.Controller {
 
             playerInterfaceManagerView.ReduceMoney(_money, _money - cost);
 
-            sFXService.Play(SFXType.CashIn);
+            sFXService.Play(SFXType.BuyAlcohol);
 
             barService.AddAlcohol(alcoholType, count);
             _money -= cost;

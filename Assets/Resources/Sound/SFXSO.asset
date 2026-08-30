@@ -103,3 +103,10 @@ MonoBehaviour:
       Data3: -406799959
       Data4: 311167629
     Path: event:/BreakChair
+  BuyAlcohol:
+    Guid:
+      Data1: 106726702
+      Data2: 1079745946
+      Data3: -861444434
+      Data4: -455743949
+    Path: event:/BuyAlcohol
