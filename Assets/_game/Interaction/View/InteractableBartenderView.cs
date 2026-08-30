@@ -15,6 +15,23 @@ namespace Assets._game.Interaction.View
         [SerializeField] private BartenderPanelView bartenderPanelView;
         [SerializeField] private RectTransform parentPanelToAddText;
         [SerializeField] private RectTransform prefabAddMoney;
+        [Space(5)]
+        [SerializeField] private Outline outlineObject;
+        public void ShowOutline()
+        {
+            if(outlineObject)
+            {
+                outlineObject.enabled = true;
+            }
+        }
+
+        public void HideOutline()
+        {
+            if (outlineObject)
+            {
+                outlineObject.enabled = false;
+            }
+        }
 
         public void AddMoney(int count)
         {

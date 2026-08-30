@@ -15,6 +15,23 @@ namespace Assets._game.Interaction.View {
 
         [SerializeField] private Transform signObject;
         [SerializeField] private GameObject arrowObject;
+        [Space(5)]
+        [SerializeField] private Outline outlineObject;
+        public void ShowOutline()
+        {
+            if (outlineObject)
+            {
+                outlineObject.enabled = true;
+            }
+        }
+
+        public void HideOutline()
+        {
+            if (outlineObject)
+            {
+                outlineObject.enabled = false;
+            }
+        }
 
         [Inject]
         public void Construct( SignalBus signalBus,

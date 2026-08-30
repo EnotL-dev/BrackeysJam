@@ -1,6 +1,7 @@
 using DG.Tweening;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Assets._game.Player.View
 {
@@ -8,7 +9,13 @@ namespace Assets._game.Player.View
     {
         private bool tipShowed = false;
         [SerializeField] private TextMeshProUGUI textTip;
+        [SerializeField] private Image blackScreen;
 
+        private void Start()
+        {
+            blackScreen.color = new Color(0,0,0,1f);
+            blackScreen.DOFade(0f, 2f).SetEase(Ease.InOutQuad);
+        }
 
         public void ShowTip(string text)
         {

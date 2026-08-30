@@ -12,6 +12,23 @@ namespace Assets._game.Npc.View {
     public class NPCInteractionScript : MonoBehaviour, IInteractable {
 
         [SerializeField] string dialoge; //TODO use a sperate script for this
+        [Space(5)]
+        [SerializeField] private Outline outlineObject;
+        public void ShowOutline()
+        {
+            if (outlineObject)
+            {
+                outlineObject.enabled = true;
+            }
+        }
+
+        public void HideOutline()
+        {
+            if (outlineObject)
+            {
+                outlineObject.enabled = false;
+            }
+        }
 
         NPCScript npcScript;
         NPCInfoView NPCInfoView;

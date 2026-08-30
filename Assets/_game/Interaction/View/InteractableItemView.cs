@@ -10,6 +10,24 @@ namespace Assets._game.Interaction.View
     {
         [Inject] FurnitureManagerView furnitureManagerView;
         [Inject] StoreView storeView;
+        [Space(5)]
+        [SerializeField] private Outline outlineObject;
+        public void ShowOutline()
+        {
+            if (outlineObject)
+            {
+                outlineObject.enabled = true;
+            }
+        }
+
+        public void HideOutline()
+        {
+            if (outlineObject)
+            {
+                outlineObject.enabled = false;
+            }
+        }
+
         private bool _wasRemoved = false;
         public bool WasRemoved { get => _wasRemoved; }
 

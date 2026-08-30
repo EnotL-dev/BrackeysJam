@@ -2,6 +2,7 @@
 using Assets._game.Player.Controller;
 using Assets._game.Store.Model;
 using Assets._game.UI.View;
+using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -32,6 +33,7 @@ namespace Assets._game.Player.View {
 
         private bool holdStart = false;
         IInteractable lastInteractable = null;
+        IInteractable hoveredInteraction = null;
         IPlayerUI currentUI;
 
         private void Start() {
@@ -66,11 +68,17 @@ namespace Assets._game.Player.View {
             bool canInteract = hasTarget && interactable.CanInteractThisFrame();
 
 
-            if ( canInteract ) {
+            if (canInteract)
+            {
                 //Debug.Log($"canInteract {canInteract} this frame");
                 UpdateInteractionUI(interactable);
             }
-            else uiInteractionView.HideTip();
+            else
+            {
+                uiInteractionView.HideTip();
+                if (hoveredInteraction != null)
+                    hoveredInteraction.HideOutline();
+            }
 
             if ( canInteract ) CheckInteraction(interactable);
 
@@ -85,9 +93,16 @@ namespace Assets._game.Player.View {
         private void UpdateInteractionUI( IInteractable interactable ) {
             if ( interactable != null && lastInteractable == null ) {
                 uiInteractionView.ShowTip(interactable.GetTip());
+                interactable.ShowOutline();
+                hoveredInteraction = interactable;
             }
             else {
                 uiInteractionView.HideTip();
+                if (hoveredInteraction != null)
+                {
+                    hoveredInteraction.HideOutline();
+                    hoveredInteraction = null;
+                }
             }
         }
 
@@ -107,6 +122,8 @@ namespace Assets._game.Player.View {
 
                 interactionService.StartInteraction(interactable);
                 uiInteractionView.HideTip();
+                if(hoveredInteraction != null)
+                    hoveredInteraction.HideOutline();
 
                 lastInteractable = interactable;
 
@@ -194,6 +211,8 @@ namespace Assets._game.Player.View {
                 return;
 
             uiInteractionView.HideTip();
+            if (hoveredInteraction != null)
+                hoveredInteraction.HideOutline();
 
             settingPanel.Open();
 

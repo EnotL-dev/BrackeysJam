@@ -16,6 +16,23 @@ namespace Assets._game.Interaction.View
         [SerializeField] private Transform spawnShootPoint;
         [Space(5)]
         [SerializeField] private ParticleSystem particleSmoke;
+        [Space(5)]
+        [SerializeField] private Outline outlineObject;
+        public void ShowOutline()
+        {
+            if (outlineObject)
+            {
+                outlineObject.enabled = true;
+            }
+        }
+
+        public void HideOutline()
+        {
+            if (outlineObject)
+            {
+                outlineObject.enabled = false;
+            }
+        }
 
         private float initialScaleX;
 
@@ -31,10 +48,7 @@ namespace Assets._game.Interaction.View
             initialScaleX = cannonObject.localScale.x;
         }
 
-        public string GetTip()
-        {
-            return "[E] - SHOOT!";
-        }
+        public string GetTip() => "[E] - SHOOT!";
 
         public bool OnceActivation() => true;
         public bool FreezePlayer() => false;

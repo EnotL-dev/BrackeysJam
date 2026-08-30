@@ -4,6 +4,8 @@ using UnityEngine;
 namespace Assets._game.Interaction.View {
     public interface IInteractable {
         string GetTip() => "E";
+        void ShowOutline();
+        void HideOutline();
 
         void OnInteract();
 
