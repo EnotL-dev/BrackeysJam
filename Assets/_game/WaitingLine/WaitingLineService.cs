@@ -11,7 +11,7 @@ namespace Assets._game.TestingScript {
 
         private readonly WaitingLineScript waitingLine;
 
-        private readonly Dictionary<int, NPCScript> queue = new();
+        private readonly List<NPCScript> queue = new();
 
         public event Action<int> OnQueueChanged;
 
@@ -39,114 +39,60 @@ namespace Assets._game.TestingScript {
 
         void HandleNpcTriggerExit( NPCScript npc ) => Exit(npc);
 
-
         public bool Enter( NPCScript npc ) {
             if ( npc == null ) return false;
 
-            int index = FindNpcIndex(npc);
-
+            int index = queue.IndexOf(npc);
             if ( index < 0 ) {
-                // NPC is just passing through the trigger.
+                // NPC entered the collider without a valid reservation
                 return false;
             }
 
-            Debug.Log($"[{waitingLine.name}] {npc.name} entered queue at index {index}");
-
+            Debug.Log($"[{waitingLine.name}] {npc.name} entered trigger at queue index {index}");
             return true;
         }
 
-        public void Exit( NPCScript npc ) {
-            Debug.Log($"[{waitingLine.name}] {npc.name} exit queue at index");
-
-            if ( npc == null ) return;
-
-            int index = FindNpcIndex(npc);
-
-            if ( index < 0 ) return;
-
-            queue.Remove(index);
-            UpdateOccupied(queue.Count);
-            Reorganize();
-        }
-
-        private void Reorganize() {
-            if ( queue.Count == 0 ) return;
-
-            //Debug.Log($"current queue have {queue.Count}");
-
-            List<NPCScript> orderedNpcs = queue
-                    .OrderBy(pair => pair.Key)
-                    .Select(pair => pair.Value)
-                    .ToList();
-
-            queue.Clear();
-
-            for ( int i = 0; i < orderedNpcs.Count; i++ ) {
-                NPCScript npc = orderedNpcs[i];
-
-                queue[i] = npc;
-
-                npc.ReOrganizeInLine(waitingLine.GetPosition(i));
-            }
-
-            UpdateOccupied(queue.Count);
-
-        }
 
         public bool TryReserve( NPCScript npc, out Vector3 targetPosition ) {
             targetPosition = Vector3.zero;
 
-            if ( npc == null ) return false;
-
-            if ( queue.ContainsValue(npc) )
+            if ( npc == null || queue.Contains(npc) || queue.Count >= waitingLine.MaxCap )
                 return false;
 
-            int index = GetNextAvailableIndex();
-
-            if ( index >= waitingLine.MaxCap )
-                return false;
-
-            queue[index] = npc;
-            Reorganize();
-
+            queue.Add(npc);
+            int index = queue.Count - 1;
             targetPosition = waitingLine.GetPosition(index);
+
             UpdateOccupied(queue.Count);
             return true;
+        }
+
+        public void Exit( NPCScript npc ) {
+            if ( npc == null ) return;
+            int index = queue.IndexOf(npc);
+            if ( index < 0 ) return;
+
+            queue.RemoveAt(index);
+            Reorganize();
+        }
+
+        private void Reorganize() {
+            for ( int i = 0; i < queue.Count; i++ ) {
+                queue[i].ReOrganizeInLine(waitingLine.GetPosition(i));
+            }
+            UpdateOccupied(queue.Count);
         }
 
         public void CancelReservation( NPCScript npc ) {
             if ( npc == null ) return;
 
-            int index = FindNpcIndex(npc);
+            int index = queue.IndexOf(npc);
 
             if ( index < 0 ) return;
 
-            queue.Remove(index);
-            UpdateOccupied(queue.Count);
-            //foreach ( var kvp in queue ) {
-            //    Debug.Log($"[QUEUE] CANCEL {npc.name} | " +
-            //                $"index={index} | " +
-            //                $"contains={queue.ContainsValue(npc)}");
-            //}
+            queue.RemoveAt(index);
 
-            //Reorganize();
-        }
-
-        private int GetNextAvailableIndex() {
-            for ( int i = 0; i < waitingLine.MaxCap; i++ ) {
-                if ( !queue.ContainsKey(i) )
-                    return i;
-            }
-
-            return waitingLine.MaxCap;
-        }
-
-        private int FindNpcIndex( NPCScript npc ) {
-            foreach ( var pair in queue ) {
-                if ( pair.Value == npc ) return pair.Key;
-            }
-
-            return -1;
+            Reorganize();
         }
 
         private void UpdateOccupied( int amt ) {

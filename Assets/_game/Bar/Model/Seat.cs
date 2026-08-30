@@ -72,6 +72,7 @@ public class Seat : MonoBehaviour {
     void Break() {
         if ( IsBroken ) return;
 
+        //sfxService.Play(SFXType.)
         IsBroken = true;
 
         SetBrokenVisual(IsBroken);
@@ -148,6 +149,8 @@ public class Seat : MonoBehaviour {
     }
 
     public void Release() {
+        Debug.Log("relase this seat back");
+
         IsOccupied = false;
         seatService?.ReleaseSeat(this);
     }

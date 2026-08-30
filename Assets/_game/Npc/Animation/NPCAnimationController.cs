@@ -41,13 +41,13 @@ namespace Assets._game.Npc.Animation {
 
 
         public void SetAction( NPCActionState state ) {
-            Debug.Log($" SetAction: {state}");
+            //Debug.Log($" SetAction: {state}");
 
             if ( state == NPCActionState.Sit ) {
                 animator.SetBool(IsSittingHash, true);
             }
             else if ( state == NPCActionState.StandUp ) {
-                Debug.Log("NPC should be standing up");
+                //Debug.Log("NPC should be standing up");
                 animator.SetBool(IsSittingHash, false);
             }
             else if ( state == NPCActionState.ConsumeOrder ) {
