@@ -1,5 +1,6 @@
 ﻿using Assets._game.Bar.Controller;
 using Assets._game.Bar.Model;
+using Assets._game.Bar.Model.Alcohol;
 using Assets._game.Bar.Model.SOScript.DrinkSO.Alcohol;
 using Assets._game.Core.StateMachine;
 using Assets._game.Npc.Animation;
@@ -186,23 +187,31 @@ namespace Assets._game.Npc.View {
         private IEnumerator WaitForAvailableDrinkRoutine( Seat seat ) {
             float elapsed = 0f;
 
+            int amount = npcInfo.wealth switch {
+                NPCWealthType.Poor => 1,
+                NPCWealthType.Normal => UnityEngine.Random.Range(2, 4), // 2 or 3
+                NPCWealthType.Rich => UnityEngine.Random.Range(3, 5),   // 3 or 4
+                _ => 1
+            };
+
+            AlcoholType type = npcInfo.farDrink;
+
             // Optional: Switch to an idle/waiting animation state while waiting at the counter
             // machineState.ChangeState(waitScript);
 
             while ( elapsed < maxWaitServeDrinkTimeout ) {
-                var order = orderFactory.GetRandomOrder();
-                if ( order == null ) {
-                    Debug.Log($"Waiting for drinks to be stocked... ({elapsed:F1}s/{maxWaitServeDrinkTimeout}s)");
-                    yield return new WaitForSeconds(checkDrinkInterval);
-                    elapsed += checkDrinkInterval;
+                AlcoholOrder order = orderFactory.GetOrderFor(type, amount) ?? orderFactory.CreateRandomAlcoholOrder(amount);
+                if ( order != null ) {
+                    Debug.Log($"Drink available, placing order for {order.alcoholType} (Amount: {order.amount}).");
+                    waitForDrinkCoroutine = null;
+
+                    PlaceOrder(seat, order);
+                    yield break;
                 }
 
-                Debug.Log("Drink restocked, placing order.");
-                waitForDrinkCoroutine = null;
-
-                PlaceOrder(seat, order);
-
-                yield break;
+                Debug.Log($"Waiting for drinks to be stocked... ({elapsed:F1}s/{maxWaitServeDrinkTimeout}s)");
+                yield return new WaitForSeconds(checkDrinkInterval);
+                elapsed += checkDrinkInterval;
             }
 
             // Patience ran out because the player never restocked
@@ -216,20 +225,14 @@ namespace Assets._game.Npc.View {
         }
 
 
-        public void PlaceOrder( Seat seat, Order order = null ) {
+        public void PlaceOrder( Seat seat, AlcoholOrder order = null ) {
             //machineState.ChangeState(waitScript);
 
             Debug.Log("Calling for order");
 
-            int amount = npcInfo.wealth switch {
-                NPCWealthType.Poor => 1,
-                NPCWealthType.Normal => UnityEngine.Random.Range(2, 4), // 2 or 3
-                NPCWealthType.Rich => UnityEngine.Random.Range(3, 5),   // 3 or 4
-                _ => 1
-            };
+            var favDrink =  npcInfo.farDrink;
 
-
-            barService.RequestDrink((AlcoholOrder)order, () => {
+            barService.RequestDrink(order, order.amount, () => {
 
                 //move to seat
                 MoveToSeat(seat.SitPosition(), seat.SitRotation(), () => {

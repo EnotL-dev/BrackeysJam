@@ -104,16 +104,16 @@ namespace Assets._game.Bar.Controller {
             Debug.Log($"<color=yellow>Reduce {alcoholType} -{count}</color>");
         }
 
-        public void RequestDrink( AlcoholOrder alcoholOrder, Action onOrderReady ) {
+        public void RequestDrink( AlcoholOrder alcoholOrder, int amount, Action onOrderReady ) {
             var so = alcoholCatalogSO.Get(alcoholOrder.alcoholType);
 
-            Debug.Log($"Order {alcoholOrder.alcoholType}");
+            Debug.Log($"Order {alcoholOrder.alcoholType}, amount {amount}");
 
 
             OnNpcRequestBar?.Invoke(so.PrepareTime, () => {
                 onOrderReady?.Invoke();
                 sfxService.Play(SFXType.CashIn);
-                economyService.SellAlchohol(alcoholOrder.alcoholType);
+                economyService.SellAlchohol(alcoholOrder.alcoholType, amount);
             });
 
 
