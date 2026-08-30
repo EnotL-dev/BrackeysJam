@@ -154,6 +154,7 @@ namespace Assets._game.Npc.View {
                     rd.useGravity = true;
                     collider.isTrigger = false;
                     animator.enabled = true;
+                    npcScript.RecoverFromKnockOut();
                 }));
             }
         }
