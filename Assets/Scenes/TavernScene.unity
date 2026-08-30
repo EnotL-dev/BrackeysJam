@@ -18729,7 +18729,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 379969593858167819, guid: f169e5f586555424b95a6c25305f0f48, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 35.279
+      value: 37.62
       objectReference: {fileID: 0}
     - target: {fileID: 379969593858167819, guid: f169e5f586555424b95a6c25305f0f48, type: 3}
       propertyPath: m_LocalPosition.y
@@ -18790,6 +18790,10 @@ PrefabInstance:
     - target: {fileID: 7916226438910283056, guid: f169e5f586555424b95a6c25305f0f48, type: 3}
       propertyPath: m_Size.y
       value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8400728092827406052, guid: f169e5f586555424b95a6c25305f0f48, type: 3}
+      propertyPath: m_Enabled
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -44410,7 +44414,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 541359957681032181, guid: b4f0da0f75e43964c9abbbc11d2e5043, type: 3}
       propertyPath: ShiftCycleTime
-      value: 60
+      value: 210
       objectReference: {fileID: 0}
     - target: {fileID: 722248349439871086, guid: b4f0da0f75e43964c9abbbc11d2e5043, type: 3}
       propertyPath: m_AnchorMax.y
