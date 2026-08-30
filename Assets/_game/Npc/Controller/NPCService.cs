@@ -43,8 +43,9 @@ namespace Assets._game.Npc.Controller {
                 return;
             }
 
-            if ( barWaitingLineService.TryReserve( out Vector3 targetPos) ) {
+            if ( barWaitingLineService.TryReserve(npc, out Vector3 targetPos) ) {
                 npc.MoveToBar(targetPos, seat);
+                comeInWaitingLineService.CancelReservation(npc);
             }
             else {
                 Debug.Log("Bar waiting line is full or unavailable.");
