@@ -61,6 +61,7 @@ namespace Assets._game.Shift.Controller
         {
             if(economyService.QuotaCurrentValue() < economyService.QuotaMaxValue())
             {
+                gameStateMachine.Enter<EndGameState>();
                 Debug.Log("<color=red>YOU LOSE!!</color>");
             }
         }
