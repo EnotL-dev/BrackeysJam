@@ -72,7 +72,7 @@ public class Seat : MonoBehaviour {
     void Break() {
         if ( IsBroken ) return;
 
-        //sfxService.Play(SFXType.)
+        sfxService.Play(SFXType.BreakChair);
         IsBroken = true;
 
         SetBrokenVisual(IsBroken);

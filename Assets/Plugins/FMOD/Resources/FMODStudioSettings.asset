@@ -407,6 +407,7 @@ MonoBehaviour:
   - Master
   Banks:
   - AmbientMusic
+  - BreakChair
   - Canon
   - Cash
   - Drink

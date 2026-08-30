@@ -66,6 +66,7 @@ namespace Assets._game.Sound.Controller {
             SFXType.TurnSign => config.TurnSign,
             SFXType.CanonShoot => config.CanonShoot,
             SFXType.FuseFire => config.FuseFire,
+            SFXType.BreakChair => config.BreakChair,
             _ => default
         };
 
