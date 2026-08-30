@@ -43310,11 +43310,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3845901359511588592, guid: 3342e70c3113c034cb2a5e3162c31e2b, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4309406570481390798, guid: 3342e70c3113c034cb2a5e3162c31e2b, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4489931226436850038, guid: 3342e70c3113c034cb2a5e3162c31e2b, type: 3}
       propertyPath: m_AnchorMax.y

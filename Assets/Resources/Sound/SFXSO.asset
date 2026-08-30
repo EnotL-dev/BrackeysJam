@@ -96,3 +96,10 @@ MonoBehaviour:
       Data3: 2101422475
       Data4: 1493022759
     Path: event:/FuseFire
+  BreakChair:
+    Guid:
+      Data1: 1042786648
+      Data2: 1082294240
+      Data3: -406799959
+      Data4: 311167629
+    Path: event:/BreakChair
