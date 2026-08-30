@@ -1,4 +1,5 @@
 ﻿using Assets._game.Npc.View;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,6 +13,7 @@ namespace Assets._game.TestingScript {
 
         private readonly Dictionary<int, NPCScript> queue = new();
 
+        public event Action<int> OnQueueChanged;
 
         public WaitingLineService( WaitingLineScript waitingLine ) {
             this.waitingLine = waitingLine;
@@ -54,6 +56,8 @@ namespace Assets._game.TestingScript {
         }
 
         public void Exit( NPCScript npc ) {
+            Debug.Log($"[{waitingLine.name}] {npc.name} exit queue at index");
+
             if ( npc == null ) return;
 
             int index = FindNpcIndex(npc);
@@ -61,14 +65,14 @@ namespace Assets._game.TestingScript {
             if ( index < 0 ) return;
 
             queue.Remove(index);
-
+            UpdateOccupied(queue.Count);
             Reorganize();
         }
 
         private void Reorganize() {
             if ( queue.Count == 0 ) return;
 
-            Debug.Log($"current queue have {queue.Count}");
+            //Debug.Log($"current queue have {queue.Count}");
 
             List<NPCScript> orderedNpcs = queue
                     .OrderBy(pair => pair.Key)
@@ -82,8 +86,10 @@ namespace Assets._game.TestingScript {
 
                 queue[i] = npc;
 
-                npc.MoveToDest(waitingLine.GetPosition(i));
+                npc.ReOrganizeInLine(waitingLine.GetPosition(i));
             }
+
+            UpdateOccupied(queue.Count);
 
         }
 
@@ -101,9 +107,10 @@ namespace Assets._game.TestingScript {
                 return false;
 
             queue[index] = npc;
+            Reorganize();
 
             targetPosition = waitingLine.GetPosition(index);
-
+            UpdateOccupied(queue.Count);
             return true;
         }
 
@@ -115,7 +122,7 @@ namespace Assets._game.TestingScript {
             if ( index < 0 ) return;
 
             queue.Remove(index);
-
+            UpdateOccupied(queue.Count);
             //foreach ( var kvp in queue ) {
             //    Debug.Log($"[QUEUE] CANCEL {npc.name} | " +
             //                $"index={index} | " +
@@ -141,5 +148,10 @@ namespace Assets._game.TestingScript {
 
             return -1;
         }
+
+        private void UpdateOccupied( int amt ) {
+            waitingLine.UpdateOccupied(amt);
+        }
+
     }
 }
