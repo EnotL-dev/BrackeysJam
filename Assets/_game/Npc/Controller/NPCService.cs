@@ -70,7 +70,7 @@ namespace Assets._game.Npc.Controller {
         public void EndInteraction( NPCScript npc ) {
 
             var script = npc.GetComponent<NPCInteractionScript>();
-            script.ModifyCanInteract();
+            script.ModifyCanInteract(false);
 
             playerInteractionView.ForcedInteractionRelease();
         }
