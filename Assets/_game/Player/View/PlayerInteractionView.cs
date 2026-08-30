@@ -31,6 +31,10 @@ namespace Assets._game.Player.View {
         [SerializeField] private float distanceToInteract = 3f;
         [SerializeField] private LayerMask interactLayer;
 
+        [SerializeField] private float attackInputDelay = 0.1f;
+
+        private float attackBlockedUntil;
+
         private bool holdStart = false;
         IInteractable lastInteractable = null;
         IInteractable hoveredInteraction = null;
@@ -68,15 +72,13 @@ namespace Assets._game.Player.View {
             bool canInteract = hasTarget && interactable.CanInteractThisFrame();
 
 
-            if (canInteract)
-            {
+            if ( canInteract ) {
                 //Debug.Log($"canInteract {canInteract} this frame");
                 UpdateInteractionUI(interactable);
             }
-            else
-            {
+            else {
                 uiInteractionView.HideTip();
-                if (hoveredInteraction != null)
+                if ( hoveredInteraction != null )
                     hoveredInteraction.HideOutline();
             }
 
@@ -85,8 +87,7 @@ namespace Assets._game.Player.View {
             CheckInteractionRelease();
         }
 
-        private void LateUpdate()
-        {
+        private void LateUpdate() {
             armsAnimatorView.ChangeAnimation("Punch", false);
         }
 
@@ -98,8 +99,7 @@ namespace Assets._game.Player.View {
             }
             else {
                 uiInteractionView.HideTip();
-                if (hoveredInteraction != null)
-                {
+                if ( hoveredInteraction != null ) {
                     hoveredInteraction.HideOutline();
                     hoveredInteraction = null;
                 }
@@ -112,22 +112,24 @@ namespace Assets._game.Player.View {
 
             if ( interactAction.action.WasPressedThisFrame() ) {
                 IFurniture furniture = interactable as IFurniture;
-                if (interactionService.IsBusy())
+                if ( interactionService.IsBusy() )
                     return;
-                if (furniture != null)
-                    if (!furniture.CanBuy() && furniture.WasRemoved == false)
+                if ( furniture != null )
+                    if ( !furniture.CanBuy() && furniture.WasRemoved == false )
                         return;
 
                 holdStart = true;
 
-                interactionService.StartInteraction(interactable);
+                attackBlockedUntil = Time.time + attackBlockedUntil;
+
+                interactionService?.StartInteraction(interactable);
                 uiInteractionView.HideTip();
-                if(hoveredInteraction != null)
+                if ( hoveredInteraction != null )
                     hoveredInteraction.HideOutline();
 
                 lastInteractable = interactable;
 
-                if(interactable.IsDraggableObject())
+                if ( interactable.IsDraggableObject() )
                     armsAnimatorView.ChangeAnimation("Hold", true);
             }
             else if ( interactAction.action.IsPressed() ) {
@@ -153,6 +155,8 @@ namespace Assets._game.Player.View {
             interactionService?.EndInteraction();
             lastInteractable = null;
 
+            attackBlockedUntil = Time.time + attackInputDelay;
+
             armsAnimatorView.ChangeAnimation("Hold", false);
         }
 
@@ -161,6 +165,8 @@ namespace Assets._game.Player.View {
             holdStart = false;
             interactionService?.EndInteraction();
             lastInteractable = null;
+
+            attackBlockedUntil = Time.time + attackInputDelay;
 
             armsAnimatorView.ChangeAnimation("Hold", false);
         }
@@ -211,7 +217,7 @@ namespace Assets._game.Player.View {
                 return;
 
             uiInteractionView.HideTip();
-            if (hoveredInteraction != null)
+            if ( hoveredInteraction != null )
                 hoveredInteraction.HideOutline();
 
             settingPanel.Open();
@@ -221,6 +227,9 @@ namespace Assets._game.Player.View {
         }
 
         private void TryAttack( InputAction.CallbackContext _ ) {
+
+            if ( Time.time < attackBlockedUntil ) return;
+
             IInteractable interactable = CheckObject();
 
             if ( interactable == null ) return;
